@@ -2,7 +2,6 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import RegisterEmail from "./registerEmail";
-import RegisterRole from "./regsiterRole";
 import RegisterDetails from "./registerDetails";
 import { Session } from "next-auth";
 
@@ -21,7 +20,6 @@ export default function RegisterMain({ session }: { session: Session | null }) {
         <div className="md:py-12">
           {step === 1 && <RegisterEmail />}
           {step === 2 && <RegisterDetails email={email} />}
-          {step === 3 && <RegisterRole />}
         </div>
       </div>
     </main>
