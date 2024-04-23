@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useStore } from "../../app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import Logout from "../logout";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,7 +12,7 @@ import ProfileDropMenu from "./ProfileDropMenu";
 
 export default function Profile() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const { signedAccountId, wallet } = useStore();
+  const { signedAccountId, wallet } = useWalletStore();
   const { data: session, status, update } = useSession();
 
 

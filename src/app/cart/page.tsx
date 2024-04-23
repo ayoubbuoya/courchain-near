@@ -4,7 +4,7 @@ import Header from "@/components/header/header";
 import Footer from "@/components/footer/footer";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import { toast } from "react-toastify";
 import { CONTRACTID } from "@/lib/config";
 import { useCurrentUserStore } from "@/stores/currentUser";
@@ -13,7 +13,7 @@ import { fromNearToYocto, fromYoctoToNear } from "@/lib/utils";
 import { Course } from "@/lib/types";
 
 export default function CartPage() {
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
   const { cartedCourses, setCartedCourses } = useCurrentUserStore();
   const [cartedCoursesPrice, setCartedCoursesPrice] = useState<number>(0);
 

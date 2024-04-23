@@ -1,4 +1,4 @@
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,7 +21,7 @@ export default function EditCourseDetails({ course }: { course: FullCourse }) {
   const [title, setTitle] = useState(course.title);
   const [description, setDescription] = useState(course.description);
   const [price, setPrice] = useState(fromYoctoToNear(course.price));
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
 
   const handleUpdateCourseDetails = async () => {
     const loadingToast = toast.loading("Updating course details...");

@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import SplitLayout from "@/components/dashboard/splitLayout";
 import Loading from "@/components/loading";
 import { CONTRACTID } from "@/lib/config";
@@ -19,7 +19,7 @@ export default function Page({
   const { course_id, module_id } = params;
   const moduleId = Number(module_id);
   const { data: session } = useSession();
-  const { signedAccountId, wallet } = useStore();
+  const { signedAccountId, wallet } = useWalletStore();
   const [lessons, setLessons] = useState<any[]>([]);
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [isLoading, setIsLoading] = useState(false);

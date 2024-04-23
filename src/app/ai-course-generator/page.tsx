@@ -8,7 +8,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useStore } from "../layout";
+import { useWalletStore } from "../layout";
 import { CONTRACTID } from "@/lib/config";
 
 export default function Page() {
@@ -17,7 +17,7 @@ export default function Page() {
   const [modulesIds, setModulesIds] = useState([]);
   const [isLoadingModules, setIsLoadingModules] = useState(false);
   const [courseId, setCourseId] = useState("");
-  const { signedAccountId, wallet } = useStore();
+  const { signedAccountId, wallet } = useWalletStore();
 
   useEffect(() => {
     if (!wallet) return;

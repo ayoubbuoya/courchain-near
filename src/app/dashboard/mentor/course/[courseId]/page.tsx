@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import EditCourseDetails from "@/components/dashboard/mentor/editCourseDetails";
 import SplitLayout from "@/components/dashboard/splitLayout";
 import Loading from "@/components/loading";
@@ -23,7 +23,7 @@ export default function MentorCoursePage({
 }) {
   const courseId = Number(params.courseId);
   const { data: session } = useSession();
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
   const [course, setCourse] = useState<FullCourse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();

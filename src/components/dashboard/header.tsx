@@ -4,7 +4,7 @@ import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useStore } from "../../app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import { CONTRACTID } from "@/lib/config";
 import ProfileDropMenu from "../header/ProfileDropMenu";
 import { useSession } from "next-auth/react";
@@ -19,7 +19,7 @@ export default function Header({
   const { data: session } = useSession();
   const firstName = session?.user.name?.split(" ")[0];
   const lastName = session?.user.name?.split(" ")[1];
-  const { signedAccountId, wallet } = useStore();
+  const { signedAccountId, wallet } = useWalletStore();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   useEffect(() => {

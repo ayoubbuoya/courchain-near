@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

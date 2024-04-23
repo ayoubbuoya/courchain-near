@@ -8,7 +8,7 @@ import RecentCreatedCourses from "@/components/dashboard/recentCreatedCourses";
 import { useSession } from "next-auth/react";
 import Loading from "@/app/loading";
 import { useEffect, useState } from "react";
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import { Course } from "@/lib/types";
 import { CONTRACTID } from "@/lib/config";
 import { toast } from "react-toastify";
@@ -21,7 +21,7 @@ export default function MentorDashboard() {
   const [sortedCourses, setSortedCourses] = useState<Course[] | null>(null); // sorted courses [for pagination
   const [isLoading, setIsLoading] = useState(true);
   const { data: session, status } = useSession();
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
 
   // fetch courses
   async function fetchCreatedCourses() {

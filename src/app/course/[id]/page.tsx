@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import CourseDetails from "@/components/course/courseDetails";
 import Hero from "@/components/course/hero";
 import Footer from "@/components/footer/footer";
@@ -33,7 +33,7 @@ export default function CoursePage({
     setCourse,
   } = useCourseStudentStatusStore();
 
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
 
   useEffect(() => {
     if (!wallet) {

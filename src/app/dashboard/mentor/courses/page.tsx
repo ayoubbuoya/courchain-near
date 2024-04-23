@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import SplitLayout from "@/components/dashboard/splitLayout";
 import Loading from "@/components/loading";
 import { CONTRACTID } from "@/lib/config";
@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 export default function MyCreatedCourses() {
   const { data: session } = useSession();
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

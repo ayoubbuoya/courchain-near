@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -28,7 +28,7 @@ export default function LearnCoursePage({
   const pathname = usePathname();
   const moduleOrder = Number(searchParams.get("module")) || 1;
   const lessonOrder = Number(searchParams.get("lesson")) || 1;
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
   const { data: session } = useSession();
   const router = useRouter();
   const [enrollment, setEnrollment] = useState<FullEnrollment | null>(null);

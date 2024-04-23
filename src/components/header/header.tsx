@@ -6,7 +6,7 @@ import CartLink from "./cartLink";
 import Profile from "./profile";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 
 export default function Header() {
   const { data: session } = useSession();

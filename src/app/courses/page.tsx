@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Course } from "@/lib/types";
 import Loading from "@/components/loading";
-import { useStore } from "../layout";
+import { useWalletStore } from "../layout";
 import { CONTRACTID } from "@/lib/config";
 
 export default function CoursesPage() {
@@ -18,7 +18,7 @@ export default function CoursesPage() {
   const { data: session } = useSession();
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
 
   useEffect(() => {
     // fetch courses

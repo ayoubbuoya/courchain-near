@@ -2,7 +2,6 @@
 
 // react
 import { useEffect } from "react";
-import { create as createStore } from "zustand";
 
 // app
 import "./globals.css";
@@ -14,19 +13,7 @@ import { Wallet } from "@/wallets/near-wallet";
 
 import SessionWrapper from "@/components/sessionWrapper";
 import { ToastContainer } from "react-toastify";
-
-// store to share  wallet and signedAccountId
-export const useStore = createStore<{
-  wallet: any;
-  signedAccountId: string;
-  setWallet: (wallet: any) => void;
-  setSignedAccountId: (signedAccountId: string) => void;
-}>((set) => ({
-  wallet: undefined,
-  signedAccountId: "",
-  setWallet: (wallet) => set({ wallet }),
-  setSignedAccountId: (signedAccountId) => set({ signedAccountId }),
-}));
+import { useWalletStore } from "@/stores/wallet";
 
 // Layout Component
 export default function RootLayout({
@@ -34,7 +21,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { setWallet, setSignedAccountId } = useStore();
+  const { setWallet, setSignedAccountId } = useWalletStore();
 
   useEffect(() => {
     const data = {

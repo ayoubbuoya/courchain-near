@@ -1,8 +1,8 @@
-import { useStore } from "@/app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import { signOut } from "next-auth/react";
 
 export default function Logout() {
-  const { wallet, signedAccountId } = useStore();
+  const { wallet, signedAccountId } = useWalletStore();
 
   const handleLogout = async () => {
     if (wallet) {

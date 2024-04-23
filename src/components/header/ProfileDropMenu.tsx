@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useStore } from "../../app/layout";
+import { useWalletStore } from "@/stores/wallet";
 import Logout from "../logout";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,7 +16,7 @@ export default function ProfileDropMenu({
   className?: string;
 }) {
   const { data: session, status, update } = useSession();
-  const { signedAccountId, wallet } = useStore();
+  const { signedAccountId, wallet } = useWalletStore();
 
   const handleLoginWallet = async () => {
     await wallet.signIn();

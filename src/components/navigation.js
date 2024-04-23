@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import NearLogo from '/public/near-logo.svg';
-import { useStore } from '@/app/layout';
+import { useWalletStore } from '@/app/layout';
 
 export const Navigation = () => {
-  const { signedAccountId, wallet } = useStore();
+  const { signedAccountId, wallet } = useWalletStore();
   const [action, setAction] = useState(() => { });
   const [label, setLabel] = useState('Loading...');
 
