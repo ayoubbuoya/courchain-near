@@ -16,7 +16,12 @@ import SessionWrapper from "@/components/sessionWrapper";
 import { ToastContainer } from "react-toastify";
 
 // store to share  wallet and signedAccountId
-export const useStore = createStore((set) => ({
+export const useStore = createStore<{
+  wallet: any;
+  signedAccountId: string;
+  setWallet: (wallet: any) => void;
+  setSignedAccountId: (signedAccountId: string) => void;
+}>((set) => ({
   wallet: undefined,
   signedAccountId: "",
   setWallet: (wallet) => set({ wallet }),
@@ -24,14 +29,19 @@ export const useStore = createStore((set) => ({
 }));
 
 // Layout Component
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const { setWallet, setSignedAccountId } = useStore();
 
   useEffect(() => {
-    const wallet = new Wallet({
+    const data = {
       networkId: NetworkId,
       createAccessKeyFor: HelloNearContract,
-    });
+    };
+    const wallet = new Wallet(JSON.stringify(data));
     wallet.startUp(setSignedAccountId);
     setWallet(wallet);
   }, []);
