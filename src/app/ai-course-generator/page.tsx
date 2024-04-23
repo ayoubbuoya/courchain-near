@@ -8,7 +8,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useWalletStore } from "../layout";
+import { useWalletStore } from "@/stores/wallet";
 import { CONTRACTID } from "@/lib/config";
 
 export default function Page() {

@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Course } from "@/lib/types";
 import Loading from "@/components/loading";
-import { useWalletStore } from "../layout";
+import { useWalletStore } from "@/stores/wallet";
 import { CONTRACTID } from "@/lib/config";
 
 export default function CoursesPage() {
