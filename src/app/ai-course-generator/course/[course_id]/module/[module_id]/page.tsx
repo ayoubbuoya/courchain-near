@@ -58,6 +58,7 @@ export default function Page({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
           course_id: course_id,
