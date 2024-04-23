@@ -1,0 +1,98 @@
+import Image from "next/image";
+
+export default function AddedValuesSection() {
+  return (
+    <section
+      className="py-10 text-center border-[1px] rounded-2xl border-y-purple"
+      style={{
+        background:
+          "linear-gradient(0deg, rgba(226,184,233,1) 10%, rgba(255,255,255,1) 95%)",
+      }}
+    >
+      <div className="container mx-auto">
+        <div className="flex items-center justify-center px-2 md:w-[50%] md:mx-auto">
+          <h1
+            style={{
+              WebkitTextStroke: "1px #e2b8e9",
+            }}
+            className="my-2 text-xl font-normal uppercase text-purple font-capriola md:text-4xl"
+          >
+            Découvrez Nos Valeurs Ajoutées en IA et Blockchain
+          </h1>
+        </div>
+        <div className="px-3.5 md:px-0 md:w-[80%] md:mx-auto">
+          <p className="text-sm font-medium text-left md:text-xl text-dimgray-300 font-poppins ">
+            {`  Explorez l'excellence éducative à travers une formation immersive.
+          Accédez à des experts de l'industrie, bénéficiez d'une flexibilité
+          totale, et forgez votre avenir dans une communauté engagée.`}
+          </p>
+        </div>
+        <div className="grid gap-8 py-10 place-items-center md:grid-cols-3 ">
+          <div className="flex flex-col items-center justify-between gap-2 ">
+            <div className="p-3 rounded-md md:p-4 bg-aqua-blue">
+              <img src="/messages--24--outline.svg" alt="" />
+            </div>
+            <h5 className="text-xl font-semibold text-center md:text-2xl md:font-bold text-dimgray-500 font-poppins">
+              Measure your performance
+            </h5>
+            <p className="px-8 text-sm font-medium md:text-base text-dimgray-300 font-poppins ">
+              Stay connected with your team and make quick decisions wherever
+              you are.
+            </p>
+          </div>
+          <div className="hidden row-span-2 md:block">
+            <div className="flex items-center justify-center mt-8">
+              <img
+                className="object-cover "
+                src="/artificial-intelligence-chip@2x.png"
+                alt=""
+              />
+            </div>
+          </div>
+          <div className="flex flex-col items-center justify-between gap-2">
+            <div className=" rounded-md md:p-1.5 bg-aqua-blue">
+              <Image
+                width={24}
+                height={24}
+                className="w-12 "
+                src="/frame-18.svg"
+                alt=""
+              />
+            </div>
+            <h5 className="text-xl font-semibold text-center md:text-2xl md:font-bold text-dimgray-500 font-poppins">
+              Custom analytics
+            </h5>
+            <p className="px-8 text-sm font-medium md:text-base text-dimgray-300 font-poppins ">
+              Get a complete sales dashboard in the cloud. See activity, revenue
+              and social metrics all in one place.
+            </p>
+          </div>
+          <div className="flex flex-col items-center justify-between gap-2">
+            <div className="p-3 rounded-md md:p-4 bg-aqua-blue">
+              <img src="/edit--24--outline.svg" alt="" />
+            </div>
+            <h5 className="text-xl font-semibold text-center md:text-2xl md:font-bold text-dimgray-500 font-poppins">
+              Build your website
+            </h5>
+            <p className="px-8 text-sm font-medium md:text-base text-dimgray-300 font-poppins ">
+              A tool that lets you build a dream website even if you know
+              nothing about web design or programming.
+            </p>
+          </div>
+          <div className="flex flex-col items-center justify-between gap-2">
+            <div className="p-3 rounded-md md:p-4 bg-aqua-blue">
+              <img src="/grid--24--outline.svg" alt="" />
+            </div>
+            <h5 className="text-xl font-semibold text-center md:text-2xl md:font-bold text-dimgray-500 font-poppins">
+              Connect multiple apps
+            </h5>
+            <p className="px-8 text-sm font-medium md:text-base text-dimgray-300 font-poppins ">
+              The first business platform to bring together all of your products
+              from one place.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
