@@ -21,10 +21,10 @@ export default function MinCoursesSection({
         {lastSixCourses &&
           lastSixCourses.map((course) => (
             <CourseMinCard
-              key={course._id}
+              key={course.id}
               title={course.title}
               price={Number(course.price) || 18}
-              link={`/course/${course._id}`}
+              link={`/course/${course.id}`}
             />
           ))}
       </div>
