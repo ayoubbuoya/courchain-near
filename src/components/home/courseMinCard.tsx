@@ -35,13 +35,15 @@ export default function CourseMinCard({
               </div>
             )}
           </div>
-          <p className="text-base text-schemes-secondary">{price + "    NEAR"} </p>
+          <p className="text-base text-schemes-secondary">
+            {price + "    NEAR"}{" "}
+          </p>
         </div>
         <Link
           href={link}
-          className="text-white bg-aqua-blue rounded-full px-5 py-3"
+          className="text-white font-poppins font-medium bg-aqua-blue rounded-3xl px-6 py-3"
         >
-          Découvrir
+          Learn More
         </Link>
       </div>
     </div>

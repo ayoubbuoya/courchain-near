@@ -137,7 +137,7 @@ export default function MentorDashboard() {
   return (
     <div className="md:grid md:grid-cols-12">
       <SplitLayout session={session} />
-      <main className="container min-h-screen pb-5 mx-auto md:px-5 md:col-span-11 md:pb-10">
+      <main className="container  pb-5 mx-auto md:px-5 md:col-span-11 md:pb-10">
         <div className="mt-4 md:mt-0 px-3 w-full md:px-0 md:max-w-[39%]">
           <h1 className="mb-1 text-2xl font-normal uppercase text-aqua-blue font-poppins md:text-3xl ">
             Create New Course
@@ -202,7 +202,7 @@ export default function MentorDashboard() {
 
                 <div className="w-full flex flex-col items-center md:items-start justify-between gap-5">
                   {courses &&
-                    courses.map((course: Course) => (
+                    courses.slice(0, 3).map((course: Course) => (
                       <div
                         key={course.id}
                         className="w-full custom-linear-border rounded-2xl"
