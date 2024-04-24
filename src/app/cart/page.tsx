@@ -201,10 +201,10 @@ export default function CartPage() {
           <div className="lg:max-w-[40%] rounded-2xl shadow-custom-green translate-y-[15%] mx-auto custom-linear-border  ">
             <div className="w-full py-5">
               <h1 className=" font-poppins font-medium text-[1.563rem] mt-5 text-aqua-blue uppercase tracking-wider py-3 ">
-                Panier de cours
+                Course basket
               </h1>
               <p className="text-base font-normal text-dimgray-200 font-poppins ">
-                Votre panier est vide
+                your basket is empty
               </p>
               <div className="py-8 w-[60%] mx-auto flex items-center justify-center">
                 <img
@@ -215,7 +215,7 @@ export default function CartPage() {
               </div>
               <div>
                 <p className="text-sm font-normal text-dimgray-200 font-poppins ">
-                  Continuez à naviguer pour plus de cours{" "}
+                  Keep browsing for more courses
                 </p>
               </div>
               <div className="flex items-center justify-center py-6 text-center">
@@ -223,7 +223,7 @@ export default function CartPage() {
                   href={"/courses"}
                   className="w-[55%] py-3 rounded-full text-white font-poppins font-normal text-base bg-aqua-blue border-white border-2 hover:bg-slate-600  "
                 >
-                  Revenir au cours
+                  Browse courses
                 </Link>
               </div>
             </div>
