@@ -7,6 +7,7 @@ import Profile from "./profile";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useWalletStore } from "@/stores/wallet";
+import ExploreButton from "./explorButton";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -51,16 +52,7 @@ export default function Header() {
       <div className={`hidden md:flex items-center justify-around w-full`}>
         {/* Start Second Sec */}
         <div className="flex items-center justify-between gap-2 xl:gap-5">
-          <div className="flex flex-col items-center justify-start bg-white-900 px-4 py-1.5 border-[1px] border-aqua-blue border-solid rounded-3xl  text-aqua-blue text-base text-center cursor-pointer">
-            <div className="flex items-center justify-start gap-2 overflow-hidden rounded">
-              <img
-                className="overflow-hidden max-w-6 shrink-0"
-                alt=""
-                src="/iconparkoutlinedown.svg"
-              />
-              <span className="text-base font-normal font-roboto">Explore</span>
-            </div>
-          </div>
+          <ExploreButton />
           <CartLink />
         </div>
         <Navbar session={session} />
