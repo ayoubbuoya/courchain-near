@@ -33,7 +33,43 @@ export default function ExploreButton() {
           browse courses
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup className="mt-3">
+        <DropdownMenuGroup className="mt-2">
+          <DropdownMenuItem className="bg-explore-button-gradient ">
+            <span className="font-poppins font-medium text-base text-dimgray-800">
+              By Level :
+            </span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuGroup className="px-1.5 mt-2">
+          <DropdownMenuItem className="pb-1">
+            <Link
+              href="/courses?level=beginner"
+              className="font-poppins font-normal text-base text-schemes-secondary"
+            >
+              Beginner
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="pb-1">
+            <Link
+              href="/courses?level=intermediate"
+              className="font-poppins font-normal text-base text-schemes-secondary"
+            >
+              Intermediate
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="pb-1">
+            <Link
+              href="/courses?level=advanced"
+              className="font-poppins font-normal text-base text-schemes-secondary"
+            >
+              Advanced
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup className="">
           <DropdownMenuItem className="bg-explore-button-gradient ">
             <span className="font-poppins font-medium text-base text-dimgray-800">
               By Category :
