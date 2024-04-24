@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function AddedValuesSection() {
   return (
     <section
-      className="py-10 text-center border-[1px] rounded-2xl border-y-purple"
+      className="py-10 text-center rounded-md"
       style={{
         background:
           "linear-gradient(0deg, rgba(226,184,233,1) 10%, rgba(255,255,255,1) 95%)",
