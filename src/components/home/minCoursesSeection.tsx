@@ -18,7 +18,7 @@ export default function MinCoursesSection({
         </h1>
       </div>
 
-      <div className="grid py-4 md:pt-8 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-4">
+      <div className="grid py-4 md:pt-8 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-4 md:gap-4 ">
         {lastSixCourses &&
           lastSixCourses.map((course) => (
             <CourseMinCard
