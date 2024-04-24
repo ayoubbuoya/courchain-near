@@ -12,7 +12,6 @@ export default function Header() {
   const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-
   return (
     <header className="sticky top-0 z-40 bg-white-900 flex items-center w-full px-4 p-2.5 md:text-base md:text-center justify-evenly text-aqua-blue border-b-[1px] border-b-aqua-blue  ">
       {/* Start First Sec */}
@@ -59,9 +58,7 @@ export default function Header() {
                 alt=""
                 src="/iconparkoutlinedown.svg"
               />
-              <span className="text-base font-normal font-roboto">
-                Explorer
-              </span>
+              <span className="text-base font-normal font-roboto">Explore</span>
             </div>
           </div>
           <CartLink />
@@ -90,7 +87,7 @@ export default function Header() {
                   src="/24px--plus@2x.png"
                 />
 
-                <div className="leading-[24px]">Nous rejoindre</div>
+                <div className="leading-[24px]">Register</div>
               </Link>
             </div>
           </div>
@@ -114,7 +111,7 @@ export default function Header() {
                     href="/register"
                     className="bg-aqua-blue px-3 py-1.5  font-normal tracking-wider font-poppins text-base text-center text-white-900 overflow-hidden rounded-full"
                   >
-                    {"Inscrire"}
+                    Register
                   </Link>
 
                   <Link
