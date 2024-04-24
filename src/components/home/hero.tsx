@@ -5,7 +5,7 @@ export default function Hero() {
     <section
       style={{
         background:
-          "linear-gradient(180.00deg, rgb(69, 161, 190),rgba(226, 184, 233, 0) 100%)",
+          "linear-gradient(0deg, rgba(226,184,233,0.2), rgba(69,161,190,0.7))",
       }}
       className="w-full overflow-hidden text-xl text-left text-white-900 font-poppins"
     >

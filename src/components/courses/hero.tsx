@@ -17,14 +17,14 @@ export default function Hero() {
         <div className="grid md:grid-cols-3 overflow-hidden">
           <div className="md:col-span-2">
             <h1 className="green-text-stroke text-2xl md:text-[2.5rem] md:leading-10 font-normal  uppercase font-capriola text-aqua-blue pb-5    ">
-              Devenez certifié en IA et Blockchain
+              BECOME CERTIFIED IN AI AND BLOCKCHAIN
             </h1>
             <div className="flex items-center justify-center py-4">
               <Link
                 href={"/register"}
                 className="rounded-full w-[70%] py-3 text-base font-normal tracking-wider text-center cursor-pointer bg-aqua-blue font-roboto hover:bg-slate-600"
               >
-                Décrochez Votre Certification
+                Obtain Your Certification
               </Link>
             </div>
           </div>
