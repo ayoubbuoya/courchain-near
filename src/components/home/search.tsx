@@ -6,7 +6,7 @@ export default function Search() {
         <input
           className="w-full h-full border-none outline-none bg-white-900 overflow-auto pr-2 text-sm "
           type="text"
-          placeholder="Quels cours chechez-vous ?"
+          placeholder="What course are you looking for?"
         />
       </div>
     </div>

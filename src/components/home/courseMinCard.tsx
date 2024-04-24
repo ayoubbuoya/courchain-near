@@ -35,7 +35,7 @@ export default function CourseMinCard({
               </div>
             )}
           </div>
-          <p className="text-base text-black">{"$ " + price} </p>
+          <p className="text-base text-schemes-secondary">{price + "    NEAR"} </p>
         </div>
         <Link
           href={link}

@@ -18,25 +18,25 @@ export default function Hero() {
             style={{ WebkitTextStroke: "1px #ffffff" }}
             className=" text-lg md:text-[3.2rem] leading-snug uppercase font-capriola font-normal text-center tracking-wide md:tracking-normal"
           >
-            {"Explorez l'Intelligence Artificielle et la Blockchain"}
+            Explore Artificial Intelligence and Blockchain Development
           </h1>
         </div>
       </div>
       <div className="flex items-center justify-center px-1 mb-4 md:mb-12 md:px-0">
         <div className="flex items-center justify-center md:w-[53%] ">
           <p className="text-sm font-medium text-center text-white font-poppins xl:text-xl">
-            {`Plongez dans le futur de la technologie avec nos cours
-              interactifs, conçus pour stimuler votre esprit et nourrir votre passion pour l'IA et
-              la blockchain.`}
+            Immerse yourself in the future of technology with our interactive
+            courses, designed to stimulate your mind and fuel your passion for
+            AI and blockchain.
           </p>
         </div>
       </div>
       <div className="flex items-center justify-center w-full mb-8 md:mb-12">
         <a
           href="/courses"
-          className="w-[70%] md:w-[30%] py-2 text-center bg-aqua-blue rounded-3xl font-poppins font-normal text-base"
+          className="capitalize w-[70%] md:w-[25%] md:hover:w-[35%] py-3 text-center bg-aqua-blue rounded-3xl font-poppins font-normal text-xl duration-700 hover:bg-gray-700   transition-all ease-in-out text-white-900"
         >
-          Découvrez nos Cours
+          Discover our Courses
         </a>
       </div>
       <div className="flex items-center justify-center mb-12">

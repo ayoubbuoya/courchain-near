@@ -2,24 +2,24 @@ import Link from "next/link";
 
 export default function TrendsSection() {
   return (
-    <section className="my-8 sm:py-5">
-      <div className="custom-linear-border rounded-2xl w-[95%] container mx-auto ">
+    <section className="my-8 sm:py-5 w-[95%] container mx-auto">
+      <div className="custom-linear-border rounded-2xl  ">
         <div className="grid px-4 py-6 md:p-20 sm:grid-cols-2 gap-x-12 ">
-          <div className="flex flex-col items-center justify-between gap-3 lg:gap-5 md:items-start ">
-            <h1 className="text-lg font-normal md:w-[70%] text-center uppercase md:text-left font-capriola lg:text-3xl text-aqua-blue">
-              Découvrez les Dernières Tendances en IA et Blockchain !
+          <div className="flex flex-col items-center justify-evenly gap-3 lg:gap-5 md:items-start ">
+            <h1 className="text-lg font-normal  text-center uppercase md:text-left font-capriola lg:text-3xl text-aqua-blue">
+              Discover the Latest Trends in AI and Blockchain!
             </h1>
             <p className="text-sm font-medium text-darkslategray-550 md:text-base lg:text-lg xl:text-xl font-poppins">
-              {`Explorez les dernières tendances en Intelligence Artificielle et
-            Blockchain avec nos cours exclusifs. Soyez prêt à relever les défis
-            du futur en apprenant les concepts les plus récents et les
-            innovations qui façonnent l'industrie.`}
+              Explore the latest trends in Artificial Intelligence and
+              Blockchain with our exclusive courses. Be prepared to meet the
+              challenges of the future by learning the latest concepts and
+              innovations shaping the industry.
             </p>
             <Link
-              href={"/courses?specialite=AI&theme=Web2"}
+              href={"/courses?category=AI"}
               className="w-[98%] cursor-pointer text-center py-2 sm:py-3 font-roboto font-normal text-base text-white bg-aqua-blue rounded-full"
             >
-              Explorez maintenant
+              Explore now
             </Link>
           </div>
           <div className="hidden sm:justify-center sm:flex">
