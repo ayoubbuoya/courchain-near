@@ -2,15 +2,35 @@ import Link from "next/link";
 import Search from "../home/search";
 import { useCourseStudentStatusStore } from "@/stores/courseStudentStatus";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
+import { useWalletStore } from "@/stores/wallet";
+import { toast } from "react-toastify";
 
 export default function Hero({
+  session,
+  update,
   handleAddCourseToCart,
 }: {
+  session: Session | null;
+  update: (session: any) => Promise<Session | null>;
   handleAddCourseToCart: () => void;
 }) {
   const router = useRouter();
   const { isCarted, isCompleted, isEnrolled, course } =
     useCourseStudentStatusStore();
+
+  const { wallet, signedAccountId } = useWalletStore();
+
+  const switchToStudent = async () => {
+    await update({
+      ...session,
+      isMentor: false,
+    });
+
+    toast.success("Switched to Student", {
+      autoClose: 1000,
+    });
+  };
 
   return (
     <section className=" bg-course-hero-gradient text-center min-h-[50vh] w-full overflow-hidden text-xl text-white-900 font-poppins py-6 backdrop-blur-[3.13rem] ">
@@ -40,7 +60,29 @@ export default function Hero({
                   </p>
                 </div>
                 <div className="flex flex-col items-center justify-between gap-3 w-[95%] md:w-[85%] ">
-                  {isCarted ? (
+                  {session &&
+                  session.user &&
+                  session.user.role === "user" &&
+                  session.isMentor &&
+                  signedAccountId !== course?.mentor.account_id ? (
+                    <button
+                      onClick={switchToStudent}
+                      className="py-2 bg-aqua-blue w-full rounded-full font-poppins text-white font-normal text-balance text-center "
+                    >
+                      Switch To Student
+                    </button>
+                  ) : session &&
+                    session.user &&
+                    session.user.role === "user" &&
+                    session.isMentor &&
+                    signedAccountId === course?.mentor.account_id ? (
+                    <Link
+                      className="py-2 bg-aqua-blue w-full rounded-full font-poppins text-white font-normal text-balance text-center"
+                      href={`/dashboard/mentor/course/${course?.id}`}
+                    >
+                      Edit Course
+                    </Link>
+                  ) : isCarted ? (
                     <button
                       onClick={() => router.push("/cart")}
                       className="py-2 bg-aqua-blue w-full rounded-full font-poppins text-white font-normal text-balance text-center "

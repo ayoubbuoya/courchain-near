@@ -4,14 +4,22 @@ import { useCourseStudentStatusStore } from "@/stores/courseStudentStatus";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Session } from "next-auth";
+import { useWalletStore } from "@/stores/wallet";
+import { toast } from "react-toastify";
 
 export default function CourseDetails({
+  session,
+  update,
   handleAddCourseToCart,
 }: {
+  session: Session | null;
+  update: (session: any) => Promise<Session | null>;
   handleAddCourseToCart: () => void;
 }) {
   const { course, isCarted, isEnrolled, isCompleted } =
     useCourseStudentStatusStore();
+  const { wallet, signedAccountId } = useWalletStore();
   const router = useRouter();
 
   if (!course) {
@@ -22,6 +30,17 @@ export default function CourseDetails({
     course.modules[0]
   );
   const courseMentor = course.mentor;
+
+  const switchToStudent = async () => {
+    await update({
+      ...session,
+      isMentor: false,
+    });
+
+    toast.success("Switched to Student", {
+      autoClose: 1000,
+    });
+  };
 
   return (
     <section className="py-5 container mx-auto">
@@ -65,7 +84,31 @@ export default function CourseDetails({
 
         <div></div>
         <div className="w-[95%] mx-auto ">
-          {isCarted ? (
+          {session &&
+          session.user &&
+          session.user.role === "user" &&
+          session.isMentor &&
+          signedAccountId !== course?.mentor.account_id ? (
+            <button
+              onClick={switchToStudent}
+              className="w-full rounded-full text-center font-roboto font-normal text-base bg-aqua-blue py-2 text-white md:text-xl "
+            >
+              Switch To Student
+            </button>
+          ) : session &&
+            session.user &&
+            session.user.role === "user" &&
+            session.isMentor &&
+            signedAccountId === course?.mentor.account_id ? (
+            <button
+              onClick={() => {
+                router.push(`/dashboard/mentor/course/${course?.id}`);
+              }}
+              className="w-full rounded-full text-center font-roboto font-normal text-base bg-aqua-blue py-2 text-white md:text-xl "
+            >
+              Edit Course
+            </button>
+          ) : isCarted ? (
             <button
               onClick={() => router.push("/cart")}
               className="w-full rounded-full text-center font-roboto font-normal text-base bg-aqua-blue py-2 text-white md:text-xl "

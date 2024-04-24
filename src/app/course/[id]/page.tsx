@@ -21,7 +21,7 @@ export default function CoursePage({
     id: number;
   };
 }) {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const { id: courseId } = params;
   const {
     isCarted,
@@ -85,35 +85,41 @@ export default function CoursePage({
     }
 
     async function checkStatusOfCourseToCurrentStudent() {
-      const carted = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "is_student_course_carted",
-        args: {
-          course_id: Number(courseId),
-          account_id: signedAccountId,
-        },
-      });
-      setIsCarted(carted);
+      if (!session?.isMentor) {
+        const carted = await wallet.viewMethod({
+          contractId: CONTRACTID,
+          method: "is_student_course_carted",
+          args: {
+            course_id: Number(courseId),
+            account_id: signedAccountId,
+          },
+        });
+        setIsCarted(carted);
 
-      const enrolled = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "is_student_course_enrolled",
-        args: {
-          course_id: Number(courseId),
-          account_id: signedAccountId,
-        },
-      });
-      setIsEnrolled(enrolled);
+        const enrolled = await wallet.viewMethod({
+          contractId: CONTRACTID,
+          method: "is_student_course_enrolled",
+          args: {
+            course_id: Number(courseId),
+            account_id: signedAccountId,
+          },
+        });
+        setIsEnrolled(enrolled);
 
-      const completed = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "is_student_course_completed",
-        args: {
-          course_id: Number(courseId),
-          account_id: signedAccountId,
-        },
-      });
-      setIsCompleted(completed);
+        const completed = await wallet.viewMethod({
+          contractId: CONTRACTID,
+          method: "is_student_course_completed",
+          args: {
+            course_id: Number(courseId),
+            account_id: signedAccountId,
+          },
+        });
+        setIsCompleted(completed);
+      } else {
+        setIsCarted(false);
+        setIsEnrolled(false);
+        setIsCompleted(false);
+      }
     }
 
     if (session && signedAccountId) {
@@ -224,7 +230,11 @@ export default function CoursePage({
       <Header />
       {course ? (
         <main className="min-h-screen text-base mb-5">
-          <Hero handleAddCourseToCart={handleAddCourseToCart} />
+          <Hero
+            session={session}
+            update={update}
+            handleAddCourseToCart={handleAddCourseToCart}
+          />
           <section className="container mx-auto py-5">
             <div className="w-[95%] mx-auto flex justify-center items-center ">
               <div className="custom-linear-border rounded-2xl w-full">
@@ -267,7 +277,11 @@ export default function CoursePage({
             </div>
           </section>
 
-          <CourseDetails handleAddCourseToCart={handleAddCourseToCart} />
+          <CourseDetails
+            session={session}
+            update={update}
+            handleAddCourseToCart={handleAddCourseToCart}
+          />
           <div className="mx-auto w-[98%] md:w-[85%]">
             <h1 className="text-xl md:text-[2.5rem] md:leading-10 font-normal uppercase text-purple font-capriola my-8 ">
               Voir ce que pensent les internautes / ux
