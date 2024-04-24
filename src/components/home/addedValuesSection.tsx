@@ -17,14 +17,14 @@ export default function AddedValuesSection() {
             }}
             className="my-2 text-xl font-normal uppercase text-purple font-capriola md:text-4xl"
           >
-            Découvrez Nos Valeurs Ajoutées en IA et Blockchain
+            Discover Our Added Values
           </h1>
         </div>
-        <div className="px-3.5 md:px-0 md:w-[80%] md:mx-auto">
+        <div className="px-5 md:px-0 md:w-[80%] md:mx-auto">
           <p className="text-sm font-medium text-left md:text-xl text-dimgray-300 font-poppins ">
-            {`  Explorez l'excellence éducative à travers une formation immersive.
-          Accédez à des experts de l'industrie, bénéficiez d'une flexibilité
-          totale, et forgez votre avenir dans une communauté engagée.`}
+            Explore educational excellence through immersive training. Access
+            industry experts, benefit from flexibility total, and forge your
+            future in an engaged community.
           </p>
         </div>
         <div className="grid gap-8 py-10 place-items-center md:grid-cols-3 ">
