@@ -10,7 +10,7 @@ export default function Hero() {
       }}
       className="text-center min-h-[50vh] w-full overflow-hidden text-xl text-white-900 font-poppins py-6"
     >
-      <div className="my-8 ">
+      <div className="my-8 relative ">
         <Search />
       </div>
       <div className="mx-auto w-[95%] md:w-[60%] mt-12 ">

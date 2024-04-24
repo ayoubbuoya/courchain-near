@@ -12,6 +12,7 @@ import { useCourseStudentStatusStore } from "@/stores/courseStudentStatus";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useCoursesStore } from "@/stores/courses";
 
 export default function CoursePage({
   params,
@@ -32,6 +33,7 @@ export default function CoursePage({
     course,
     setCourse,
   } = useCourseStudentStatusStore();
+  const { setAllCourses } = useCoursesStore();
 
   const { wallet, signedAccountId } = useWalletStore();
 
@@ -73,6 +75,15 @@ export default function CoursePage({
       }
     }
 
+    async function fetchCourses() {
+      const courses = await wallet.viewMethod({
+        contractId: CONTRACTID,
+        method: "get_courses",
+        args: {},
+      });
+      setAllCourses(courses);
+    }
+
     async function checkStatusOfCourseToCurrentStudent() {
       const carted = await wallet.viewMethod({
         contractId: CONTRACTID,
@@ -108,6 +119,7 @@ export default function CoursePage({
     if (session && signedAccountId) {
       fetchCourse();
       checkStatusOfCourseToCurrentStudent();
+      fetchCourses();
     }
   }, [wallet, signedAccountId, session, courseId]);
 
@@ -255,9 +267,7 @@ export default function CoursePage({
             </div>
           </section>
 
-          <CourseDetails
-            handleAddCourseToCart={handleAddCourseToCart}
-          />
+          <CourseDetails handleAddCourseToCart={handleAddCourseToCart} />
           <div className="mx-auto w-[98%] md:w-[85%]">
             <h1 className="text-xl md:text-[2.5rem] md:leading-10 font-normal uppercase text-purple font-capriola my-8 ">
               Voir ce que pensent les internautes / ux

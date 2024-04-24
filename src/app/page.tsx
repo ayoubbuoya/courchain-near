@@ -17,11 +17,13 @@ import { Course } from "@/lib/types";
 import { useWalletStore } from "@/stores/wallet";
 import { CONTRACTID } from "@/lib/config";
 import Loading from "@/components/loading";
+import { useCoursesStore } from "@/stores/courses";
 
 export default function Homepage() {
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { wallet, signedAccountId } = useWalletStore();
+  const {  setAllCourses } = useCoursesStore();
 
   useEffect(() => {
     // fetch courses
@@ -37,6 +39,7 @@ export default function Homepage() {
         method: "get_courses",
         args: {},
       });
+      setAllCourses(courses);
       setCourses(courses);
       setIsLoading(false);
     }

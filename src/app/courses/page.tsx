@@ -12,6 +12,7 @@ import { Course } from "@/lib/types";
 import Loading from "@/components/loading";
 import { useWalletStore } from "@/stores/wallet";
 import { CONTRACTID } from "@/lib/config";
+import { useCoursesStore } from "@/stores/courses";
 
 export default function CoursesPage() {
   // get session and courses
@@ -19,21 +20,17 @@ export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { wallet, signedAccountId } = useWalletStore();
+  const { setAllCourses } = useCoursesStore();
 
   useEffect(() => {
     // fetch courses
     async function fetchCourses() {
-      // const courses = await wallet.viewMethod({
-      //   contractId: CONTRACTID,
-      //   method: "get_published_courses",
-      //   args: {},
-      // });
-
       const courses = await wallet.viewMethod({
         contractId: CONTRACTID,
         method: "get_courses",
         args: {},
       });
+      setAllCourses(courses);
       setCourses(courses);
       setIsLoading(false);
     }
