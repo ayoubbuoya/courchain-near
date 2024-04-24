@@ -3,12 +3,14 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import CourseMinCard from "../home/courseMinCard";
 import { Course } from "@/lib/types";
+import { useState } from "react";
 
 export default function CoursesSection({
   courses,
 }: {
   courses: Course[] | null;
 }) {
+  const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
@@ -33,10 +35,97 @@ export default function CoursesSection({
           Find the right courses for you
         </h1>
 
-        <button className="capitalize flex items-center gap-2 px-4 py-2 mt-3 md:mt-6 mb-8 text-lg font-normal tracking-wide bg-white border-[1px] rounded-full text-aqua-blue border-aqua-blue font-poppins ">
-          <img src="/iconparkoutlinedown.svg" alt="" />
-          filter by
+        <button
+          onClick={() => {
+            setIsFilterSidebarOpen(!isFilterSidebarOpen);
+          }}
+          className={`capitalize flex items-center gap-2 px-4 py-2 mt-3 md:mt-6  ${
+            isFilterSidebarOpen ? "mb-0" : " mb-8"
+          } text-xl font-normal tracking-wide bg-white border-[1px] rounded-xl text-aqua-blue border-aqua-blue font-poppins`}
+        >
+          Filter
         </button>
+
+        <div
+          className={`${
+            isFilterSidebarOpen ? "block" : "hidden"
+          } custom-linear-border rounded-xl my-4 ml-4 mr-2 `}
+        >
+          <div className="py-2 px-2 flex items-center justify-between ">
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="level"
+                className="text-xl font-normal text-black font-poppins"
+              >
+                Level
+              </label>
+              <select
+                name="level"
+                id="level"
+                className="text-xl font-normal text-black font-poppins"
+              >
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="category"
+                className="text-xl font-normal text-black font-poppins"
+              >
+                Category
+              </label>
+              <select
+                name="category"
+                id="category"
+                className="text-xl font-normal text-black font-poppins"
+              >
+                <option value="ai">AI</option>
+                <option value="blockchain">Blockchain</option>
+                <option value="computer-science">Computer Science</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="price"
+                className="text-xl font-normal text-black font-poppins"
+              >
+                Price
+              </label>
+              <select
+                name="price"
+                id="price"
+                className="text-xl font-normal text-black font-poppins"
+              >
+                <option value="free">Free</option>
+                <option value="paid">Paid</option>
+              </select>
+            </div>
+
+            {/* duration */}
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="duration"
+                className="text-xl font-normal text-black font-poppins"
+              >
+                Duration
+              </label>
+              <select
+                name="duration"
+                id="duration"
+                className="text-xl font-normal text-black font-poppins"
+              >
+                <option value="short">Short</option>
+                <option value="medium">Medium</option>
+                <option value="long">Long</option>
+              </select>
+              </div>
+
+              
+          </div>
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-4">
           {coursesToDisplay &&
