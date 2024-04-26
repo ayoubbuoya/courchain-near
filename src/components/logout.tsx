@@ -5,7 +5,7 @@ export default function Logout() {
   const { wallet, signedAccountId } = useWalletStore();
 
   const handleLogout = async () => {
-    if (wallet) {
+    if (wallet && signedAccountId) {
       await wallet.signOut();
     }
 
