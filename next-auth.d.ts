@@ -15,7 +15,6 @@ declare module "next-auth" {
     certifications: string[];
     education: string[];
     phone: string;
-    password: string;
     isMentor: boolean;
   }
 }
@@ -41,7 +40,6 @@ declare module "next-auth" {
       certifications?: string[] | null;
       education?: string[] | null;
       phone?: string | null;
-      password?: string | null;
       isMentor?: boolean | null;
     };
   }

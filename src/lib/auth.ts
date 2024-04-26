@@ -78,7 +78,6 @@ export const authConfig: NextAuthOptions = {
           certifications: user.certifications,
           education: user.education,
           phone: user.phone,
-          password: user.password,
           isMentor: user.isMentor || false,
         };
       },
@@ -111,7 +110,7 @@ export const authConfig: NextAuthOptions = {
         token.certifications = user.certifications;
         token.education = user.education;
         token.phone = user.phone;
-        token.isMentor = user.isMentor; 
+        token.isMentor = user.isMentor;
       }
 
       return token;
@@ -162,7 +161,6 @@ export const authConfig: NextAuthOptions = {
             user.certifications = createtUser.certifications;
             user.education = createtUser.education;
             user.phone = createtUser.phone;
-            user.password = createtUser.password;
             user.id = createtUser._id as string;
             user.isMentor = false;
           } else {
@@ -176,7 +174,6 @@ export const authConfig: NextAuthOptions = {
             user.certifications = userExists.certifications;
             user.education = userExists.education;
             user.phone = userExists.phone;
-            user.password = userExists.password;
             user.isMentor = false;
           }
         } catch (e) {
