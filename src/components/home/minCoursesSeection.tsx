@@ -2,14 +2,13 @@ import { Course } from "@/lib/types";
 import CourseMinCard from "./courseMinCard";
 import Link from "next/link";
 import { fromYoctoToNear } from "@/lib/utils";
+import { useCoursesStore } from "@/stores/courses";
 
-export default function MinCoursesSection({
-  courses,
-}: {
-  courses: Course[] | null;
-}) {
+export default function MinCoursesSection() {
+  const { allCourses } = useCoursesStore();
+
   // last six courses
-  const lastSixCourses = courses?.slice(-6);
+  const lastSixCourses = allCourses?.slice(-6);
   return (
     <section className="text-left w-[96%] mx-auto ">
       <div className="w-[98%] mx-auto my-2">

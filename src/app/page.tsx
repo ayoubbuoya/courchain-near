@@ -18,36 +18,11 @@ import { useWalletStore } from "@/stores/wallet";
 import { CONTRACTID } from "@/lib/config";
 import Loading from "@/components/loading";
 import { useCoursesStore } from "@/stores/courses";
+import { useLoadingStore } from "@/stores/loading";
 
 export default function Homepage() {
-  const [courses, setCourses] = useState<Course[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading } = useLoadingStore();
   const { wallet, signedAccountId } = useWalletStore();
-  const {  setAllCourses } = useCoursesStore();
-
-  useEffect(() => {
-    // fetch courses
-    async function fetchCourses() {
-      // const courses = await wallet.viewMethod({
-      //   contractId: CONTRACTID,
-      //   method: "get_published_courses",
-      //   args: {},
-      // });
-
-      const courses = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "get_courses",
-        args: {},
-      });
-      setAllCourses(courses);
-      setCourses(courses);
-      setIsLoading(false);
-    }
-
-    if (wallet) {
-      fetchCourses();
-    }
-  }, [wallet, signedAccountId]);
 
   if (isLoading) {
     return <Loading />;
@@ -58,7 +33,7 @@ export default function Homepage() {
       <Header />
       <main className="min-h-screen text-base text-left bg-white-900 font-poppins text-dimgray-100">
         <Hero />
-        <MinCoursesSection courses={courses} />
+        <MinCoursesSection />
         <TrendsSection />
         <section className="text-white text-left bg-home-certif-green-purple-gradient backdrop-blur-[3.13rem] overflow-hidden">
           <div className="container grid place-items-center gap-12 px-3 py-8 md:py-10 mx-auto sm:grid-cols-2">

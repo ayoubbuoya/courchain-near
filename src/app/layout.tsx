@@ -15,6 +15,9 @@ import SessionWrapper from "@/components/sessionWrapper";
 import { ToastContainer } from "react-toastify";
 import { useWalletStore } from "@/stores/wallet";
 import { useCoursesStore } from "@/stores/courses";
+import { getSession, useSession } from "next-auth/react";
+import { useCurrentUserStore } from "@/stores/currentUser";
+import { useLoadingStore } from "@/stores/loading";
 
 // Layout Component
 export default function RootLayout({
@@ -22,10 +25,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { setWallet, setSignedAccountId, signedAccountId } = useWalletStore();
+  const { setWallet, setSignedAccountId, signedAccountId, wallet } =
+    useWalletStore();
   const { allCourses, setAllCourses } = useCoursesStore();
+  const { session, setSession } = useCurrentUserStore();
+  const { setIsLoading } = useLoadingStore();
+
+  async function fetchCourses() {
+    setIsLoading(true);
+    const courses = await wallet.viewMethod({
+      contractId: CONTRACTID,
+      method: "get_courses",
+      args: {},
+    });
+    console.log("Courses Fetched From Layout : ", courses);
+    setAllCourses(courses);
+    setIsLoading(false);
+  }
+
+  async function getCurrentSession() {
+    setIsLoading(true);
+    const session = await getSession();
+    console.log("Session from layout : ", session);
+    setSession(session);
+    setIsLoading(false);
+  }
 
   useEffect(() => {
+    getCurrentSession();
     const data = {
       networkId: NetworkId,
       createAccessKeyFor: HelloNearContract,
@@ -33,25 +60,18 @@ export default function RootLayout({
     const wallet: any = new Wallet(JSON.stringify(data));
     wallet.startUp(setSignedAccountId);
     setWallet(wallet);
+  }, []);
 
+  useEffect(() => {
     if (!wallet) {
-      console.log("wallet not found");
+      return;
     }
 
     if (wallet && signedAccountId) {
       console.log("fetching courses from layout");
       fetchCourses();
     }
-
-    async function fetchCourses() {
-      const courses = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "get_courses",
-        args: {},
-      });
-      setAllCourses(courses);
-    }
-  }, []);
+  }, [wallet, signedAccountId]);
 
   return (
     <SessionWrapper>
