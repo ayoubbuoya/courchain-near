@@ -22,8 +22,6 @@ export default function Search() {
     setSearchCourses(filteredCourses);
   };
 
-  console.log("Pathname", pathname);
-
   return (
     <div className="relative flex items-center justify-center w-full min-h-1/5 text-dimgray-100 ">
       <div className="flex items-center justify-start px-6 w-[90%] md:w-2/3 h-12 border-1 bg-white-900 border-aqua-blue rounded-3xl gap-5">
