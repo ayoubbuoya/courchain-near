@@ -9,56 +9,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { CONTRACTID } from "@/lib/config";
 import { useSession } from "next-auth/react";
 import ProfileDropMenu from "./ProfileDropMenu";
+import { useCurrentUserStore } from "@/stores/currentUser";
 
 export default function Profile() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const { signedAccountId, wallet } = useWalletStore();
-  const { data: session, status, update } = useSession();
-
-
-
-  useEffect(() => {
-    if (!wallet) return;
-
-    async function createNewUser() {
-      const existed = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "user_exists",
-        args: {
-          account_id: signedAccountId,
-          email: session?.user?.email,
-          username: session?.user.username,
-        },
-      });
-      console.log("User exists: ", existed);
-
-      if (!existed) {
-        console.log("Creating new user...");
-        await wallet.callMethod({
-          contractId: CONTRACTID,
-          method: "create_user",
-          args: {
-            name: session?.user?.name,
-            email: session?.user?.email,
-            username: session?.user?.username,
-            phone: session?.user?.phone,
-            by_google: session?.user?.byGoogle,
-            password: session?.user?.password || "",
-            bio: session?.user?.bio,
-            skills: [],
-            certifications: [],
-            education: [],
-            picture: session?.user?.image,
-            created_at: new Date().getTime(),
-          },
-        });
-      }
-    }
-
-    if (signedAccountId && session) {
-      createNewUser();
-    }
-  }, [wallet]);
+  const { session } = useCurrentUserStore();
 
   return (
     <div className="md:w-[25%] md:flex md:justify-end md:items-center font-poppins ">

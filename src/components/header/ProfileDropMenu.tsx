@@ -67,13 +67,7 @@ export default function ProfileDropMenu({
       <ul className="mt-2.5 md:mt-0  md:py-1 border-t-[1px] border-solid border-aqua-blue md:border-t-0 ">
         <li>
           <Link
-            href={
-              session?.isMentor
-                ? "/dashboard/mentor"
-                : !session?.isMentor
-                ? "/dashboard/student"
-                : "/dashboard"
-            }
+            href={"/dashboard"}
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Dashboard
