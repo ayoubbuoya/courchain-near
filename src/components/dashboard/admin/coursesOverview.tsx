@@ -15,7 +15,6 @@ export default function CoursesOverview({
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const perSlide = 3;
-  const totalSlides = Math.ceil(courses.length / perSlide);
   const [startSlice, setStartSlice] = useState(0);
   const [endSlice, setEndSlice] = useState(perSlide);
 
