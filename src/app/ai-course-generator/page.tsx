@@ -19,52 +19,6 @@ export default function Page() {
   const [courseId, setCourseId] = useState("");
   const { signedAccountId, wallet } = useWalletStore();
 
-  useEffect(() => {
-    if (!wallet) return;
-
-    async function createNewUser() {
-      const existed = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "user_exists",
-        args: {
-          account_id: signedAccountId,
-          email: session?.user?.email,
-          username: session?.user?.email?.split("@")[0],
-        },
-      });
-      console.log("User exists: ", existed);
-
-      if (!existed) {
-        console.log("Creating new user...");
-        await wallet.callMethod({
-          contractId: CONTRACTID,
-          method: "create_user",
-          args: {
-            name: session?.user?.name,
-            email: session?.user?.email,
-            username: session?.user?.email?.split("@")[0],
-            phone: "23524714",
-            by_google: true,
-            password: "",
-            bio: "I'm a software engineer",
-            skills: ["React", "Node.js", "TypeScript"],
-            certifications: [
-              "AWS Certified Developer",
-              "Google Cloud Certified Professional Cloud Architect",
-            ],
-            education: ["Bachelor of Science in Computer Science"],
-            picture: session?.user?.image,
-            created_at: new Date().getTime(),
-          },
-        });
-      }
-    }
-
-    if (signedAccountId) {
-      createNewUser();
-    }
-  }, [wallet]);
-
   if (!session) {
     return <Loading />;
   }
