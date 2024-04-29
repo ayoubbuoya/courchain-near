@@ -43,7 +43,7 @@ export default async function AdminDashboard() {
         </div>
 
         <CoursesOverview courses={courses} />
-        <div className="mt-4 md:max-w-[95%] mx-auto  ">
+        <div className="mt-4 md:max-w-[90%] mx-auto  ">
           <DataTable columns={columns} data={data} />
         </div>
       </main>
