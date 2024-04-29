@@ -19,51 +19,7 @@ export default function Header({
   const { data: session } = useSession();
   const firstName = session?.user.name?.split(" ")[0];
   const lastName = session?.user.name?.split(" ")[1];
-  const { signedAccountId, wallet } = useWalletStore();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
-  useEffect(() => {
-    if (!wallet) return;
-
-    async function createNewUser() {
-      const existed = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "user_exists",
-        args: {
-          account_id: signedAccountId,
-          email: session?.user?.email,
-          username: session?.user?.username,
-        },
-      });
-      console.log("User exists: ", existed);
-
-      if (!existed) {
-        console.log("Creating new user...");
-        await wallet.callMethod({
-          contractId: CONTRACTID,
-          method: "create_user",
-          args: {
-            name: session?.user?.name,
-            email: session?.user?.email,
-            username: session?.user?.username,
-            phone: session?.user?.phone,
-            by_google: session?.user?.byGoogle,
-            password: session?.user?.password || "",
-            bio: session?.user?.bio,
-            skills: [],
-            certifications: [],
-            education: [],
-            picture: session?.user?.image,
-            created_at: new Date().getTime(),
-          },
-        });
-      }
-    }
-
-    if (session && signedAccountId ) {
-      createNewUser();
-    }
-  }, [wallet]);
 
   return (
     <header className="container flex items-center justify-between w-full px-4 py-1 mx-auto md:col-span-11 md:px-5 md:mt-9 md:py-0 sm:px-8 ">
