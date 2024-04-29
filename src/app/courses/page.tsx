@@ -15,30 +15,9 @@ import { CONTRACTID } from "@/lib/config";
 import { useCoursesStore } from "@/stores/courses";
 
 export default function CoursesPage() {
-  // get session and courses
-  const { data: session } = useSession();
-  const [courses, setCourses] = useState<Course[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { wallet, signedAccountId } = useWalletStore();
-  const { setAllCourses } = useCoursesStore();
-
-  useEffect(() => {
-    // fetch courses
-    async function fetchCourses() {
-      const courses = await wallet.viewMethod({
-        contractId: CONTRACTID,
-        method: "get_courses",
-        args: {},
-      });
-      setAllCourses(courses);
-      setCourses(courses);
-      setIsLoading(false);
-    }
-
-    if (wallet) {
-      fetchCourses();
-    }
-  }, [wallet, signedAccountId]);
+  const { allCourses, setAllCourses } = useCoursesStore();
 
   if (isLoading) {
     return <Loading />;
@@ -49,7 +28,7 @@ export default function CoursesPage() {
       <Header />
       <main className="text-left text-base ">
         <Hero />
-        <CoursesSection courses={courses} />
+        <CoursesSection courses={allCourses} />
         <ExpertsSection />
         <FAQSection />
       </main>
