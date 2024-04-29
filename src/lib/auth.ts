@@ -4,6 +4,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { compare } from "bcrypt";
 import User from "@/models/user";
 import connectDB from "./db";
+import initAdminBlockchainConnection from "./blockchain";
+import { CONTRACTID } from "./config";
 
 export const authConfig: NextAuthOptions = {
   session: {
@@ -60,24 +62,33 @@ export const authConfig: NextAuthOptions = {
           return null;
         }
 
-        // if user found return user
-        console.log("User Founded : ", user);
+        // get the user from blockchain
+        const adminAccount = await initAdminBlockchainConnection();
+        const userBlockchainData = await adminAccount.viewFunction({
+          contractId: CONTRACTID,
+          methodName: "get_user_by_email",
+          args: {
+            email: credentials.email,
+          },
+        });
+        console.log("User Blockchain Data : ", userBlockchainData);
+
         return {
-          id: user._id,
-          email: user.email,
-          name: user.name,
-          username: user.username,
-          image: user.picture,
-          picture: user.picture,
-          role: user.role,
-          byGoogle: user.byGoogle,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-          bio: user.bio,
-          skills: user.skills,
-          certifications: user.certifications,
-          education: user.education,
-          phone: user.phone,
+          id: userBlockchainData.id,
+          email: userBlockchainData.email,
+          name: userBlockchainData.name,
+          username: userBlockchainData.username,
+          image: userBlockchainData.picture,
+          picture: userBlockchainData.picture,
+          role: userBlockchainData.role,
+          byGoogle: userBlockchainData.byGoogle,
+          createdAt: userBlockchainData.createdAt,
+          updatedAt: userBlockchainData.updatedAt,
+          bio: userBlockchainData.bio,
+          skills: userBlockchainData.skills,
+          certifications: userBlockchainData.certifications,
+          education: userBlockchainData.education,
+          phone: userBlockchainData.phone,
           isMentor: user.isMentor || false,
         };
       },
@@ -164,16 +175,26 @@ export const authConfig: NextAuthOptions = {
             user.id = createtUser._id as string;
             user.isMentor = false;
           } else {
-            user.role = userExists.role;
-            user.id = userExists._id as string;
-            user.byGoogle = userExists.byGoogle;
-            user.username = userExists.username;
-            user.picture = userExists.picture;
-            user.bio = userExists.bio;
-            user.skills = userExists.skills;
-            user.certifications = userExists.certifications;
-            user.education = userExists.education;
-            user.phone = userExists.phone;
+            // get the user data from blockchain
+            const adminAccount = await initAdminBlockchainConnection();
+            const userBlockchainData = await adminAccount.viewFunction({
+              contractId: CONTRACTID,
+              methodName: "get_user_by_email",
+              args: {
+                email: user.email,
+              },
+            });
+            console.log("User Blockchain Data : ", userBlockchainData);
+            user.role = userBlockchainData.role;
+            user.id = userBlockchainData.id as string;
+            user.byGoogle = userBlockchainData.byGoogle;
+            user.username = userBlockchainData.username;
+            user.picture = userBlockchainData.picture;
+            user.bio = userBlockchainData.bio;
+            user.skills = userBlockchainData.skills;
+            user.certifications = userBlockchainData.certifications;
+            user.education = userBlockchainData.education;
+            user.phone = userBlockchainData.phone;
             user.isMentor = false;
           }
         } catch (e) {

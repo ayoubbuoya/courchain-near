@@ -32,7 +32,7 @@ export default function LoginForm() {
       });
 
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/");
         router.refresh();
       }, 2000);
     } else {
