@@ -58,7 +58,7 @@ export default function Header() {
         <Navbar session={session} />
         {/* Start Last sec */}
         {session ? (
-          <Profile />
+          <Profile session={session} />
         ) : (
           <div className="flex items-center justify-around gap-5">
             <Link
@@ -95,7 +95,7 @@ export default function Header() {
             <div className="border-t-[1px] border-solid border-aqua-blue">
               {session ? (
                 <div className="px-2  mt-4 mb-1">
-                  <Profile />
+                  <Profile session={session} />
                 </div>
               ) : (
                 <div className="flex flex-col gap-4 px-2 mt-4 mb-2">

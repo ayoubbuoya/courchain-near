@@ -10,10 +10,10 @@ import { CONTRACTID } from "@/lib/config";
 import { useSession } from "next-auth/react";
 import ProfileDropMenu from "./ProfileDropMenu";
 import { useCurrentUserStore } from "@/stores/currentUser";
+import { Session } from "next-auth";
 
-export default function Profile() {
+export default function Profile({ session }: { session: Session | null }) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const { session } = useCurrentUserStore();
 
   return (
     <div className="md:w-[25%] md:flex md:justify-end md:items-center font-poppins ">
