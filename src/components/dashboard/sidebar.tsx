@@ -158,7 +158,7 @@ export default function Sidebar({
           <ul className="flex flex-col items-center justify-around gap-1 mt-5 md:gap-8">
             <li>
               <Link
-                href={"/dashboard/student/courses"}
+                href={"/dashboard/student"}
                 className="flex flex-col items-center justify-center gap-1 px-1 py-3 group"
               >
                 <svg
@@ -171,7 +171,11 @@ export default function Sidebar({
                 >
                   <path
                     d="M30.25 4.125H22C20.5413 4.125 19.1424 4.70446 18.1109 5.73591C17.0795 6.76736 16.5 8.16631 16.5 9.625V28.875C16.5 27.781 16.9346 26.7318 17.7082 25.9582C18.4818 25.1846 19.531 24.75 20.625 24.75H30.25V4.125Z"
-                    className="stroke-schemes-secondary group-hover:stroke-aqua-blue"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/student"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
+                    }`}
                     // stroke="#625B71"
                     strokeWidth="2.5"
                     strokeLinecap="round"
@@ -180,13 +184,23 @@ export default function Sidebar({
                   <path
                     d="M2.75 4.125H11C12.4587 4.125 13.8576 4.70446 14.8891 5.73591C15.9205 6.76736 16.5 8.16631 16.5 9.625V28.875C16.5 27.781 16.0654 26.7318 15.2918 25.9582C14.5182 25.1846 13.469 24.75 12.375 24.75H2.75V4.125Z"
                     // stroke="#625B71"
-                    className="stroke-schemes-secondary group-hover:stroke-aqua-blue"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/student"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
+                    }`}
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
-                <span className="text-xs font-medium text-center md:hidden group-hover:block font-poppins text-schemes-secondary group-hover:font-normal group-hover:text-aqua-blue ">
+                <span
+                  className={`text-xs font-medium text-center  group-hover:block font-poppins  group-hover:text-aqua-blue ${
+                    pathname === "/dashboard/student"
+                      ? "text-aqua-blue"
+                      : "text-schemes-secondary md:hidden "
+                  }`}
+                >
                   My Courses
                 </span>
               </Link>
