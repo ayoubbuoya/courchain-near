@@ -22,7 +22,6 @@ import { useLoadingStore } from "@/stores/loading";
 
 export default function Homepage() {
   const { isLoading } = useLoadingStore();
-  const { wallet, signedAccountId } = useWalletStore();
 
   if (isLoading) {
     return <Loading />;

@@ -142,13 +142,14 @@ export default function RootLayout({
       return;
     }
 
-    if (wallet && signedAccountId) {
-      console.log("fetching courses from layout");
-      fetchCourses();
+    if (!signedAccountId) {
+      return;
     }
 
     if (signedAccountId) {
       checkWalletAndServerUserDetails();
+      console.log("fetching courses from layout");
+      fetchCourses();
     }
   }, [wallet, signedAccountId]);
 
