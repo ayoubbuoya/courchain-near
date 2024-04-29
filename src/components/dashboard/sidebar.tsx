@@ -211,8 +211,10 @@ export default function Sidebar({
                 >
                   <path
                     d="M30.25 4.125H22C20.5413 4.125 19.1424 4.70446 18.1109 5.73591C17.0795 6.76736 16.5 8.16631 16.5 9.625V28.875C16.5 27.781 16.9346 26.7318 17.7082 25.9582C18.4818 25.1846 19.531 24.75 20.625 24.75H30.25V4.125Z"
-                    className={`stroke-schemes-secondary group-hover:stroke-aqua-blue ${
-                      pathname === "/dashboard/admin" && "stroke-aqua-blue"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/admin"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
                     }`}
                     // stroke="#625B71"
                     strokeWidth="2.5"
@@ -222,8 +224,10 @@ export default function Sidebar({
                   <path
                     d="M2.75 4.125H11C12.4587 4.125 13.8576 4.70446 14.8891 5.73591C15.9205 6.76736 16.5 8.16631 16.5 9.625V28.875C16.5 27.781 16.0654 26.7318 15.2918 25.9582C14.5182 25.1846 13.469 24.75 12.375 24.75H2.75V4.125Z"
                     // stroke="#625B71"
-                    className={`stroke-schemes-secondary group-hover:stroke-aqua-blue ${
-                      pathname === "/dashboard/admin" && "stroke-aqua-blue"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/admin"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
                     }`}
                     strokeWidth="2.5"
                     strokeLinecap="round"
@@ -238,6 +242,75 @@ export default function Sidebar({
                   }`}
                 >
                   All Courses
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={"/dashboard/admin/users"}
+                className="flex flex-col items-center justify-center gap-1 px-1 py-3 group"
+              >
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 30 30"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M28.75 26.25V23.75C28.7492 22.6422 28.3804 21.566 27.7017 20.6904C27.023 19.8148 26.0727 19.1895 25 18.9125"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/admin/users"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
+                    }`}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M21.25 26.25V23.75C21.25 22.4239 20.7232 21.1521 19.7855 20.2145C18.8479 19.2768 17.5761 18.75 16.25 18.75H6.25C4.92392 18.75 3.65215 19.2768 2.71447 20.2145C1.77678 21.1521 1.25 22.4239 1.25 23.75V26.25"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/admin/users"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
+                    }`}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M20 3.9125C21.0755 4.18787 22.0288 4.81337 22.7095 5.69039C23.3903 6.5674 23.7598 7.64604 23.7598 8.75625C23.7598 9.86646 23.3903 10.9451 22.7095 11.8221C22.0288 12.6991 21.0755 13.3246 20 13.6"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/admin/users"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
+                    }`}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M11.25 13.75C14.0114 13.75 16.25 11.5114 16.25 8.75C16.25 5.98858 14.0114 3.75 11.25 3.75C8.48858 3.75 6.25 5.98858 6.25 8.75C6.25 11.5114 8.48858 13.75 11.25 13.75Z"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/admin/users"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
+                    }`}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+
+                <span
+                  className={`text-xs font-medium text-center  font-poppins   ${
+                    pathname === "/dashboard/admin/users"
+                      ? "md:block text-aqua-blue"
+                      : "md:hidden text-schemes-secondary group-hover:font-normal group-hover:text-aqua-blue group-hover:block"
+                  }`}
+                >
+                  All Users
                 </span>
               </Link>
             </li>
