@@ -1,51 +1,26 @@
 "use client";
 
 import { CONTRACTID } from "@/lib/config";
+import { FullCourse } from "@/lib/types";
 import { useCoursesStore } from "@/stores/courses";
 import { useLoadingStore } from "@/stores/loading";
 import { useWalletStore } from "@/stores/wallet";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export default function CoursesOverview() {
-  const { allFullCourses, setALLFullCourses } = useCoursesStore();
-  const { signedAccountId, wallet } = useWalletStore();
-  const [isLoading, setIsLoading] = useState(true);
+export default function CoursesOverview({
+  courses,
+}: {
+  courses: FullCourse[];
+}) {
+  const [isLoading, setIsLoading] = useState(false);
   const perSlide = 3;
-  const totalSlides = Math.ceil(allFullCourses.length / perSlide);
+  const totalSlides = Math.ceil(courses.length / perSlide);
   const [startSlice, setStartSlice] = useState(0);
   const [endSlice, setEndSlice] = useState(perSlide);
 
-  async function fetchFullCourses() {
-    setIsLoading(true);
-    const courses = await wallet.viewMethod({
-      contractId: CONTRACTID,
-      method: "get_full_courses",
-      args: {},
-    });
-    console.log("Courses Fetched From Layout : ", courses);
-    setALLFullCourses(courses);
-    setIsLoading(false);
-  }
-
-  useEffect(() => {
-    if (!wallet) {
-      return;
-    }
-
-    if (!signedAccountId) {
-      return;
-    }
-
-    if (signedAccountId) {
-      console.log("fetching all full courses for admin...");
-      fetchFullCourses();
-      console.log("Courses Fetched  : ", allFullCourses);
-    }
-  }, [wallet, signedAccountId]);
-
   const handleNextSlide = () => {
-    if (endSlice < allFullCourses.length) {
+    if (endSlice < courses.length) {
       setStartSlice(startSlice + perSlide);
       setEndSlice(endSlice + perSlide);
     } else {
@@ -59,8 +34,8 @@ export default function CoursesOverview() {
       setStartSlice(startSlice - perSlide);
       setEndSlice(endSlice - perSlide);
     } else {
-      setStartSlice(allFullCourses.length - perSlide);
-      setEndSlice(allFullCourses.length);
+      setStartSlice(courses.length - perSlide);
+      setEndSlice(courses.length);
     }
   };
 
@@ -93,7 +68,7 @@ export default function CoursesOverview() {
           </div>
         )}
 
-        {allFullCourses.length === 0 && !isLoading && (
+        {courses.length === 0 && !isLoading && (
           <div className="col-span-6 h-full w-full flex justify-center items-center">
             <p className="text-center font-poppins font-semibold text-lg text-dimgray-50">
               No Courses Found
@@ -101,7 +76,7 @@ export default function CoursesOverview() {
           </div>
         )}
 
-        {allFullCourses.slice(startSlice, endSlice).map((course) => (
+        {courses.slice(startSlice, endSlice).map((course) => (
           <div
             key={course.id}
             className="h-full w-full bg-white shadow-md custom-linear-border rounded-2xl col-span-2 cursor-pointer "
@@ -157,7 +132,7 @@ export default function CoursesOverview() {
         ))}
 
         <div className="h-full relative">
-          {endSlice < allFullCourses.length && (
+          {endSlice < courses.length && (
             <Image
               onClick={handleNextSlide}
               width={24}

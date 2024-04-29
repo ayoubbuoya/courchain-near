@@ -6,7 +6,7 @@ import { useEffect } from "react";
 // app
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import { NetworkId, HelloNearContract, CONTRACTID } from "../lib/config";
+import { NetworkId, CONTRACTID } from "../lib/config";
 
 // wallet-selector
 import { Wallet } from "@/wallets/near-wallet";
@@ -130,7 +130,7 @@ export default function RootLayout({
     getCurrentSession();
     const data = {
       networkId: NetworkId,
-      createAccessKeyFor: HelloNearContract,
+      createAccessKeyFor: CONTRACTID,
     };
     const wallet: any = new Wallet(JSON.stringify(data));
     wallet.startUp(setSignedAccountId);

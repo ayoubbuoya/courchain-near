@@ -1,8 +1,13 @@
 import CoursesOverview from "@/components/dashboard/admin/coursesOverview";
 import SplitLayout from "@/components/dashboard/splitLayout";
 import { authConfig } from "@/lib/auth";
+import initAdminBlockchainConnection from "@/lib/blockchain";
+import { CONTRACTID } from "@/lib/config";
+import { FullCourse } from "@/lib/types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authConfig);
@@ -15,6 +20,18 @@ export default async function AdminDashboard() {
     redirect("/dashboard");
   }
 
+  const adminAccount = await initAdminBlockchainConnection();
+  console.log("Admin Account : ", adminAccount);
+  // get all courses
+  const courses = await adminAccount.viewFunction({
+    contractId: CONTRACTID,
+    methodName: "get_full_courses",
+    args: {},
+  });
+
+  console.log("Courses : ", courses);
+
+  const data = courses;
   return (
     <div className="md:grid md:grid-cols-12">
       <SplitLayout session={session} />
@@ -25,7 +42,10 @@ export default async function AdminDashboard() {
           </h1>
         </div>
 
-        <CoursesOverview />
+        <CoursesOverview courses={courses} />
+        <div className="mt-4 md:max-w-[95%] mx-auto  ">
+          <DataTable columns={columns} data={data} />
+        </div>
       </main>
     </div>
   );
