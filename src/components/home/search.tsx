@@ -38,7 +38,7 @@ export default function Search() {
       {search !== "" && searchCourses && searchCourses.length === 0 && (
         <div
           className={`absolute bg-white top-[101%] z-50 w-full overflow-auto max-w-[58%] mx-auto border-1 border-aqua-blue rounded-sm ${
-            pathname === "/courses" ? "max-h-[32vh]" : "max-h-[60vh]"
+            pathname === "/courses/preview" ? "max-h-[32vh]" : "max-h-[60vh]"
           } `}
         >
           <div className="px-8 h-full w-full py-5 flex items-center justify-center gap-2">
@@ -52,7 +52,7 @@ export default function Search() {
       {searchCourses && searchCourses.length > 0 && search !== "" && (
         <div
           className={`absolute bg-white top-[101%] z-50 w-full overflow-auto max-w-[58%] mx-auto border-1 border-aqua-blue rounded-sm ${
-            pathname === "/courses" ? "max-h-[32vh]" : "max-h-[60vh]"
+            pathname === "/courses/preview" ? "max-h-[32vh]" : "max-h-[60vh]"
           } `}
         >
           <div className="px-8 h-full w-full py-1 flex flex-col items-center justify-center gap-2">

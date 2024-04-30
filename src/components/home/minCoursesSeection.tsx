@@ -30,7 +30,7 @@ export default function MinCoursesSection() {
       </div>
       <div className="flex justify-center md:justify-end items-center py-4 md:pb-1">
         <Link
-          href="/courses"
+          href="/courses/preview"
           className="bg-aqua-blue text-center py-3 px-6 md:px-10 rounded-full text-white font-roboto font-normal tracking-normal text-base"
         >
           View all courses

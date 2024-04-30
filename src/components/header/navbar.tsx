@@ -19,8 +19,8 @@ export default function Navbar({ session }: { session: Session | null }) {
 
       <li className="pb-2 md:pb-0">
         <Link
-          className={pathname === "/courses" ? "text-purple" : ""}
-          href="/courses"
+          className={pathname === "/courses/preview" ? "text-purple" : ""}
+          href="/courses/preview"
         >
           Courses
         </Link>

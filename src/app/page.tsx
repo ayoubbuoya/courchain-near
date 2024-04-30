@@ -47,7 +47,7 @@ export default function Homepage() {
               </p>
               <div className="w-[80%] sm:w-[95%]  flex items-center justify-center py-4">
                 <Link
-                  href={"/courses?categories=blockchain"}
+                  href={"/courses?category=blockchain"}
                   className="w-full py-2 font-normal text-center rounded-full cursor-pointer md:py-3 sm:text-lg bg-aqua-blue font-roboto"
                 >
                   Obtain Your Certification In Blockchain

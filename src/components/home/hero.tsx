@@ -33,7 +33,7 @@ export default function Hero() {
       </div>
       <div className="flex items-center justify-center w-full mb-8 md:mb-12">
         <a
-          href="/courses"
+          href="/courses/preview"
           className="capitalize w-[70%] md:w-[25%] md:hover:w-[35%] py-3 text-center bg-aqua-blue rounded-3xl font-poppins font-normal text-xl duration-700 hover:bg-gray-700   transition-all ease-in-out text-white-900"
         >
           Discover our Courses

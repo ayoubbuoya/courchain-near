@@ -220,7 +220,7 @@ export default function CartPage() {
               </div>
               <div className="flex items-center justify-center py-6 text-center">
                 <Link
-                  href={"/courses"}
+                  href={"/courses/preview"}
                   className="w-[55%] py-3 rounded-full text-white font-poppins font-normal text-base bg-aqua-blue border-white border-2 hover:bg-slate-600  "
                 >
                   Browse courses
