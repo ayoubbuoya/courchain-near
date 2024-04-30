@@ -245,23 +245,23 @@ export default function CoursesPage() {
                     </Label>
                     <Label className="flex items-center gap-2 text-base font-medium text-schemes-secondary font-poppins">
                       <Checkbox
-                        checked={categories.includes("business")}
+                        checked={categories.includes("blockchain")}
                         onCheckedChange={(checked) => {
-                          handleCategoryChange("business", checked);
+                          handleCategoryChange("blockchain", checked);
                         }}
-                        id="category-business"
+                        id="category-blockchain"
                       />
-                      Business
+                      Blockchain
                     </Label>
                     <Label className="flex items-center gap-2 text-base font-medium text-schemes-secondary font-poppins">
                       <Checkbox
-                        checked={categories.includes("marketing")}
+                        checked={categories.includes("computer science")}
                         onCheckedChange={(checked) => {
-                          handleCategoryChange("marketing", checked);
+                          handleCategoryChange("computer science", checked);
                         }}
                         id="category-marketing"
                       />
-                      Marketing
+                      Computer Science
                     </Label>
                     <Label className="flex items-center gap-2 text-base font-medium text-schemes-secondary font-poppins">
                       <Checkbox
