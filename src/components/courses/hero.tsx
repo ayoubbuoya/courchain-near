@@ -21,7 +21,7 @@ export default function Hero() {
             </h1>
             <div className="flex items-center justify-center py-4">
               <Link
-                href={"/register"}
+                href={"/courses?category=artificial intelligence&category=blockchain"}
                 className="rounded-full w-[70%] py-3 text-base font-normal tracking-wider text-center cursor-pointer bg-aqua-blue font-roboto hover:bg-slate-600"
               >
                 Obtain Your Certification

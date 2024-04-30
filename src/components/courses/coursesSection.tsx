@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import CourseMinCard from "../home/courseMinCard";
 import { Course } from "@/lib/types";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function CoursesSection({
   courses,
@@ -35,99 +36,7 @@ export default function CoursesSection({
           Find the right courses for you
         </h1>
 
-        <button
-          onClick={() => {
-            setIsFilterSidebarOpen(!isFilterSidebarOpen);
-          }}
-          className={`capitalize flex items-center gap-2 px-4 py-2 mt-3 md:mt-6  ${
-            isFilterSidebarOpen ? "mb-0" : " mb-8"
-          } text-xl font-normal tracking-wide bg-white border-[1px] rounded-xl text-aqua-blue border-aqua-blue font-poppins`}
-        >
-          Filter
-        </button>
-
-        <div
-          className={`${
-            isFilterSidebarOpen ? "block" : "hidden"
-          } custom-linear-border rounded-xl my-4 ml-4 mr-2 `}
-        >
-          <div className="py-2 px-2 flex items-center justify-between ">
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="level"
-                className="text-xl font-normal text-black font-poppins"
-              >
-                Level
-              </label>
-              <select
-                name="level"
-                id="level"
-                className="text-xl font-normal text-black font-poppins"
-              >
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-              </select>
-            </div>
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="category"
-                className="text-xl font-normal text-black font-poppins"
-              >
-                Category
-              </label>
-              <select
-                name="category"
-                id="category"
-                className="text-xl font-normal text-black font-poppins"
-              >
-                <option value="ai">AI</option>
-                <option value="blockchain">Blockchain</option>
-                <option value="computer-science">Computer Science</option>
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="price"
-                className="text-xl font-normal text-black font-poppins"
-              >
-                Price
-              </label>
-              <select
-                name="price"
-                id="price"
-                className="text-xl font-normal text-black font-poppins"
-              >
-                <option value="free">Free</option>
-                <option value="paid">Paid</option>
-              </select>
-            </div>
-
-            {/* duration */}
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="duration"
-                className="text-xl font-normal text-black font-poppins"
-              >
-                Duration
-              </label>
-              <select
-                name="duration"
-                id="duration"
-                className="text-xl font-normal text-black font-poppins"
-              >
-                <option value="short">Short</option>
-                <option value="medium">Medium</option>
-                <option value="long">Long</option>
-              </select>
-              </div>
-
-              
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-4 mt-4 md:mt-8">
           {coursesToDisplay &&
             coursesToDisplay.map((course, index) => (
               <CourseMinCard
@@ -194,9 +103,12 @@ export default function CoursesSection({
                 Course
               </p>
 
-              <button className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue">
+              <Link
+                href="/courses?level=beginner"
+                className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue"
+              >
                 View included courses
-              </button>
+              </Link>
             </div>
           </div>
           <div className="custom-linear-border rounded-2xl shadow-custom-purple flex items-center justify-center text-center backdrop-blur-[3.13rem]">
@@ -208,9 +120,12 @@ export default function CoursesSection({
                 Course
               </p>
 
-              <button className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue">
+              <Link
+                href={"/courses?level=intermediate"}
+                className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue"
+              >
                 View included courses
-              </button>
+              </Link>
             </div>
           </div>
           <div className="custom-linear-border rounded-2xl shadow-custom-purple flex items-center justify-center text-center backdrop-blur-[3.13rem] ">
@@ -222,9 +137,12 @@ export default function CoursesSection({
                 Course
               </p>
 
-              <button className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue">
+              <Link
+                href="/courses?level=advanced"
+                className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue"
+              >
                 View included courses
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -244,9 +162,12 @@ export default function CoursesSection({
                 Course
               </p>
 
-              <button className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue">
+              <Link
+                href={"/courses?category=artificial intelligence"}
+                className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue"
+              >
                 View included courses
-              </button>
+              </Link>
             </div>
           </div>
           <div className="custom-linear-border rounded-2xl backdrop-blur-[3.13rem] shadow-custom-purple flex items-center justify-center text-center ">
@@ -258,9 +179,12 @@ export default function CoursesSection({
                 Course
               </p>
 
-              <button className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue">
+              <Link
+                href={"/courses?category=blockchain"}
+                className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue"
+              >
                 View included courses
-              </button>
+              </Link>
             </div>
           </div>
           <div className="custom-linear-border rounded-2xl backdrop-blur-[3.13rem] shadow-custom-purple flex items-center justify-center text-center ">
@@ -272,9 +196,12 @@ export default function CoursesSection({
                 Certification
               </p>
 
-              <button className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue">
+              <Link
+                href={"/courses?category=computer science"}
+                className="px-6 py-3 text-sm font-normal text-white rounded-full hover:bg-slate-600 mt-7 font-poppins bg-aqua-blue"
+              >
                 View included courses
-              </button>
+              </Link>
             </div>
           </div>
         </div>
