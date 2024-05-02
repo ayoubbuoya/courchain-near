@@ -99,6 +99,18 @@ export default function UsersOverview({ users }: { users: User[] }) {
             </div>
           </div>
         ))}
+        <div className="h-full relative">
+          {endSlice < users.length && (
+            <Image
+              onClick={handleNextSlide}
+              width={24}
+              height={24}
+              src="/left-arrow--24--outline.svg"
+              alt="lefty arrow icon"
+              className="absolute w-[50%] top-[45%] left-10 rotate-180 cursor-pointer hover:scale-125 transform transition-transform duration-300 ease-in-out"
+            />
+          )}
+        </div>
       </div>
     </div>
   );
