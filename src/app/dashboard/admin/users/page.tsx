@@ -27,6 +27,12 @@ export default async function AdminDashboardUsers() {
     methodName: "get_users",
   });
 
+  // sort users by created_at
+  const sortedUsers = users.sort(
+    (a: { created_at: number }, b: { created_at: number }) =>
+      b.created_at - a.created_at
+  );
+
   console.log("Users : ", users);
 
   return (
@@ -39,7 +45,7 @@ export default async function AdminDashboardUsers() {
           </h1>
         </div>
 
-        <UsersOverview users={users} />
+        <UsersOverview users={sortedUsers} />
 
         <div className="mt-4 md:max-w-[85%] mx-auto ">
           <DataTable columns={columns} data={users} />
