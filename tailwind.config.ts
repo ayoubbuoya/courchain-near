@@ -133,6 +133,8 @@ const config = {
         "custom-purple": "0px 4px 100px 0px rgba(226, 184, 233, 0.2)",
       },
       backgroundImage: {
+        "profile-gradient":
+          "linear-gradient(180deg, rgba(69,161,190,0.5) 0%, rgba(232,198,237,1) 100%)",
         "explore-button-gradient":
           "linear-gradient(to right, rgba(226, 184, 233, 0.5) 0%, rgba(69, 161, 190, 0.4) 20%,rgba(226, 184, 233, 0.4) 80%)",
         "open-inscription-gradient":
