@@ -485,6 +485,85 @@ export default function MentorCoursePage({
     }
   };
 
+  const handleSaveLesson = async () => {
+    const loadingToast = toast.loading("Saving lesson");
+
+    if (!currentLesson) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Lesson To Save",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
+
+    if (!wallet) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Wallet Connected",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
+
+    if (!signedAccountId) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Account Connected",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
+
+    try {
+      const response = await wallet.callMethod({
+        contractId: CONTRACTID,
+        method: "add_article_to_lesson",
+        args: {
+          lesson_id: currentLesson.id,
+          article: currentLesson.article,
+        },
+      });
+
+      const resSuccess = Boolean(
+        Buffer.from(response.status.SuccessValue, "base64").toString(
+          "utf-8"
+        ) === "true"
+      );
+
+      if (!resSuccess) {
+        toast.update(loadingToast, {
+          type: "error",
+          render: "Error Saving lesson",
+          isLoading: false,
+          autoClose: 1000,
+        });
+        return;
+      }
+
+      toast.update(loadingToast, {
+        type: "success",
+        render: "Lesson Saved Successfully",
+        isLoading: false,
+        autoClose: 1000,
+      });
+
+      setCurrentLesson(null);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error saving lesson: ", error);
+      toast.update(loadingToast, {
+        type: "error",
+        render: "Error saving lesson",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    }
+  };
+
   if (isLoading) return <Loading />;
 
   return (
@@ -786,12 +865,20 @@ export default function MentorCoursePage({
                         <textarea
                           className="w-full h-full rounded-2xl p-3 outline-none text-schemes-secondary font-poppins placeholder-opacity-50"
                           placeholder="Write your article in markdown language here"
+                          value={currentLesson?.article || ""}
+                          onChange={(e) => {
+                            if (!currentLesson) return;
+                            setCurrentLesson({
+                              ...currentLesson,
+                              article: e.target.value,
+                            });
+                          }}
                         ></textarea>
                       </div>
                     </div>
                     <button
-                      onClick={() => {}}
-                      className="bg-aqua-blue text-white rounded-full px-5 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center mt-3"
+                      onClick={handleSaveLesson}
+                      className="bg-aqua-blue  text-white rounded-full w-full px-5 py-3 font-poppins font-normal text-lg  text-center mt-4"
                     >
                       Save Content
                     </button>
