@@ -41,6 +41,80 @@ export default function MentorCoursePage({
   const [aiGeneratedContent, setAIGeneratedContent] = useState<string | null>(
     null
   );
+  const [isEditing, setIsEditing] = useState(false);
+
+  async function fetchCourseDetails() {
+    // reset all states
+    setIsLoading(true);
+    setCourse(null);
+    setCurrentLesson(null);
+
+    const fetchedCourseDetails = await wallet.viewMethod({
+      contractId: CONTRACTID,
+      method: "get_full_course",
+      args: {
+        course_id: courseId,
+      },
+    });
+    console.log("Course Details: ", fetchedCourseDetails);
+    setCourse(fetchedCourseDetails);
+    setCurrentLesson(
+      fetchedCourseDetails.modules[moduleOrder - 1].lessons[lessonOrder - 1]
+    );
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    if (!wallet) return;
+
+    if (session && !session.user) {
+      router.push("/login");
+      return;
+    }
+
+    if (session && session.user.role === "user" && !session.isMentor) {
+      router.push("/dashboard/student");
+      return;
+    }
+
+    if (session && session.user.role === "admin") {
+      router.push("/dashboard/admin");
+      return;
+    }
+
+    if (session && !signedAccountId) {
+      toast.error("Connect to your NEAR Wallet", {
+        autoClose: 1000,
+      });
+      return;
+    }
+
+    if (session && wallet && signedAccountId) {
+      fetchCourseDetails();
+    }
+  }, [wallet, signedAccountId, session]);
+
+  useEffect(() => {
+    console.log("Module Order Changed: ", moduleOrder);
+    // reset all states
+    setIsLoading(true);
+    setCurrentLesson(null);
+    setAddContentAction(null);
+    setUploadedVideo(null);
+    setAIGeneratedContent(null);
+    setIsEditing(false);
+
+    if (wallet) {
+      if (course) {
+        setCurrentLesson(
+          course.modules[moduleOrder - 1].lessons[lessonOrder - 1]
+        );
+        setIsLoading(false);
+      } else {
+        fetchCourseDetails();
+      }
+    }
+  }, [searchParams]);
 
   const handleLessonOrderChange = (order: number) => {
     const params = new URLSearchParams(searchParams);
@@ -333,76 +407,83 @@ export default function MentorCoursePage({
     }
   };
 
-  async function fetchCourseDetails() {
-    // reset all states
-    setIsLoading(true);
-    setCourse(null);
-    setCurrentLesson(null);
-
-    const fetchedCourseDetails = await wallet.viewMethod({
-      contractId: CONTRACTID,
-      method: "get_full_course",
-      args: {
-        course_id: courseId,
-      },
-    });
-    console.log("Course Details: ", fetchedCourseDetails);
-    setCourse(fetchedCourseDetails);
-    setCurrentLesson(
-      fetchedCourseDetails.modules[moduleOrder - 1].lessons[lessonOrder - 1]
-    );
-    setIsLoading(false);
-  }
-
-  useEffect(() => {
-    if (!wallet) return;
-
-    if (session && !session.user) {
-      router.push("/login");
-      return;
-    }
-
-    if (session && session.user.role === "user" && !session.isMentor) {
-      router.push("/dashboard/student");
-      return;
-    }
-
-    if (session && session.user.role === "admin") {
-      router.push("/dashboard/admin");
-      return;
-    }
-
-    if (session && !signedAccountId) {
-      toast.error("Connect to your NEAR Wallet", {
+  const handleEditArticle = async () => {
+    const loadingToast = toast.loading("Update lesson article");
+    if (!currentLesson) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Lesson To Update",
+        isLoading: false,
         autoClose: 1000,
       });
       return;
     }
 
-    if (session && wallet && signedAccountId) {
-      fetchCourseDetails();
+    if (!wallet) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Wallet Connected",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
     }
-  }, [wallet, signedAccountId, session]);
 
-  useEffect(() => {
-    console.log("Module Order Changed: ", moduleOrder);
-    // reset all states
-    setIsLoading(true);
-    setCurrentLesson(null);
-    setAddContentAction(null);
-    setUploadedVideo(null);
+    if (!signedAccountId) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Account Connected",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
 
-    if (wallet) {
-      if (course) {
-        setCurrentLesson(
-          course.modules[moduleOrder - 1].lessons[lessonOrder - 1]
-        );
-        setIsLoading(false);
-      } else {
-        fetchCourseDetails();
+    try {
+      const response = await wallet.callMethod({
+        contractId: CONTRACTID,
+        method: "add_article_to_lesson",
+        args: {
+          lesson_id: currentLesson.id,
+          article: currentLesson.article,
+        },
+      });
+
+      const resSuccess = Boolean(
+        Buffer.from(response.status.SuccessValue, "base64").toString(
+          "utf-8"
+        ) === "true"
+      );
+
+      if (!resSuccess) {
+        toast.update(loadingToast, {
+          type: "error",
+          render: "Error updating lesson article",
+          isLoading: false,
+          autoClose: 1000,
+        });
+        return;
       }
+
+      toast.update(loadingToast, {
+        type: "success",
+        render: "AI Content Saved Successfully",
+        isLoading: false,
+        autoClose: 1000,
+      });
+
+      setCurrentLesson(null);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error saving lesson: ", error);
+      toast.update(loadingToast, {
+        type: "error",
+        render: "Error saving lesson",
+        isLoading: false,
+        autoClose: 1000,
+      });
     }
-  }, [searchParams]);
+  };
 
   if (isLoading) return <Loading />;
 
@@ -431,80 +512,125 @@ export default function MentorCoursePage({
                 />
               </div>
             ) : currentLesson?.article && addContentAction === null ? (
-              <div className="w-full xl:max-w-[88%] mx-auto overflow-x-hidden overflow-y-auto ">
-                <Markdown
-                  children={currentLesson?.article}
-                  components={{
-                    strong: ({ node, ...props }) => (
-                      <strong className="text-aqua-blue font-poppins font-medium text-xl">
-                        {props.children}
-                      </strong>
-                    ),
-                    p: ({ node, ...props }) => (
-                      <p className="text-schemes-secondary font-poppins py-2 font-normal text-base">
-                        {props.children}
-                      </p>
-                    ),
-                    ul: ({ node, ...props }) => (
-                      <ul className="list-disc list-inside">
-                        {props.children}
-                      </ul>
-                    ),
-                    li: ({ node, ...props }) => (
-                      <li className="marker:text-purple text-schemes-secondary font-poppins font-normal text-base ">
-                        {props.children}
-                      </li>
-                    ),
-                    h1: ({ node, ...props }) => (
-                      <h1 className="text-2xl font-semibold text-purple">
-                        {props.children}
-                      </h1>
-                    ),
-                    h2: ({ node, ...props }) => (
-                      <h2 className="text-xl font-semibold text-purple">
-                        {props.children}
-                      </h2>
-                    ),
-                    h3: ({ node, ...props }) => (
-                      <h3 className="text-lg font-semibold text-purple">
-                        {props.children}
-                      </h3>
-                    ),
-                    h4: ({ node, ...props }) => (
-                      <h4 className="text-base font-semibold text-purple">
-                        {props.children}
-                      </h4>
-                    ),
-                    h5: ({ node, ...props }) => (
-                      <h5 className="text-base font-semibold text-purple">
-                        {props.children}
-                      </h5>
-                    ),
-                    h6: ({ node, ...props }) => (
-                      <h6 className="text-base font-semibold text-purple">
-                        {props.children}
-                      </h6>
-                    ),
+              <div className="w-full xl:max-w-[88%] mx-auto overflow-x-hidden overflow-y-auto h-full ">
+                {isEditing ? (
+                  <>
+                    <div className="custom-linear-border w-full mb-4 mt-5  h-[75%]  rounded-2xl">
+                      <div className="p-3 pt-0 h-[88%]  ">
+                        <div className="border-b-2 py-3.5 border-aqua-blue  ">
+                          <h2 className="text-purple font-poppins font-medium text-lg text-center">
+                            {currentLesson?.title}
+                          </h2>
+                        </div>
+                        <textarea
+                          className="w-full h-full rounded-2xl p-3 outline-none text-schemes-secondary font-poppins placeholder-opacity-50"
+                          placeholder="Write your article in markdown language here"
+                          value={currentLesson?.article || ""}
+                          onChange={(e) => {
+                            setCurrentLesson({
+                              ...currentLesson,
+                              article: e.target.value,
+                            });
+                          }}
+                        ></textarea>
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleEditArticle}
+                      className="bg-aqua-blue text-white rounded-full w-full py-3 font-poppins capitalize font-normal text-lg  text-center mt-3 "
+                    >
+                      Save Article
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Markdown
+                      children={currentLesson?.article}
+                      components={{
+                        strong: ({ node, ...props }) => (
+                          <strong className="text-aqua-blue font-poppins font-medium text-xl">
+                            {props.children}
+                          </strong>
+                        ),
+                        p: ({ node, ...props }) => (
+                          <p className="text-schemes-secondary font-poppins py-2 font-normal text-base">
+                            {props.children}
+                          </p>
+                        ),
+                        ul: ({ node, ...props }) => (
+                          <ul className="list-disc list-inside">
+                            {props.children}
+                          </ul>
+                        ),
+                        li: ({ node, ...props }) => (
+                          <li className="marker:text-purple text-schemes-secondary font-poppins font-normal text-base ">
+                            {props.children}
+                          </li>
+                        ),
+                        h1: ({ node, ...props }) => (
+                          <h1 className="text-2xl font-semibold text-purple">
+                            {props.children}
+                          </h1>
+                        ),
+                        h2: ({ node, ...props }) => (
+                          <h2 className="text-xl font-semibold text-purple">
+                            {props.children}
+                          </h2>
+                        ),
+                        h3: ({ node, ...props }) => (
+                          <h3 className="text-lg font-semibold text-purple">
+                            {props.children}
+                          </h3>
+                        ),
+                        h4: ({ node, ...props }) => (
+                          <h4 className="text-base font-semibold text-purple">
+                            {props.children}
+                          </h4>
+                        ),
+                        h5: ({ node, ...props }) => (
+                          <h5 className="text-base font-semibold text-purple">
+                            {props.children}
+                          </h5>
+                        ),
+                        h6: ({ node, ...props }) => (
+                          <h6 className="text-base font-semibold text-purple">
+                            {props.children}
+                          </h6>
+                        ),
 
-                    ol: ({ node, ...props }) => (
-                      <ol className="list-decimal list-inside">
-                        {props.children}
-                      </ol>
-                    ),
-                    blockquote: ({ node, ...props }) => (
-                      <blockquote className="border-l-4 border-aqua-blue pl-4">
-                        {props.children}
-                      </blockquote>
-                    ),
-                    code: ({ node, ...props }) => (
-                      <code className="bg-gray-200 p-1">{props.children}</code>
-                    ),
-                    pre: ({ node, ...props }) => (
-                      <pre className="bg-gray-200 p-1">{props.children}</pre>
-                    ),
-                  }}
-                  className={`text-schemes-secondary font-poppins py-2 font-normal text-base`}
-                />
+                        ol: ({ node, ...props }) => (
+                          <ol className="list-decimal list-inside">
+                            {props.children}
+                          </ol>
+                        ),
+                        blockquote: ({ node, ...props }) => (
+                          <blockquote className="border-l-4 border-aqua-blue pl-4">
+                            {props.children}
+                          </blockquote>
+                        ),
+                        code: ({ node, ...props }) => (
+                          <code className="bg-gray-200 p-1">
+                            {props.children}
+                          </code>
+                        ),
+                        pre: ({ node, ...props }) => (
+                          <pre className="bg-gray-200 p-1">
+                            {props.children}
+                          </pre>
+                        ),
+                      }}
+                      className={`text-schemes-secondary font-poppins py-2 font-normal text-base`}
+                    />
+                    <button
+                      onClick={() => {
+                        setIsEditing(true);
+                      }}
+                      className="w-full font-poppins font-medium py-2 mt-5 text-white bg-aqua-blue rounded-md"
+                    >
+                      Edit Article
+                    </button>
+                  </>
+                )}
               </div>
             ) : (
               // choose to upload video or article

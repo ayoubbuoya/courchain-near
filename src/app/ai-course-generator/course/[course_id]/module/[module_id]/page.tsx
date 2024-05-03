@@ -87,7 +87,7 @@ export default function Page({
   };
 
   const handleSaveLesson = async () => {
-    const loadingToast = toast.loading("Saving AI Content to lesson");
+    const loadingToast = toast.loading("Saving lesson");
     if (!lesson) {
       toast.update(loadingToast, {
         type: "error",
@@ -137,7 +137,7 @@ export default function Page({
       if (!resSuccess) {
         toast.update(loadingToast, {
           type: "error",
-          render: "Error Saving AI Content",
+          render: "Error Saving lesson",
           isLoading: false,
           autoClose: 1000,
         });
@@ -146,7 +146,7 @@ export default function Page({
 
       toast.update(loadingToast, {
         type: "success",
-        render: "AI Content Saved Successfully",
+        render: "Lesson Saved Successfully",
         isLoading: false,
         autoClose: 1000,
       });
