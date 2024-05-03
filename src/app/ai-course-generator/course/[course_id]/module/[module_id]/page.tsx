@@ -23,6 +23,7 @@ export default function Page({
   const [lessons, setLessons] = useState<any[]>([]);
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
 
   console.log("Course ID: ", course_id);
   console.log("Module ID: ", module_id);
@@ -85,6 +86,84 @@ export default function Page({
     });
   };
 
+  const handleSaveLesson = async () => {
+    const loadingToast = toast.loading("Saving AI Content to lesson");
+    if (!lesson) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Lesson To Save",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
+
+    if (!wallet) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Wallet Connected",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
+
+    if (!signedAccountId) {
+      toast.update(loadingToast, {
+        type: "error",
+        render: "No Account Connected",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      return;
+    }
+
+    try {
+      const response = await wallet.callMethod({
+        contractId: CONTRACTID,
+        method: "add_article_to_lesson",
+        args: {
+          lesson_id: lesson.id,
+          article: lesson.article,
+        },
+      });
+
+      const resSuccess = Boolean(
+        Buffer.from(response.status.SuccessValue, "base64").toString(
+          "utf-8"
+        ) === "true"
+      );
+
+      if (!resSuccess) {
+        toast.update(loadingToast, {
+          type: "error",
+          render: "Error Saving AI Content",
+          isLoading: false,
+          autoClose: 1000,
+        });
+        return;
+      }
+
+      toast.update(loadingToast, {
+        type: "success",
+        render: "AI Content Saved Successfully",
+        isLoading: false,
+        autoClose: 1000,
+      });
+
+      setLesson(null);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error saving lesson: ", error);
+      toast.update(loadingToast, {
+        type: "error",
+        render: "Error saving lesson",
+        isLoading: false,
+        autoClose: 1000,
+      });
+    }
+  };
+
   if (!session) {
     return <Loading />;
   }
@@ -138,14 +217,48 @@ export default function Page({
                 </div>
               )}
               {/* Lesson Content */}
-              {lesson && !isLoading && lesson.article && (
+              {lesson && !isLoading && !isEditing && lesson.article && (
                 <div className="my-3 md:mt-20 md:max-w-[50%]">
                   <div className="whitespace-pre-line font-light text-sm font-poppins text-black ">
                     {lesson.article.replace(/\*\*(.*?)\*\*/g, "$1")}
                   </div>
                   <div className="flex justify-center items-center mt-6 mb-2 md:my-10">
-                    <button className="bg-purple py-2 px-5 md:px-6 rounded-full text-white text-sm font-poppins font-normal text-center">
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="bg-purple py-2 px-5 md:px-6 rounded-full text-white text-sm font-poppins font-normal text-center"
+                    >
                       Personnaliser cette réponse
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Lesson Editor */}
+              {lesson && isEditing && lesson.article && !isLoading && (
+                <div className="my-3 md:mt-32 w-full h-screen ">
+                  <div className="custom-linear-border w-full rounded-2xl h-[88%]">
+                    <div className="rounded-2xl h-[88%] p-3 pt-0">
+                      <div className="border-b-2 py-3.5 border-aqua-blue  ">
+                        <h2 className="text-purple font-poppins font-medium text-lg text-center">
+                          {lesson.title}
+                        </h2>
+                      </div>
+                      <textarea
+                        className="w-full h-full rounded-2xl p-3 outline-none text-schemes-secondary font-poppins placeholder-opacity-50"
+                        placeholder="Write your article in markdown language here"
+                        value={lesson.article}
+                        onChange={(e) =>
+                          setLesson({ ...lesson, article: e.target.value })
+                        }
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center mt-6 mb-2 md:my-10">
+                    <button
+                      onClick={handleSaveLesson}
+                      className="bg-purple py-2 w-full md:px-6 rounded-full text-white text-sm font-poppins font-normal text-center"
+                    >
+                      Save Lesson
                     </button>
                   </div>
                 </div>
