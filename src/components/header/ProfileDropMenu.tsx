@@ -5,6 +5,7 @@ import Logout from "../logout";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 export default function ProfileDropMenu({
   isDropdownVisible,
@@ -17,6 +18,7 @@ export default function ProfileDropMenu({
 }) {
   const { data: session, status, update } = useSession();
   const { signedAccountId, wallet } = useWalletStore();
+  const pathname = usePathname();
 
   const handleLoginWallet = async () => {
     await wallet.signIn();
@@ -91,25 +93,28 @@ export default function ProfileDropMenu({
         </li>
       </ul>
 
-      <ul className="py-0.5 md:py-1 border-t-[1px] border-solid border-aqua-blue md:border-t-0">
-        <li>
-          {session?.isMentor ? (
-            <button
-              onClick={switchToStudent}
-              className="text-left w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Switch to Student
-            </button>
-          ) : (
-            <button
-              onClick={switchToMentor}
-              className="text-left w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Switch to Mentor
-            </button>
-          )}
-        </li>
-      </ul>
+      {/* show only when no dashboartd in pathname  */}
+      {!pathname.includes("dashboard") && (
+        <ul className="py-0.5 md:py-1 border-t-[1px] border-solid border-aqua-blue md:border-t-0">
+          <li>
+            {session?.isMentor ? (
+              <button
+                onClick={switchToStudent}
+                className="text-left w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Switch to Student
+              </button>
+            ) : (
+              <button
+                onClick={switchToMentor}
+                className="text-left w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Switch to Mentor
+              </button>
+            )}
+          </li>
+        </ul>
+      )}
 
       <ul className="py-0.5 md:py-1 border-t-[1px] border-solid border-aqua-blue md:border-t-0">
         <li>
