@@ -13,6 +13,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import { toast } from "react-toastify";
+import VideoPlayer from "@/components/videoPlayer";
 
 export default function MentorCoursePage({
   params,
@@ -583,13 +584,7 @@ export default function MentorCoursePage({
             )}
 
             {currentLesson?.video_url ? (
-              <div className="w-full h-[400px] bg-gray-200 flex items-center justify-center">
-                <video
-                  className="w-full h-full"
-                  src={currentLesson?.video_url}
-                  controls
-                />
-              </div>
+              <VideoPlayer currentLesson={currentLesson} />
             ) : currentLesson?.article && addContentAction === null ? (
               <div className="w-full xl:max-w-[88%] mx-auto overflow-x-hidden overflow-y-auto h-full ">
                 {isEditing ? (
@@ -756,63 +751,64 @@ export default function MentorCoursePage({
 
                 {addContentAction === "video" && (
                   <div className="w-full h-full mt-8">
-                    <div className="w-full min-h-[50%] bg-gray-50 flex items-center justify-center rounded-2xl">
-                      <input
-                        ref={videoInputRef}
-                        type="file"
-                        className="w-full h-full hidden"
-                        accept="video/*"
-                        onChange={handleVideoUploadChange}
-                      />
-                      {!uploadedVideo && (
-                        <button
-                          onClick={handleVideoUpload}
-                          className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
-                        >
-                          Upload Video
-                        </button>
-                      )}
+                    <div className="w-full custom-linear-border min-h-[70%] rounded-2xl flex items-center justify-center">
+                      <div className="w-full h-full flex items-center justify-center  p-1 rounded-2xl">
+                        <input
+                          ref={videoInputRef}
+                          type="file"
+                          className="w-full h-full hidden"
+                          accept="video/*"
+                          onChange={handleVideoUploadChange}
+                        />
+                        {!uploadedVideo && (
+                          <button
+                            onClick={handleVideoUpload}
+                            className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
+                          >
+                            Upload Video
+                          </button>
+                        )}
 
-                      {uploadedVideo && (
-                        <div className="w-full h-full ">
-                          <p className="text-aqua-blue mt-4 text-center font-poppins font-medium text-lg">
-                            {uploadedVideo.name}
-                          </p>
+                        {uploadedVideo && (
+                          <div className="w-full h-full ">
+                            <p className="text-aqua-blue mt-4 text-center font-poppins font-medium text-lg">
+                              {uploadedVideo.name}
+                            </p>
 
-                          <video
-                            className="w-full h-full py-3 outline-none"
-                            src={URL.createObjectURL(uploadedVideo)}
-                            controls
-                          />
+                            <video
+                              className="w-full h-[80%] px-5 py-3 outline-none rounded-2xl   "
+                              src={URL.createObjectURL(uploadedVideo)}
+                            />
 
-                          <div className="w-full flex justify-around items-center py-4 ">
-                            <button
-                              onClick={handlePlayVideo}
-                              className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
-                            >
-                              Play Video
-                            </button>
-                            <button
-                              onClick={handleResetVideo}
-                              className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
-                            >
-                              Reset Video
-                            </button>
-                            <button
-                              onClick={handleVideoUpload}
-                              className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
-                            >
-                              Change Video
-                            </button>
-                            <button
-                              onClick={handleSaveVideo}
-                              className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
-                            >
-                              Save Video
-                            </button>
+                            <div className="w-full flex justify-around items-center py-4 ">
+                              <button
+                                onClick={handlePlayVideo}
+                                className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
+                              >
+                                Play Video
+                              </button>
+                              <button
+                                onClick={handleResetVideo}
+                                className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
+                              >
+                                Reset Video
+                              </button>
+                              <button
+                                onClick={handleVideoUpload}
+                                className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
+                              >
+                                Change Video
+                              </button>
+                              <button
+                                onClick={handleSaveVideo}
+                                className="bg-aqua-blue text-white rounded-xl px-8 py-3 font-poppins font-normal text-[0.88rem] leading-5 text-center"
+                              >
+                                Save Video
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}

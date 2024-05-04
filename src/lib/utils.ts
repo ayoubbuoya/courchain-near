@@ -14,6 +14,17 @@ export function fromYoctoToNear(amount: number | bigint): number {
   return parseFloat(near);
 }
 
+export function secondesToVideoDuration(seconds: number) {
+  
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  // Ensure two-digit formatting for minutes and seconds
+  const formattedMinutes = minutes.toString().padStart(2, "0");
+  const formattedSeconds = remainingSeconds.toString().padStart(2, "0");
+
+  return `${formattedMinutes}:${formattedSeconds}`;
+}
+
 export function formatDate(date: Date) {
   const monthNames = [
     "January",
