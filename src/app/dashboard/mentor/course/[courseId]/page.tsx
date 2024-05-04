@@ -90,10 +90,10 @@ export default function MentorCoursePage({
       return;
     }
 
-    if (session && wallet && signedAccountId) {
+    if (wallet && signedAccountId) {
       fetchCourseDetails();
     }
-  }, [wallet, signedAccountId, session]);
+  }, [wallet, signedAccountId]);
 
   useEffect(() => {
     console.log("Module Order Changed: ", moduleOrder);
@@ -583,17 +583,47 @@ export default function MentorCoursePage({
               </div>
             )}
 
-            {currentLesson?.video_url ? (
-              <div className="min-h-[70%] md:mt-10">
-                <video
-                  className="w-full h-full  rounded-2xl outline-none border border-gray-300 "
-                  src={currentLesson.video_url}
-                  controls
-                  autoPlay
-                />
+            {currentLesson?.video_url && addContentAction === null ? (
+              <div className="w-full h-full xl:max-w-[93%] mx-auto mt-2  ">
+                <p className="text-schemes-secondary font-poppins font-normal text-base">
+                  {course?.with_ai
+                    ? "You can upload a video or write an article for this lesson or use AI to generate content"
+                    : "You can upload a video or write an article for this lesson"}
+                </p>
+                <div className="my-6 w-full flex items-center justify-evenly">
+                  <button
+                    onClick={() => setAddContentAction("video")}
+                    className={`apitalize  rounded-full px-5 py-3  border  border-solid  font-poppins font-normal text-[0.88rem] leading-5 text-center duration-500 ${
+                      currentLesson.video_url.length > 0
+                        ? "bg-aqua-blue border-white text-white"
+                        : "bg-white text-aqua-blue border-aqua-blue"
+                    }`}
+                  >
+                    Change Video
+                  </button>
+                  <button
+                    onClick={() => setAddContentAction("article")}
+                    className={`capitalize  rounded-full px-5 py-3  border  border-solid  font-poppins font-normal text-[0.88rem] leading-5 text-center duration-500 ${
+                      addContentAction === "article"
+                        ? "bg-aqua-blue border-white text-white"
+                        : "bg-white text-aqua-blue border-aqua-blue"
+                    }`}
+                  >
+                    Write an article
+                  </button>
+                </div>
+
+                <div className="mt-5">
+                  <video
+                    className="w-full h-full  rounded-2xl outline-none border border-gray-300 "
+                    src={currentLesson.video_url}
+                    controls
+                    autoPlay
+                  />
+                </div>
               </div>
             ) : currentLesson?.article && addContentAction === null ? (
-              <div className="w-full xl:max-w-[88%] mx-auto overflow-x-hidden overflow-y-auto h-full ">
+              <div className="  w-full ml-[2%]  xl:max-w-[90%]  overflow-x-hidden overflow-y-auto h-full ">
                 {isEditing ? (
                   <>
                     <div className="custom-linear-border w-full mb-4 mt-5  h-[75%]  rounded-2xl">
@@ -702,20 +732,30 @@ export default function MentorCoursePage({
                       }}
                       className={`text-schemes-secondary font-poppins py-2 font-normal text-base`}
                     />
-                    <button
-                      onClick={() => {
-                        setIsEditing(true);
-                      }}
-                      className="w-full font-poppins font-medium py-2 mt-5 text-white bg-aqua-blue rounded-md"
-                    >
-                      Edit Article
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setIsEditing(true);
+                        }}
+                        className="w-full font-poppins font-medium py-2 mt-5 text-white bg-aqua-blue rounded-md"
+                      >
+                        Edit Article
+                      </button>
+                      <button
+                        onClick={() => {
+                          setAddContentAction("video");
+                        }}
+                        className="w-full font-poppins font-medium py-2 mt-5 text-white bg-aqua-blue rounded-md"
+                      >
+                        Upload Video
+                      </button>
+                    </div>
                   </>
                 )}
               </div>
             ) : (
               // choose to upload video or article
-              <div className="w-full h-full xl:max-w-[93%] mx-auto   ">
+              <div className="w-full h-full xl:max-w-[93%] mx-auto ">
                 <p className="text-schemes-secondary font-poppins font-normal text-base">
                   {course?.with_ai
                     ? "You can upload a video or write an article for this lesson or use AI to generate content"
