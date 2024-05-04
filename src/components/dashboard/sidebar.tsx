@@ -47,7 +47,7 @@ export default function Sidebar({
           <ul className="flex flex-col items-center justify-around gap-1 mt-5 md:gap-8">
             <li>
               <Link
-                href={"/dashboard/mentor/courses"}
+                href={"/dashboard/mentor"}
                 className="flex flex-col items-center justify-center gap-1 px-1 py-3 group "
               >
                 <svg
@@ -59,12 +59,62 @@ export default function Sidebar({
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    className={`fill-schemes-secondary group-hover:fill-aqua-blue ${
-                      pathname === "/dashboard/mentor/courses" &&
-                      "fill-aqua-blue"
+                    className={` group-hover:fill-aqua-blue ${
+                      pathname === "/dashboard/mentor"
+                        ? "fill-aqua-blue"
+                        : "fill-schemes-secondary"
                     }`}
                     d="M13.723 18.958h3.529a1.458 1.458 0 0 0 1.035-.423l5.221-5.22a1.458 1.458 0 0 0 0-2.057l-3.529-3.5a1.458 1.458 0 0 0-2.056 0l-5.221 5.221c-.275.27-.432.636-.438 1.021v3.5a1.458 1.458 0 0 0 1.459 1.458zm1.458-4.375 3.777-3.733 1.459 1.458-3.763 3.734h-1.458l-.015-1.459zm15.444 5.834h-1.459V5.833h1.459a1.458 1.458 0 1 0 0-2.916H4.375a1.458 1.458 0 1 0 0 2.916h1.458v14.584H4.375a1.458 1.458 0 1 0 0 2.916H16.04v1.677l-6.635 4.375a1.459 1.459 0 0 0 .802 2.698c.287.004.567-.083.802-.248l5.031-3.325v2.115a1.458 1.458 0 1 0 2.917 0V28.51l5.031 3.325c.235.165.516.252.802.248a1.458 1.458 0 0 0 .803-2.668l-6.636-4.375v-1.707h11.667a1.458 1.458 0 0 0 0-2.916zm-4.375 0H8.75V5.833h17.5v14.584z"
                     // fill="#625B71"
+                  />
+                </svg>
+                <span
+                  className={`text-xs font-medium text-center group-hover:block font-poppins  ${
+                    pathname === "/dashboard/mentor"
+                      ? "text-aqua-blue"
+                      : "md:hidden text-schemes-secondary group-hover:font-normal group-hover:text-aqua-blue"
+                  }`}
+                >
+                  Dashboard
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={"/dashboard/mentor/courses"}
+                className="flex flex-col items-center justify-center gap-1 px-1 py-3 group "
+              >
+                <svg
+                  width="33"
+                  height="33"
+                  viewBox="0 0 33 33"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-7 md:w-8"
+                >
+                  <path
+                    d="M30.25 4.125H22C20.5413 4.125 19.1424 4.70446 18.1109 5.73591C17.0795 6.76736 16.5 8.16631 16.5 9.625V28.875C16.5 27.781 16.9346 26.7318 17.7082 25.9582C18.4818 25.1846 19.531 24.75 20.625 24.75H30.25V4.125Z"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/mentor/courses"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
+                    }`}
+                    // stroke="#625B71"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M2.75 4.125H11C12.4587 4.125 13.8576 4.70446 14.8891 5.73591C15.9205 6.76736 16.5 8.16631 16.5 9.625V28.875C16.5 27.781 16.0654 26.7318 15.2918 25.9582C14.5182 25.1846 13.469 24.75 12.375 24.75H2.75V4.125Z"
+                    // stroke="#625B71"
+                    className={` group-hover:stroke-aqua-blue ${
+                      pathname === "/dashboard/mentor/courses"
+                        ? "stroke-aqua-blue"
+                        : "stroke-schemes-secondary"
+                    }`}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
                 <span
@@ -74,11 +124,11 @@ export default function Sidebar({
                       : "md:hidden text-schemes-secondary group-hover:font-normal group-hover:text-aqua-blue"
                   }`}
                 >
-                  Mes Cours
+                  My courses
                 </span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 href={"/dashboard/mentor/stats"}
                 className="flex flex-col items-center justify-center gap-1 px-1 py-3 group "
@@ -150,7 +200,7 @@ export default function Sidebar({
                   Calendrier
                 </span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         )}
 
