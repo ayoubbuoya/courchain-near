@@ -584,7 +584,14 @@ export default function MentorCoursePage({
             )}
 
             {currentLesson?.video_url ? (
-              <VideoPlayer currentLesson={currentLesson} />
+              <div className="min-h-[70%] md:mt-10">
+                <video
+                  className="w-full h-full  rounded-2xl outline-none border border-gray-300 "
+                  src={currentLesson.video_url}
+                  controls
+                  autoPlay
+                />
+              </div>
             ) : currentLesson?.article && addContentAction === null ? (
               <div className="w-full xl:max-w-[88%] mx-auto overflow-x-hidden overflow-y-auto h-full ">
                 {isEditing ? (
@@ -778,6 +785,8 @@ export default function MentorCoursePage({
                             <video
                               className="w-full h-[80%] px-5 py-3 outline-none rounded-2xl   "
                               src={URL.createObjectURL(uploadedVideo)}
+                              controls
+                              autoPlay
                             />
 
                             <div className="w-full flex justify-around items-center py-4 ">
