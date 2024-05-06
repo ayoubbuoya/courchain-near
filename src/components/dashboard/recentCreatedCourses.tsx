@@ -36,7 +36,7 @@ export default function RecentCreatedCourses({
       </div>
       <div className="grid grid-cols-1 px-5 md:grid-cols-2 gap-x-8 gap-y-5 md:px-0 ">
         {sortedCourses &&
-          sortedCourses.map((course: any) => (
+          sortedCourses.map((course: Course) => (
             <div key={course.id} className="custom-linear-border rounded-2xl">
               <div className="pb-2">
                 <div className="flex justify-center py-4">
@@ -88,7 +88,13 @@ export default function RecentCreatedCourses({
                       </div>
                     </div>
                     <div className="min-w-[90%] md:w-full  mx-auto  bg-gray-200 rounded-full h-1 ">
-                      <div className="bg-aqua-blue h-1 w-[50%] rounded-full "></div>
+                      <div
+                        className={`bg-aqua-blue h-1 rounded-full ${
+                          course.progress && course.progress > 0
+                            ? `w-[${course.progress}%]`
+                            : "w-2"
+                        } `}
+                      ></div>
                     </div>
                   </div>
                 </div>

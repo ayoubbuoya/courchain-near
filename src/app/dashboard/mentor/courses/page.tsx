@@ -115,7 +115,13 @@ export default function MyCreatedCourses() {
                       </div>
                     </div>
                     <div className="w-[80%] mx-auto bg-gray-100 rounded-full h-1">
-                      <div className="bg-aqua-blue h-1 w-[50%] rounded-full "></div>
+                      <div
+                        className={`bg-aqua-blue h-1 rounded-full ${
+                          course.progress && course.progress > 0
+                            ? `w-[${course.progress}%]`
+                            : "w-2"
+                        } `}
+                      ></div>
                     </div>
                   </div>
                 </Link>

@@ -29,7 +29,7 @@ export interface Course {
   tags: string[];
   picture: string;
   with_ai: boolean;
-  price: bigint;
+  progress?: number;
   mentor_id: string;
   modules_ids: number[];
   created_at: number;
