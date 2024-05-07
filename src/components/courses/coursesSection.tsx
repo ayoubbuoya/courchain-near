@@ -5,6 +5,7 @@ import CourseMinCard from "../home/courseMinCard";
 import { Course } from "@/lib/types";
 import { useState } from "react";
 import Link from "next/link";
+import { fromYoctoToNear } from "@/lib/utils";
 
 export default function CoursesSection({
   courses,
@@ -42,7 +43,7 @@ export default function CoursesSection({
               <CourseMinCard
                 key={index}
                 title={course.title}
-                price={15}
+                price={fromYoctoToNear(course.price)}
                 link={"/course/" + course.id}
               />
             ))}
