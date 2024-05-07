@@ -48,10 +48,14 @@ export default function RightSide({
   const [isAddModuleOpen, setIsAddModuleOpen] = useState<boolean>(false);
   const [isAddLessonOpen, setIsAddLessonOpen] = useState<boolean>(false);
   const [isEditLessonOpen, setIsEditLessonOpen] = useState<boolean>(false);
+  const [isAddQuizzOpen, setIsAddQuizzOpen] = useState<boolean>(false);
+  const [isEditQuizzOpen, setIsEditQuizzOpen] = useState<boolean>(false);
   const [moduleTitle, setModuleTitle] = useState<string>("");
   const [moduleDescription, setModuleDescription] = useState<string>("");
   const [lessonTitle, setLessonTitle] = useState<string>("");
   const [lessonDescription, setLessonDescription] = useState<string>("");
+  const [quizzTitle, setQuizzTitle] = useState<string>("");
+  const [quizzDescription, setQuizzDescription] = useState<string>("");
 
   const [modules, setModules] = useState<FullModule[]>(course?.modules || []);
   const [currentModuleLessons, setCurrentModuleLessons] = useState<
@@ -124,8 +128,11 @@ export default function RightSide({
 
     const loadingToastId = toast.loading("Creating new lesson...");
 
-    const order = course.modules[moduleOrder - 1].lessons.length > 0 ? course.modules[moduleOrder - 1].lessons.length + 1 : 1; 
-    
+    const order =
+      course.modules[moduleOrder - 1].lessons.length > 0
+        ? course.modules[moduleOrder - 1].lessons.length + 1
+        : 1;
+
     console.log("order : ", order);
 
     await wallet.callMethod({
@@ -145,6 +152,33 @@ export default function RightSide({
 
     toast.update(loadingToastId, {
       render: "Lesson created successfully",
+      type: "success",
+      isLoading: false,
+      autoClose: 3000,
+    });
+  };
+
+  const handleSaveNewQuizz = async (moduleId: number) => {
+    if (!quizzTitle) {
+      toast.error("PLease fill in title field");
+      return;
+    }
+
+    const loadingToastId = toast.loading("Creating new quizz...");
+
+    await wallet.callMethod({
+      contractId: CONTRACTID,
+      method: "create_quizz",
+      args: {
+        module_id: moduleId,
+        title: quizzTitle,
+        description: quizzDescription,
+        created_at: new Date().getTime(),
+      },
+    });
+
+    toast.update(loadingToastId, {
+      render: "Quizz created successfully",
       type: "success",
       isLoading: false,
       autoClose: 3000,
@@ -305,6 +339,59 @@ export default function RightSide({
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        <Dialog open={isAddQuizzOpen} onOpenChange={setIsAddQuizzOpen}>
+          <DialogContent className="sm:max-w-[40%]">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-medium capitalize text-aqua-blue font-poppins ">
+                Create new quizz
+              </DialogTitle>
+              <DialogDescription className="text-schemes-secondary">
+                Add a new quizz to your course. Click save when you're done.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid items-center grid-cols-4 gap-4">
+                <Label
+                  htmlFor="quizz-title"
+                  className="text-base font-normal text-right text-aqua-blue font-poppins "
+                >
+                  Quizz Title
+                </Label>
+                <input
+                  id="quizz-title"
+                  className="col-span-3 outline-aqua-blue py-3 border border-aqua-blue rounded-lg px-3 font-poppins font-normal text-[0.8rem] leading-5 text-schemes-primary"
+                  value={quizzTitle}
+                  onChange={(e) => setQuizzTitle(e.target.value)}
+                />
+              </div>
+              <div className="grid items-center grid-cols-4 gap-4">
+                <Label
+                  htmlFor="quizz-description"
+                  className="text-base font-normal text-right text-aqua-blue font-poppins "
+                >
+                  Description
+                </Label>
+                <textarea
+                  id="quizz-description"
+                  className="col-span-3 outline-aqua-blue py-3 border border-aqua-blue rounded-lg px-3 font-poppins font-normal text-[0.8rem] leading-5 text-schemes-primary"
+                  value={quizzDescription}
+                  onChange={(e) => setQuizzDescription(e.target.value)}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                type="button"
+                onClick={() => {
+                  handleSaveNewQuizz(course.modules[moduleOrder - 1].id);
+                }}
+                className=" bg-aqua-blue outline-aqua-blue text-white rounded-lg px-5 py-2 font-poppins font-normal text-[0.88rem] leading-5 duration-700 text-center hover:bg-white hover:text-aqua-blue hover:border hover:border-aqua-blue"
+              >
+                Save changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         {course?.modules.map((module) => (
           <div
             key={module.id}
@@ -368,16 +455,48 @@ export default function RightSide({
                         />
                       </div>
                     ))}
+                    {module.quizz && (
+                      <div className="group w-full cursor-pointer flex justify-between items-center">
+                        <h2
+                          onClick={() => {
+                            // goToEditLesson(module.order, lesson.order);
+                            setIsEditQuizzOpen(true);
+                          }}
+                          className={`text-lg text-dimgray-700 font-medium `}
+                        >
+                          {module.quizz.title}
+                        </h2>
+                        <Pencil
+                          size={24}
+                          onClick={() => {
+                            // goToEditLesson(module.order, lesson.order);
+                            setIsEditQuizzOpen(true);
+                          }}
+                          className="hidden group-hover:block text-aqua-blue"
+                        />
+                      </div>
+                    )}
 
-                    <div className="w-full cursor-pointer flex justify-between items-baseline">
+                    <div className="w-full cursor-pointer flex justify-start items-center gap-20 ">
                       <button
                         onClick={() => {
                           setIsAddLessonOpen(true);
                         }}
-                        className={`text-lg capitalize tracking-wider text-left  w-full py-1 text-purple font-semibold`}
+                        className={`text-lg  tracking-wider text-left capitalize   py-1 text-purple font-semibold`}
                       >
-                        Add new lesson
+                        Add lesson
                       </button>
+
+                      {!module.quizz && (
+                        <button
+                          onClick={() => {
+                            setIsAddQuizzOpen(true);
+                          }}
+                          className="text-lg capitalize  tracking-wider text-left   py-1 text-purple font-semibold"
+                        >
+                          Add quizz
+                        </button>
+                      )}
 
                       <Dialog
                         open={isAddLessonOpen}

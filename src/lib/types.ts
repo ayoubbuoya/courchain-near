@@ -48,6 +48,7 @@ export interface Module {
   updated_at: number;
   course_id: number;
   lessons_ids: number[];
+  quizz_id: number;
 }
 
 export interface Lesson {
@@ -85,7 +86,24 @@ export interface FullModule {
   created_at: number;
   updated_at: number;
   lessons: FullLesson[];
+  quizz: Quizz;
 }
+
+export interface Quizz {
+  id: number;
+  title: string;
+  questions: Question[];
+  created_at: number;
+  updated_at: number;
+}
+
+export interface Question {
+  id: number;
+  question: string;
+  options: string[];
+  answer: string;
+}
+
 
 export interface FullCourse {
   id: number;
