@@ -109,6 +109,7 @@ export class Wallet {
    * @param {Object} args - the arguments to pass to the method
    * @param {string} gas - the amount of gas to use
    * @param {string} deposit - the amount of yoctoNEAR to deposit
+   * @param {string} callbackUrl - the url to redirect to after the transaction is complete
    * @returns {Promise<Transaction>} - the resulting transaction
    */
   callMethod = async ({
@@ -117,8 +118,27 @@ export class Wallet {
     args = {},
     gas = THIRTY_TGAS,
     deposit = NO_DEPOSIT,
+    callbackUrl = "",
   }) => {
     // Sign a transaction with the "FunctionCall" action
+    if (callbackUrl.length > 0 && callbackUrl !== "") {
+      return await this.selectedWallet.signAndSendTransaction({
+        signerId: this.accountId,
+        receiverId: contractId,
+        actions: [
+          {
+            type: "FunctionCall",
+            params: {
+              methodName: method,
+              args,
+              gas,
+              deposit,
+              callbackUrl,
+            },
+          },
+        ],
+      });
+    }
     return await this.selectedWallet.signAndSendTransaction({
       signerId: this.accountId,
       receiverId: contractId,

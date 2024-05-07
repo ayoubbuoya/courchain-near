@@ -60,9 +60,11 @@ export default function MentorCoursePage({
     });
     console.log("Course Details: ", fetchedCourseDetails);
     setCourse(fetchedCourseDetails);
-    setCurrentLesson(
-      fetchedCourseDetails.modules[moduleOrder - 1].lessons[lessonOrder - 1]
-    );
+    if (fetchedCourseDetails.modules.length > 0) {
+      setCurrentLesson(
+        fetchedCourseDetails.modules[moduleOrder - 1].lessons[lessonOrder - 1]
+      );
+    }
     setIsLoading(false);
   }
 

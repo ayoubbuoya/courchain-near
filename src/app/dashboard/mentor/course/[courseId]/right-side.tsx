@@ -18,7 +18,11 @@ export default function RightSide({
   const [modules, setModules] = useState<FullModule[]>(course?.modules || []);
   const [currentModuleLessons, setCurrentModuleLessons] = useState<
     FullLesson[]
-  >(course?.modules[0].lessons || []);
+  >(
+    course && course.modules && course.modules.length > 0
+      ? course?.modules[0].lessons
+      : []
+  );
 
   const dragLesson = useRef<number>(0);
   const draggedOverLesson = useRef<number>(0);
