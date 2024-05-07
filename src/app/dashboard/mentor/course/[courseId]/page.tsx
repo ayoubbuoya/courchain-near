@@ -903,8 +903,8 @@ export default function MentorCoursePage({
 
                 {addContentAction === "article" && (
                   <div className="w-full mt-8 h-full">
-                    <div className="custom-linear-border w-full min-h-[40%] h-[65%] max-h-[75%] rounded-2xl">
-                      <div className="p-3 pt-0 h-[88%]  ">
+                    <div className="custom-linear-border w-full h-[75%] rounded-2xl">
+                      <div className="p-3 pt-0 h-[75%]  ">
                         <div className="border-b-2 py-3.5 border-aqua-blue  ">
                           <h2 className="text-purple font-poppins font-medium text-lg text-center">
                             {currentLesson?.title}
@@ -939,6 +939,8 @@ export default function MentorCoursePage({
             course={course}
             moduleOrder={moduleOrder}
             lessonOrder={lessonOrder}
+            currentLesson={currentLesson}
+            setCurrentLesson={setCurrentLesson}
             handleModuleOrderChange={handleModuleOrderChange}
             handleLessonOrderChange={handleLessonOrderChange}
           />
