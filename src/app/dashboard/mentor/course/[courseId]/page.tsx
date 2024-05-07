@@ -937,6 +937,7 @@ export default function MentorCoursePage({
           </div>
           <RightSide
             course={course}
+            setCourse={setCourse}
             moduleOrder={moduleOrder}
             lessonOrder={lessonOrder}
             currentLesson={currentLesson}

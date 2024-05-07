@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 
 export default function RightSide({
   course,
+  setCourse,
   lessonOrder,
   moduleOrder,
   currentLesson,
@@ -34,6 +35,7 @@ export default function RightSide({
   handleModuleOrderChange,
 }: {
   course: FullCourse | null;
+  setCourse: (course: FullCourse) => void;
   lessonOrder: number;
   moduleOrder: number;
 
@@ -59,6 +61,10 @@ export default function RightSide({
       ? course?.modules[0].lessons
       : []
   );
+
+  if (!course) {
+    return null;
+  }
 
   const dragLesson = useRef<number>(0);
   const draggedOverLesson = useRef<number>(0);
@@ -345,15 +351,6 @@ export default function RightSide({
                     {module.lessons.map((lesson, index) => (
                       <div
                         key={lesson.id}
-                        draggable
-                        onDragStart={() => {
-                          dragLesson.current = index;
-                        }}
-                        onDragEnter={() => {
-                          draggedOverLesson.current = index;
-                        }}
-                        onDragEnd={handleSort}
-                        onDragOver={(e) => e.preventDefault()}
                         className="group w-full cursor-pointer flex justify-between items-center"
                       >
                         <h2
