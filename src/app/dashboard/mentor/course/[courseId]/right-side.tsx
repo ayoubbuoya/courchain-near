@@ -124,6 +124,10 @@ export default function RightSide({
 
     const loadingToastId = toast.loading("Creating new lesson...");
 
+    const order = course.modules[moduleOrder - 1].lessons.length > 0 ? course.modules[moduleOrder - 1].lessons.length + 1 : 1; 
+    
+    console.log("order : ", order);
+
     await wallet.callMethod({
       contractId: CONTRACTID,
       method: "create_lesson",
@@ -134,10 +138,7 @@ export default function RightSide({
         video_url: "",
         article: "",
         with_ai: false,
-        order:
-          currentModuleLessons && currentModuleLessons.length > 0
-            ? currentModuleLessons.length + 1
-            : 1,
+        order,
         created_at: new Date().getTime(),
       },
     });
