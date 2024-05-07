@@ -90,39 +90,30 @@ export default function RightSide({
     }
 
     const loadingToastId = toast.loading("Creating new  module...");
-    try {
-      await wallet.callMethod({
-        contractId: CONTRACTID,
-        method: "create_module",
-        args: {
-          course_id: course.id,
-          title: moduleTitle,
-          description: moduleDescription,
-          status: "",
-          with_ai: false,
-          order:
-            course.modules && course.modules.length > 0
-              ? course.modules.length + 1
-              : 1,
-          created_at: new Date().getTime(),
-        },
-      });
 
-      toast.update(loadingToastId, {
-        render: "Module created successfully",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
-    } catch (error) {
-      toast.update(loadingToastId, {
-        render: "An error occurred. Please try again.",
-        type: "error",
-        isLoading: false,
-        autoClose: 3000,
-      });
-      console.error(error);
-    }
+    await wallet.callMethod({
+      contractId: CONTRACTID,
+      method: "create_module",
+      args: {
+        course_id: course.id,
+        title: moduleTitle,
+        description: moduleDescription,
+        status: "",
+        with_ai: false,
+        order:
+          course.modules && course.modules.length > 0
+            ? course.modules.length + 1
+            : 1,
+        created_at: new Date().getTime(),
+      },
+    });
+
+    toast.update(loadingToastId, {
+      render: "Module created successfully",
+      type: "success",
+      isLoading: false,
+      autoClose: 3000,
+    });
   };
 
   const handleSaveNewLesson = async (moduleId: number) => {
