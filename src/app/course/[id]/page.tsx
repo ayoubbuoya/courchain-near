@@ -122,14 +122,14 @@ export default function CoursePage({
       }
     }
 
-    if (session && signedAccountId) {
+    if (signedAccountId) {
       fetchCourse();
       checkStatusOfCourseToCurrentStudent();
       fetchCourses();
     }
-  }, [wallet, signedAccountId, session, courseId]);
+  }, [wallet, signedAccountId, courseId]);
 
-  if (status === "loading") {
+  if (!session || (session && !session.user)) {
     return <Loading />;
   }
 
