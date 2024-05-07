@@ -23,7 +23,7 @@ export default function Page({
   const [lessons, setLessons] = useState<any[]>([]);
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
   console.log("Course ID: ", course_id);
   console.log("Module ID: ", module_id);
@@ -53,6 +53,7 @@ export default function Page({
 
   const handleGenerateLessonContent = async (lessonId: string) => {
     setIsLoading(true);
+    setIsEditing(false);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_AI_SERVER_API}/lesson/generate/`,
       {
@@ -118,50 +119,39 @@ export default function Page({
       return;
     }
 
-    try {
-      const response = await wallet.callMethod({
-        contractId: CONTRACTID,
-        method: "add_article_to_lesson",
-        args: {
-          lesson_id: lesson.id,
-          article: lesson.article,
-        },
-      });
+    const response = await wallet.callMethod({
+      contractId: CONTRACTID,
+      method: "add_article_to_lesson",
+      args: {
+        lesson_id: lesson.id,
+        article: lesson.article,
+      },
+    });
 
-      const resSuccess = Boolean(
-        Buffer.from(response.status.SuccessValue, "base64").toString(
-          "utf-8"
-        ) === "true"
-      );
+    const resSuccess = Boolean(
+      Buffer.from(response.status.SuccessValue, "base64").toString("utf-8") ===
+        "true"
+    );
 
-      if (!resSuccess) {
-        toast.update(loadingToast, {
-          type: "error",
-          render: "Error Saving lesson",
-          isLoading: false,
-          autoClose: 1000,
-        });
-        return;
-      }
-
-      toast.update(loadingToast, {
-        type: "success",
-        render: "Lesson Saved Successfully",
-        isLoading: false,
-        autoClose: 1000,
-      });
-
-      setLesson(null);
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error saving lesson: ", error);
+    if (!resSuccess) {
       toast.update(loadingToast, {
         type: "error",
-        render: "Error saving lesson",
+        render: "Error Saving lesson",
         isLoading: false,
         autoClose: 1000,
       });
+      return;
     }
+
+    toast.update(loadingToast, {
+      type: "success",
+      render: "Lesson Saved Successfully",
+      isLoading: false,
+      autoClose: 1000,
+    });
+
+    setLesson(null);
+    setIsEditing(false);
   };
 
   if (!session) {

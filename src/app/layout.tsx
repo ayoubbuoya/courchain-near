@@ -59,7 +59,9 @@ export default function RootLayout({
     }
 
     const sess = session ? session : await getCurrentSession();
-
+    if (!sess) {
+      return;
+    }
     // get user details from session
     const userSer = sess?.user;
     // get user details from wallet
