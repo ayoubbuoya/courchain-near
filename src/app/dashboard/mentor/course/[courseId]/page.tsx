@@ -570,6 +570,8 @@ export default function MentorCoursePage({
 
   if (isLoading) return <Loading />;
 
+  if (!course) return <Loading />;
+
   return (
     <div className="md:grid md:grid-cols-12">
       <SplitLayout session={session} />
@@ -901,7 +903,7 @@ export default function MentorCoursePage({
                   </div>
                 )}
 
-                {addContentAction === "article" && (
+                {currentLesson && addContentAction === "article" && (
                   <div className="w-full mt-8 h-full">
                     <div className="custom-linear-border w-full h-[75%] rounded-2xl">
                       <div className="p-3 pt-0 h-[75%]  ">
