@@ -31,6 +31,16 @@ export default function Hero({
       autoClose: 1000,
     });
   };
+  const switchToMentor = async () => {
+    await update({
+      ...session,
+      isMentor: true,
+    });
+
+    toast.success("Switched to mentor", {
+      autoClose: 1000,
+    });
+  };
 
   return (
     <section className=" bg-course-hero-gradient text-center min-h-[50vh] w-full overflow-hidden text-xl text-white-900 font-poppins py-6 backdrop-blur-[3.13rem] ">
@@ -82,6 +92,17 @@ export default function Hero({
                     >
                       Edit Course
                     </Link>
+                  ) : session &&
+                    session.user &&
+                    session.user.role === "user" &&
+                    !session.isMentor &&
+                    signedAccountId === course?.mentor.account_id ? (
+                    <button
+                      onClick={switchToMentor}
+                      className="w-full rounded-full text-center font-roboto font-normal text-base bg-aqua-blue py-2 text-white md:text-xl "
+                    >
+                      Switch To Mentor
+                    </button>
                   ) : isCarted ? (
                     <button
                       onClick={() => router.push("/cart")}

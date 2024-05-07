@@ -42,6 +42,17 @@ export default function CourseDetails({
     });
   };
 
+  const switchToMentor = async () => {
+    await update({
+      ...session,
+      isMentor: true,
+    });
+
+    toast.success("Switched to Mentor", {
+      autoClose: 1000,
+    });
+  };
+
   return (
     <section className="py-5 container mx-auto">
       <div className="w-[95%] mx-auto grid place-items-center md:grid-cols-2  gap-y-3">
@@ -107,6 +118,17 @@ export default function CourseDetails({
               className="w-full rounded-full text-center font-roboto font-normal text-base bg-aqua-blue py-2 text-white md:text-xl "
             >
               Edit Course
+            </button>
+          ) : session &&
+            session.user &&
+            session.user.role === "user" &&
+            !session.isMentor &&
+            signedAccountId === course?.mentor.account_id ? (
+            <button
+              onClick={switchToMentor}
+              className="w-full rounded-full text-center font-roboto font-normal text-base bg-aqua-blue py-2 text-white md:text-xl "
+            >
+              Switch To Mentor
             </button>
           ) : isCarted ? (
             <button
