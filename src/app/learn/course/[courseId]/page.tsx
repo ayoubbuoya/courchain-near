@@ -124,48 +124,38 @@ export default function LearnCoursePage({
   const handleMarkLessonAsCompleted = async () => {
     const loadingToast = toast.loading("Marking Lesson as Completed");
 
-    try {
-      const callResult = await wallet.callMethod({
-        contractId: CONTRACTID,
-        method: "complete_lesson",
-        args: {
-          lesson_id: currentLesson?.lesson.id,
-        },
-      });
+    const callResult = await wallet.callMethod({
+      contractId: CONTRACTID,
+      method: "complete_lesson",
+      args: {
+        lesson_id: currentLesson?.lesson.id,
+      },
+    });
 
-      const success = Boolean(
-        Buffer.from(callResult.status.SuccessValue, "base64").toString(
-          "utf-8"
-        ) === "true"
-      );
+    const success = Boolean(
+      Buffer.from(callResult.status.SuccessValue, "base64").toString(
+        "utf-8"
+      ) === "true"
+    );
 
-      if (!success) {
-        toast.update(loadingToast, {
-          render: "Error marking lesson as completed",
-          type: "error",
-          autoClose: 2000,
-          isLoading: false,
-        });
-        return;
-      }
-
-      toast.update(loadingToast, {
-        render: "Lesson marked as completed",
-        type: "success",
-        autoClose: 2000,
-        isLoading: false,
-      });
-
-      fetchCourseEnrollment();
-    } catch (error) {
-      console.error("Error marking lesson as completed: ", error);
+    if (!success) {
       toast.update(loadingToast, {
         render: "Error marking lesson as completed",
         type: "error",
         autoClose: 2000,
         isLoading: false,
       });
+      return;
     }
+
+    toast.update(loadingToast, {
+      render: "Lesson marked as completed",
+      type: "success",
+      autoClose: 2000,
+      isLoading: false,
+    });
+
+    fetchCourseEnrollment();
   };
 
   return (
