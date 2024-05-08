@@ -67,7 +67,7 @@ export default function LoginForm() {
           htmlFor="password"
           className="font-poppins font-normal text-base text-slate-600"
         >
-          Mot de passe
+         Password
         </label>
         <input
           type="password"
@@ -82,18 +82,11 @@ export default function LoginForm() {
           type="submit"
           className="w-[80%] py-[0.6rem] rounded-full mx-auto text-white font-poppins font-normal text-base bg-aqua-blue border-white border-2  "
         >
-          Connexion
+          Sign In
         </button>
       </div>
 
-      <div className="flex flex-col items-center justify-center ">
-        <Link
-          href={"/forgot-password"}
-          className="text-aqua-blue font-normal font-poppins text-sm text-center hover:underline hover:decoration-aqua-blue hover:decoration-1"
-        >
-          Mot de passe oublié
-        </Link>
-      </div>
+   
     </form>
   );
 }

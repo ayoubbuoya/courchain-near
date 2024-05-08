@@ -45,7 +45,7 @@ export const authConfig: NextAuthOptions = {
           return null;
         }
 
-        if (!user.password && user.byGoogle) {
+        if (user.byGoogle) {
           console.log("User Related With a Google Account");
           return null;
         }
@@ -72,6 +72,27 @@ export const authConfig: NextAuthOptions = {
           },
         });
         console.log("User Blockchain Data : ", userBlockchainData);
+        if (!userBlockchainData) {
+          console.log("User not found in blockchain");
+          return {
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            username: user.username,
+            image: user.picture,
+            picture: user.picture,
+            role: user.role,
+            byGoogle: user.byGoogle,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+            bio: user.bio,
+            skills: user.skills,
+            certifications: user.certifications,
+            education: user.education,
+            phone: user.phone,
+            isMentor: user.isMentor || false,
+          };
+        }
 
         return {
           id: userBlockchainData.id,
