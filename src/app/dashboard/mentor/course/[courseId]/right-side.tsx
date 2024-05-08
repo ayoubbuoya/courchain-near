@@ -215,6 +215,31 @@ export default function RightSide({
     });
   };
 
+  const handleDeleteLesson = async () => {
+
+    if (!currentLesson) {
+      toast.error("An error occurred. Please try again.");
+      return;
+    }
+
+    const loadingToastId = toast.loading("Deleting lesson...");
+
+    await wallet.callMethod({
+      contractId: CONTRACTID,
+      method: "delete_lesson",
+      args: {
+        lesson_id: currentLesson.id,
+      },
+    });
+
+    toast.update(loadingToastId, {
+      render: "Lesson deleted successfully",
+      type: "success",
+      isLoading: false,
+      autoClose: 3000,
+    });
+  }
+
   return (
     <div className="right-side pr-5">
       <div className="flex flex-col items-start justify-between gap-4">
@@ -331,7 +356,14 @@ export default function RightSide({
                 />
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className=" w-full flex flex-row items-center justify-between sm:justify-between">
+              <Button
+                type="button"
+                className=" bg-red-500 hover:bg-red-500 outline-red-500 text-white rounded-lg px-5 py-2 font-poppins font-normal text-[0.88rem] leading-5 duration-700 text-center "
+                onClick={handleDeleteLesson}
+              >
+                Delete Lesson
+              </Button>
               <Button
                 type="button"
                 className=" bg-aqua-blue outline-aqua-blue text-white rounded-lg px-5 py-2 font-poppins font-normal text-[0.88rem] leading-5 duration-700 text-center hover:bg-white hover:text-aqua-blue hover:border hover:border-aqua-blue"
