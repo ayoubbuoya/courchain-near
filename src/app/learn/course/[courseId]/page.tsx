@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useWalletStore } from "@/stores/wallet";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
@@ -12,9 +12,21 @@ import {
   FullEnrollment,
   FullLessonProgress,
   FullModuleProgress,
+  FullQuizzProgress,
 } from "@/lib/types";
 import Image from "next/image";
 import Markdown from "react-markdown";
+
+import { Button } from "@/components/ui/button";
+import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
+
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Quizz, Answer, Question } from "@/lib/types";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Link from "next/link";
 
 export default function LearnCoursePage({
   params,
@@ -26,6 +38,7 @@ export default function LearnCoursePage({
   const { courseId } = params;
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const quizzParam = searchParams.get("quizz") || null;
   const moduleOrder = Number(searchParams.get("module")) || 1;
   const lessonOrder = Number(searchParams.get("lesson")) || 1;
   const { wallet, signedAccountId } = useWalletStore();
@@ -36,8 +49,21 @@ export default function LearnCoursePage({
   const [currentLesson, setCurrentLesson] = useState<FullLessonProgress | null>(
     null
   );
+  const [currentQuizz, setCurrentQuizz] = useState<FullQuizzProgress | null>(
+    null
+  );
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [watchedPercentage, setWatchedPercentage] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   async function fetchCourseEnrollment() {
+    // reset the state
+    setIsLoading(true);
+    setEnrollment(null);
+    setCurrentLesson(null);
+    setCurrentQuizz(null);
+    setQuestions([]);
+
     const courseEnrollment = await wallet.viewMethod({
       contractId: CONTRACTID,
       method: "get_student_enrolled_course",
@@ -59,10 +85,41 @@ export default function LearnCoursePage({
     }
 
     setEnrollment(courseEnrollment);
-    setCurrentLesson(
-      courseEnrollment.modules[moduleOrder - 1].lessons[lessonOrder - 1]
-    );
+    if (quizzParam && quizzParam === "true") {
+      const quizz = courseEnrollment.modules[moduleOrder - 1].quizz;
+      setCurrentQuizz(quizz);
+      if (quizz) {
+        // set questions from quizz but replace all answer.is_correct with false
+        const quests = quizz.quizz.questions.map((question: Question) => {
+          const answers = question.answers.map((answer) => {
+            return { ...answer, is_correct: false };
+          });
+          return { ...question, answers };
+        });
+        setQuestions(quests);
+      }
+    } else {
+      setCurrentLesson(
+        courseEnrollment.modules[moduleOrder - 1].lessons[lessonOrder - 1]
+      );
+    }
   }
+
+  useEffect(() => {
+    const updateWatchedPercentage = () => {
+      if (videoRef.current) {
+        const { currentTime, duration } = videoRef.current;
+        const percentage = (currentTime / duration) * 100;
+        setWatchedPercentage(percentage);
+      }
+    };
+
+    if (!videoRef.current) return;
+
+    const interval = setInterval(updateWatchedPercentage, 1000); // Update every second
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     console.log("LearnCoursePage mounted");
@@ -92,11 +149,31 @@ export default function LearnCoursePage({
   useEffect(() => {
     console.log("Module Order Changed: ", moduleOrder);
     setIsLoading(true);
+    setCurrentLesson(null);
+    setCurrentQuizz(null);
+    setQuestions([]);
+
     if (wallet) {
       if (enrollment) {
-        setCurrentLesson(
-          enrollment.modules[moduleOrder - 1].lessons[lessonOrder - 1]
-        );
+        if (quizzParam && quizzParam === "true") {
+          const quizz = enrollment.modules[moduleOrder - 1].quizz;
+          setCurrentQuizz(quizz);
+          if (quizz) {
+            // set questions from quizz but replace all answer.is_correct with false
+            const quests = quizz.quizz.questions.map((question: Question) => {
+              const answers = question.answers.map((answer) => {
+                return { ...answer, is_correct: false };
+              });
+              return { ...question, answers };
+            });
+            setQuestions(quests);
+          }
+        } else {
+          setCurrentLesson(
+            enrollment.modules[moduleOrder - 1].lessons[lessonOrder - 1]
+          );
+        }
+
         setIsLoading(false);
       } else {
         fetchCourseEnrollment();
@@ -111,6 +188,8 @@ export default function LearnCoursePage({
   const handleLessonOrderChange = (order: number) => {
     const params = new URLSearchParams(searchParams);
     params.set("lesson", order.toString());
+    // remove the quizz param if it exists
+    params.delete("quizz");
     router.replace(`${pathname}?${params.toString()}`);
   };
 
@@ -118,17 +197,45 @@ export default function LearnCoursePage({
     const params = new URLSearchParams(searchParams);
     params.set("module", order.toString());
     params.set("lesson", "1");
+    // remove the quizz param if it exists
+    params.delete("quizz");
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleQuizzSelect = () => {
+    const params = new URLSearchParams(searchParams);
+    params.set("quizz", "true");
     router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleMarkLessonAsCompleted = async () => {
     const loadingToast = toast.loading("Marking Lesson as Completed");
 
+    if (!currentLesson) {
+      toast.update(loadingToast, {
+        render: "No lesson to mark as completed",
+        type: "error",
+        autoClose: 2000,
+        isLoading: false,
+      });
+      return;
+    }
+
+    if (currentLesson.lesson.video_url && watchedPercentage < 100.0) {
+      toast.update(loadingToast, {
+        render: "Please watch the full video to mark as completed",
+        type: "error",
+        autoClose: 2000,
+        isLoading: false,
+      });
+      return;
+    }
+
     const callResult = await wallet.callMethod({
       contractId: CONTRACTID,
       method: "complete_lesson",
       args: {
-        lesson_id: currentLesson?.lesson.id,
+        lesson_id: currentLesson.lesson.id,
       },
     });
 
@@ -158,25 +265,96 @@ export default function LearnCoursePage({
     fetchCourseEnrollment();
   };
 
+  const handleSubmitQuizz = async () => {
+    const loadingToast = toast.loading("Submitting Quizz");
+    console.log("Questions: ", questions);
+
+    // check if all questions have been answered
+    const answeredQuestions = questions.filter((question) => {
+      return question.answers.some((answer) => answer.is_correct);
+    });
+
+    if (answeredQuestions.length < questions.length) {
+      toast.update(loadingToast, {
+        render: "Please answer all questions",
+        type: "error",
+        autoClose: 2000,
+        isLoading: false,
+      });
+      return;
+    }
+
+    await wallet.callMethod({
+      contractId: CONTRACTID,
+      method: "submit_quizz",
+      args: {
+        quizz_id: currentQuizz?.quizz.id,
+        submitted_questions: questions,
+      },
+    });
+
+    toast.update(loadingToast, {
+      render: "Quizz submitted successfully",
+      type: "success",
+      autoClose: 2000,
+      isLoading: false,
+    });
+
+    fetchCourseEnrollment();
+  };
+
   return (
     <div className="md:grid md:grid-cols-12">
       <SplitLayout session={session} />
       <main className="w-full min-h-screen py-5 md:px-5 md:col-span-11 md:py-10 ">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 ">
           <div className="lef-side md:col-span-2">
-            <h1 className="mb-4 text-2xl font-semibold text-purple">
-              {enrollment?.course.title}
-            </h1>
+            {enrollment?.status === "completed" ? (
+              <div className="flex items-center justify-between max-w-[98%] mb-6">
+                <h1 className="capitalize text-2xl font-poppins font-semibold text-purple">
+                  {enrollment?.course.title}
+                </h1>
+
+                <Link
+                  href={`/profile/${signedAccountId}?tab=certificates`}
+                  className="text-aqua-blue font-poppins font-semibold text-xl hover:underline cursor-pointer capitalize"
+                >
+                  view certificates
+                </Link>
+              </div>
+            ) : (
+              <h1 className="mb-4 text-2xl font-semibold text-purple">
+                {enrollment?.course.title}
+              </h1>
+            )}
+
             <div className="">
               {currentLesson?.lesson.video_url ? (
-                <div className="w-full h-[400px] bg-gray-200 flex items-center justify-center">
+                <div className="w-full lg:max-w-[95%] mx-auto  flex flex-col  ">
                   <video
+                    ref={videoRef}
                     className="w-full h-full"
                     src={currentLesson?.lesson.video_url}
                     controls
+                    autoPlay
+                    onEnded={() => {
+                      setWatchedPercentage(100.0);
+                    }}
                   />
+                  {currentLesson?.status === "completed" ? (
+                    <button className="w-full font-poppins font-medium py-2 mt-5 text-white bg-aqua-blue rounded-md">
+                      Lesson Completed
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleMarkLessonAsCompleted}
+                      className="w-full font-poppins font-medium py-2 mt-5 text-white bg-aqua-blue rounded-md"
+                    >
+                      Mark as Completed
+                    </button>
+                  )}
                 </div>
-              ) : (
+              ) : currentLesson?.lesson.article ? (
                 <div className="w-full xl:max-w-[88%] mx-auto overflow-x-hidden overflow-y-auto ">
                   <Markdown
                     children={
@@ -268,7 +446,154 @@ export default function LearnCoursePage({
                     </button>
                   )}
                 </div>
-              )}
+              ) : currentQuizz && !currentQuizz.is_correct ? (
+                <div className="w-full xl:max-w-[88%] mx-auto overflow-x-hidden overflow-y-auto ">
+                  <Card className="font-poppins">
+                    <CardHeader className="w-full flex flex-row justify-between items-center">
+                      <CardTitle className="capitalize text-aqua-blue font-poppins">
+                        {currentQuizz.quizz.title}
+                      </CardTitle>
+                      <Button
+                        onClick={handleSubmitQuizz}
+                        className="capitalize rounded-sm font-poppins font-semibold text-lg bg-aqua-blue hover:bg-aqua-blue"
+                      >
+                        {currentQuizz.try_count > 0
+                          ? "Resubmit Quizz"
+                          : "Submit Quizz"}
+                      </Button>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-6">
+                        {questions.map((question, quesIndex) => {
+                          // check if the question is a multiple choice question by checking if there more than one question.answer.is_correct === true
+                          const isMultipleChoice =
+                            currentQuizz.quizz.questions[
+                              quesIndex
+                            ].answers.filter((answer) => answer.is_correct)
+                              .length > 1;
+                          return (
+                            <div
+                              key={quesIndex}
+                              className="border-2 border-aqua-blue rounded-md p-4 space-y-4"
+                            >
+                              <p className="font-medium font-poppins text-lg">
+                                {question.text}
+                              </p>
+
+                              {isMultipleChoice ? (
+                                <div className="grid grid-cols-2 gap-3">
+                                  {question.answers.map((answer, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex items-center gap-2"
+                                    >
+                                      <Checkbox
+                                        checked={answer.is_correct}
+                                        onClick={() => {
+                                          const newQuestions = [...questions];
+                                          newQuestions[quesIndex].answers[
+                                            index
+                                          ].is_correct =
+                                            !newQuestions[quesIndex].answers[
+                                              index
+                                            ].is_correct;
+                                          setQuestions(newQuestions);
+                                        }}
+                                        className="text-aqua-blue"
+                                      />
+                                      <p className="text-aqua-blue font-poppins font-semibold">
+                                        {answer.text}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+                                <RadioGroup className="grid grid-cols-2 gap-3">
+                                  {question.answers.map((answer, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex items-center gap-2"
+                                    >
+                                      <RadioGroupItem
+                                        checked={answer.is_correct}
+                                        onClick={() => {
+                                          // reset all answers to false before setting the current answer to true
+                                          const newQuestions = [...questions];
+                                          newQuestions[
+                                            quesIndex
+                                          ].answers.forEach(
+                                            (ans) => (ans.is_correct = false)
+                                          );
+                                          newQuestions[quesIndex].answers[
+                                            index
+                                          ].is_correct = true;
+                                          setQuestions(newQuestions);
+                                        }}
+                                        value={answer.text}
+                                      />
+                                      <p className="text-aqua-blue font-poppins font-semibold">
+                                        {answer.text}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </RadioGroup>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : currentQuizz && currentQuizz.is_correct ? (
+                <div className="w-full xl:max-w-[88%] mx-auto overflow-x-hidden overflow-y-auto ">
+                  <Card className="font-poppins">
+                    <CardHeader className="w-full flex flex-row justify-between items-center">
+                      <CardTitle className="capitalize text-aqua-blue font-poppins">
+                        {currentQuizz.quizz.title}
+                      </CardTitle>
+                      <Button className="capitalize rounded-sm font-poppins font-semibold text-lg bg-aqua-blue hover:bg-aqua-blue">
+                        Quizz Completed
+                      </Button>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-6">
+                        {currentQuizz.quizz.questions.map(
+                          (question, quesIndex) => {
+                            return (
+                              <div
+                                key={quesIndex}
+                                className="border-2 border-aqua-blue rounded-md p-4 space-y-4"
+                              >
+                                <p className="font-medium font-poppins text-lg">
+                                  {question.text}
+                                </p>
+
+                                <div className="grid grid-cols-2 gap-3">
+                                  {question.answers.map((answer, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex items-center gap-2"
+                                    >
+                                      <Checkbox
+                                        checked={answer.is_correct}
+                                        className="text-aqua-blue"
+                                      />
+                                      <p className="text-aqua-blue font-poppins font-semibold">
+                                        {answer.text}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          }
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="right-side pr-5">
@@ -323,7 +648,8 @@ export default function LearnCoursePage({
                             >
                               <h2
                                 className={`text-lg ${
-                                  lesson.lesson.order === lessonOrder
+                                  lesson.lesson.order === lessonOrder &&
+                                  !quizzParam
                                     ? "text-aqua-blue font-semibold"
                                     : "text-dimgray-700 font-medium "
                                 }`}
@@ -332,6 +658,23 @@ export default function LearnCoursePage({
                               </h2>
                             </div>
                           ))}
+                          {module.quizz && (
+                            <div
+                              key={module.quizz.id}
+                              className="w-full cursor-pointer flex justify-between items-baseline"
+                            >
+                              <h2
+                                onClick={handleQuizzSelect}
+                                className={`text-lg ${
+                                  quizzParam === "true"
+                                    ? "text-aqua-blue font-semibold"
+                                    : "text-dimgray-700 font-medium "
+                                }`}
+                              >
+                                {module.quizz.quizz.title}
+                              </h2>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
