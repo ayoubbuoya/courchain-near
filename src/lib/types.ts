@@ -98,7 +98,6 @@ export interface Quizz {
 }
 
 export interface Question {
-
   text: string;
   answers: Answer[];
 }
@@ -178,6 +177,7 @@ export interface FullModuleProgress {
   module: FullModule;
   student: User;
   lessons: FullLessonProgress[];
+  quizz: FullQuizzProgress | null;
   status: string;
   is_enrolled: boolean;
   progress: number;
@@ -190,5 +190,17 @@ export interface FullLessonProgress {
   student: User;
   status: string;
   is_enrolled: boolean;
+  completed_at: number | null;
+}
+
+export interface FullQuizzProgress {
+  id: number;
+  quizz: Quizz;
+  student: User;
+  status: string;
+  try_count: number;
+  is_enrolled: boolean;
+  is_submitted: boolean;
+  is_correct: boolean;
   completed_at: number | null;
 }
