@@ -18,7 +18,7 @@ export default function Sidebar({
       id="default-sidebar"
       className={`bg-mobile-sidebar-gradient md:bg-sidebar-gradient fixed top-0 left-0 z-40 w-[28%] sm:w-[15%] h-screen transition-transform bg-white border-r border-gray-200 md:translate-x-0 ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } md:static md:w-full md:row-span-2 h-full md:h-full overflow-y-auto`}
+      } md:static md:w-full md:row-span-2 h-full   md:h-full overflow-y-auto`}
     >
       <div className="px-1 ">
         <div className="flex justify-end my-2 md:hidden ">

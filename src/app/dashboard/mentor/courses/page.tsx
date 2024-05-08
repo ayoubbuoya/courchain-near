@@ -88,42 +88,44 @@ export default function MyCreatedCourses() {
             </p>
           </div>
 
-          <div className="grid gap-4 mt-5 xl:grid-cols-3">
-            {courses ? (
-              courses.map((course) => (
-                <Link
-                  href={`/dashboard/mentor/course/${course.id}`}
-                  key={course.id}
-                  className="cursor-pointer overflow-hidden bg-white shadow-md custom-linear-border rounded-2xl"
-                >
-                  <div className="flex flex-col items-start justify-between gap-3 p-4 overflow-hidden rounded-2xl">
-                    <div className="flex items-center space-x-4 overflow-hidden w-full">
-                      <img
-                        src={
-                          course.picture || "/idea lamp over an open book.svg"
-                        }
-                        alt={course.title}
-                        className="w-16 h-16 rounded-lg"
-                      />
-                      <div className="w-full overflow-hidden">
-                        <h2 className="text-lg font-semibold truncate text-aqua-blue">
-                          {course.title}
-                        </h2>
-                        <p className="text-sm font-normal text-gray-500">
-                          {course.category}
-                        </p>
+          <div className="min-h-[65vh]">
+            <div className="grid gap-4 mt-5 xl:grid-cols-3  ">
+              {courses ? (
+                courses.map((course) => (
+                  <Link
+                    href={`/dashboard/mentor/course/${course.id}`}
+                    key={course.id}
+                    className="cursor-pointer overflow-hidden bg-white shadow-md custom-linear-border rounded-2xl"
+                  >
+                    <div className="flex flex-col items-start justify-between gap-3 p-4 overflow-hidden rounded-2xl">
+                      <div className="flex items-center space-x-4 overflow-hidden w-full">
+                        <img
+                          src={
+                            course.picture || "/idea lamp over an open book.svg"
+                          }
+                          alt={course.title}
+                          className="w-16 h-16 rounded-lg"
+                        />
+                        <div className="w-full overflow-hidden">
+                          <h2 className="text-lg font-semibold truncate text-aqua-blue">
+                            {course.title}
+                          </h2>
+                          <p className="text-sm font-normal text-gray-500">
+                            {course.category}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-md">
-                <p className="text-lg font-semibold text-gray-800">
-                  You have not enrolled in any course yet.
-                </p>
-              </div>
-            )}
+                  </Link>
+                ))
+              ) : (
+                <div className="flex items-center justify-center p-4 bg-white rounded-lg shadow-md">
+                  <p className="text-lg font-semibold text-gray-800">
+                    You have not enrolled in any course yet.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center justify-center my-4">

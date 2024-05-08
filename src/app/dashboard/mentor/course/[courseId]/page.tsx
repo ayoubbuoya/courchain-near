@@ -604,9 +604,9 @@ export default function MentorCoursePage({
     <div className="md:grid md:grid-cols-12">
       <SplitLayout session={session} />
 
-      <main className="w-full min-h-screen py-5 md:px-5 md:col-span-11 md:py-10 ">
+      <main className="w-full  py-5 md:px-5 md:col-span-11 md:py-10 ">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 ">
-          <div className="lef-side md:col-span-2">
+          <div className="lef-side md:col-span-2 min-h-[77.8vh]">
             {course && (
               <div className="flex items-start justify-between pr-14">
                 <h1 className="mb-4 text-2xl font-semibold text-purple">
@@ -830,7 +830,7 @@ export default function MentorCoursePage({
                 </div>
 
                 {currentLesson && addContentAction === "video" && (
-                  <div className="w-full h-full mt-8">
+                  <div className="w-full h-[70vh] mt-8">
                     <div className="w-full custom-linear-border min-h-[70%] rounded-2xl flex items-center justify-center">
                       <div className="w-full h-full flex items-center justify-center  p-1 rounded-2xl">
                         <input
@@ -896,7 +896,7 @@ export default function MentorCoursePage({
                 )}
 
                 {currentLesson && addContentAction === "ai" && (
-                  <div className="w-full mt-8 h-full">
+                  <div className="w-full mt-8 h-[70vh]">
                     {isAISectionLoading ? (
                       <div className="w-full min-h-[60%] max-h-full flex justify-center items-center mt-10 ">
                         <div className="w-20 h-20 border-4 border-t-aqua-blue border-r-aqua-blue border-b-purple border-l-purple rounded-full animate-spin"></div>
@@ -932,7 +932,7 @@ export default function MentorCoursePage({
                 )}
 
                 {currentLesson && addContentAction === "article" && (
-                  <div className="w-full mt-8 h-full">
+                  <div className="w-full mt-8 h-[70vh]">
                     <div className="custom-linear-border w-full h-[75%] rounded-2xl">
                       <div className="p-3 pt-0 h-[75%]  ">
                         <div className="border-b-2 py-3.5 border-aqua-blue  ">
@@ -974,7 +974,7 @@ export default function MentorCoursePage({
                 />
               </div>
             ) : currentQuizz && currentQuizz.questions.length > 0 ? (
-              <div className="w-full h-full mt-8">
+              <div className="w-full min-h-[70vh] mt-8">
                 <ShowMentorQuizz currentQuizz={currentQuizz} />
               </div>
             ) : null}

@@ -146,7 +146,7 @@ export default function AddQuizz({
   };
 
   return (
-    <div className="w-full h-full mt-8">
+    <div className="w-full min-h-[70vh] mt-8">
       {currentQuizz &&  (
         <div className="w-full">
           <div className="col-span-2 space-y-6">
