@@ -87,15 +87,6 @@ export default function RecentCreatedCourses({
                         </div>
                       </div>
                     </div>
-                    <div className="min-w-[90%] md:w-full  mx-auto  bg-gray-200 rounded-full h-1 ">
-                      <div
-                        className={`bg-aqua-blue h-1 rounded-full ${
-                          course.progress && course.progress > 0
-                            ? `w-[${course.progress}%]`
-                            : "w-2"
-                        } `}
-                      ></div>
-                    </div>
                   </div>
                 </div>
               </div>
