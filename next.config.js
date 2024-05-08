@@ -9,6 +9,12 @@ const nextConfig = {
         port: "",
         pathname: "/a/*",
       },
+      {
+        protocol: "https",
+        hostname: "orange-causal-puma-236.mypinata.cloud",
+        port: "",
+        pathname: "/ipfs/*",
+      },
     ],
   },
 };
