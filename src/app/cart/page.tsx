@@ -231,7 +231,7 @@ export default function CartPage() {
         </main>
       ) : (
         <main className="flex items-center justify-center min-h-screen">
-          <div className="container mx-auto xl:w-[80%] shadow-custom-green custom-linear-border rounded-2xl backdrop-blur-[3.13rem]">
+          <div className="mx-auto xl:w-[80%] shadow-custom-green custom-linear-border rounded-2xl backdrop-blur-[3.13rem]">
             <div className="md:p-20 xl:py-5 ">
               <div className="flex flex-col items-center ">
                 <h4 className="text-aqua-blue uppercase  font-poppins text-2xl leading-[2.39rem] font-medium text-left ">
