@@ -86,24 +86,26 @@ export interface FullModule {
   created_at: number;
   updated_at: number;
   lessons: FullLesson[];
-  quizz: Quizz;
+  quizz: Quizz | null;
 }
 
 export interface Quizz {
-  id: number;
+  id?: number;
   title: string;
   questions: Question[];
-  created_at: number;
-  updated_at: number;
+  created_at?: number;
+  updated_at?: number;
 }
 
 export interface Question {
-  id: number;
-  question: string;
-  options: string[];
-  answer: string;
-}
 
+  text: string;
+  answers: Answer[];
+}
+export interface Answer {
+  text: string;
+  is_correct: boolean;
+}
 
 export interface FullCourse {
   id: number;

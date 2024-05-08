@@ -30,19 +30,22 @@ export default function RightSide({
   lessonOrder,
   moduleOrder,
   currentLesson,
+  quizzParam,
   setCurrentLesson,
   handleLessonOrderChange,
   handleModuleOrderChange,
+  handleQuizzSelect,
 }: {
   course: FullCourse | null;
   setCourse: (course: FullCourse) => void;
   lessonOrder: number;
   moduleOrder: number;
-
+  quizzParam: string | null;
   currentLesson: FullLesson | null;
   setCurrentLesson: (lesson: FullLesson) => void;
   handleLessonOrderChange: (order: number) => void;
   handleModuleOrderChange: (order: number) => void;
+  handleQuizzSelect: () => void;
 }) {
   const { wallet } = useWalletStore();
   const [isAddModuleOpen, setIsAddModuleOpen] = useState<boolean>(false);
@@ -437,7 +440,7 @@ export default function RightSide({
                             handleLessonOrderChange(lesson.order);
                           }}
                           className={`text-lg ${
-                            lesson.order === lessonOrder
+                            lesson.order === lessonOrder && !quizzParam
                               ? "text-aqua-blue font-semibold"
                               : "text-dimgray-700 font-medium "
                           }`}
@@ -458,11 +461,12 @@ export default function RightSide({
                     {module.quizz && (
                       <div className="group w-full cursor-pointer flex justify-between items-center">
                         <h2
-                          onClick={() => {
-                            // goToEditLesson(module.order, lesson.order);
-                            setIsEditQuizzOpen(true);
-                          }}
-                          className={`text-lg text-dimgray-700 font-medium `}
+                          onClick={handleQuizzSelect}
+                          className={`text-lg  ${
+                            quizzParam === "true"
+                              ? "text-aqua-blue font-semibold"
+                              : "text-dimgray-700 font-medium"
+                          } `}
                         >
                           {module.quizz.title}
                         </h2>

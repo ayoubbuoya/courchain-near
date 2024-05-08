@@ -5,7 +5,7 @@ import EditCourseDetails from "@/components/dashboard/mentor/editCourseDetails";
 import SplitLayout from "@/components/dashboard/splitLayout";
 import Loading from "@/components/loading";
 import { CONTRACTID } from "@/lib/config";
-import { FullCourse, FullLesson } from "@/lib/types";
+import { FullCourse, FullLesson, Quizz } from "@/lib/types";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,8 @@ import Markdown from "react-markdown";
 import { toast } from "react-toastify";
 import VideoPlayer from "@/components/videoPlayer";
 import RightSide from "./right-side";
+import AddQuizz from "./add-quizz";
+import ShowMentorQuizz from "./show-mentor-quizz";
 
 export default function MentorCoursePage({
   params,
@@ -33,6 +35,7 @@ export default function MentorCoursePage({
   const pathname = usePathname();
   const moduleOrder = Number(searchParams.get("module")) || 1;
   const lessonOrder = Number(searchParams.get("lesson")) || 1;
+  const quizzParam = searchParams.get("quizz") || null;
   const [currentLesson, setCurrentLesson] = useState<FullLesson | null>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const [addContentAction, setAddContentAction] = useState<
@@ -43,7 +46,12 @@ export default function MentorCoursePage({
   const [aiGeneratedContent, setAIGeneratedContent] = useState<string | null>(
     null
   );
+  const [currentQuizz, setCurrentQuizz] = useState<Quizz | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [quizz, setQuizz] = useState<Quizz | null>(null);
+  const [quizzAddAction, setQuizzAddAction] = useState<"add" | "ai" | null>(
+    null
+  );
 
   async function fetchCourseDetails() {
     // reset all states
@@ -61,9 +69,13 @@ export default function MentorCoursePage({
     console.log("Course Details: ", fetchedCourseDetails);
     setCourse(fetchedCourseDetails);
     if (fetchedCourseDetails.modules.length > 0) {
-      setCurrentLesson(
-        fetchedCourseDetails.modules[moduleOrder - 1].lessons[lessonOrder - 1]
-      );
+      if (quizzParam && quizzParam === "true") {
+        setCurrentQuizz(fetchedCourseDetails.modules[moduleOrder - 1].quizz);
+      } else {
+        setCurrentLesson(
+          fetchedCourseDetails.modules[moduleOrder - 1].lessons[lessonOrder - 1]
+        );
+      }
     }
     setIsLoading(false);
   }
@@ -107,9 +119,15 @@ export default function MentorCoursePage({
     setUploadedVideo(null);
     setAIGeneratedContent(null);
     setIsEditing(false);
+    setCurrentQuizz(null);
 
     if (wallet) {
       if (course) {
+        if (quizzParam && quizzParam === "true") {
+          setCurrentQuizz(course.modules[moduleOrder - 1].quizz);
+          setIsLoading(false);
+          return;
+        }
         setCurrentLesson(
           course.modules[moduleOrder - 1].lessons[lessonOrder - 1]
         );
@@ -122,6 +140,8 @@ export default function MentorCoursePage({
 
   const handleLessonOrderChange = (order: number) => {
     const params = new URLSearchParams(searchParams);
+    // remove the quizz param if it exists
+    params.delete("quizz");
     params.set("lesson", order.toString());
     router.replace(`${pathname}?${params.toString()}`);
   };
@@ -130,6 +150,14 @@ export default function MentorCoursePage({
     const params = new URLSearchParams(searchParams);
     params.set("module", order.toString());
     params.set("lesson", "1");
+    // remove the quizz param if it exists
+    params.delete("quizz");
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleQuizzSelect = () => {
+    const params = new URLSearchParams(searchParams);
+    params.set("quizz", "true");
     router.replace(`${pathname}?${params.toString()}`);
   };
 
@@ -758,7 +786,7 @@ export default function MentorCoursePage({
                   </>
                 )}
               </div>
-            ) : (
+            ) : !currentQuizz ? (
               // choose to upload video or article
               <div className="w-full h-full xl:max-w-[93%] mx-auto ">
                 <p className="text-schemes-secondary font-poppins font-normal text-base">
@@ -801,7 +829,7 @@ export default function MentorCoursePage({
                   )}
                 </div>
 
-                {addContentAction === "video" && (
+                {currentLesson && addContentAction === "video" && (
                   <div className="w-full h-full mt-8">
                     <div className="w-full custom-linear-border min-h-[70%] rounded-2xl flex items-center justify-center">
                       <div className="w-full h-full flex items-center justify-center  p-1 rounded-2xl">
@@ -867,7 +895,7 @@ export default function MentorCoursePage({
                   </div>
                 )}
 
-                {addContentAction === "ai" && (
+                {currentLesson && addContentAction === "ai" && (
                   <div className="w-full mt-8 h-full">
                     {isAISectionLoading ? (
                       <div className="w-full min-h-[60%] max-h-full flex justify-center items-center mt-10 ">
@@ -935,7 +963,21 @@ export default function MentorCoursePage({
                   </div>
                 )}
               </div>
-            )}
+            ) : currentQuizz && currentQuizz.questions.length === 0 ? (
+              <div className="w-full h-full xl:max-w-[93%] mx-auto">
+                <p className="text-schemes-secondary font-poppins font-normal text-base">
+                  You can write a quizz for this lesson
+                </p>
+                <AddQuizz
+                  currentQuizz={currentQuizz}
+                  quizzAddAction={quizzAddAction}
+                />
+              </div>
+            ) : currentQuizz && currentQuizz.questions.length > 0 ? (
+              <div className="w-full h-full mt-8">
+                <ShowMentorQuizz currentQuizz={currentQuizz} />
+              </div>
+            ) : null}
           </div>
           <RightSide
             course={course}
@@ -943,6 +985,8 @@ export default function MentorCoursePage({
             moduleOrder={moduleOrder}
             lessonOrder={lessonOrder}
             currentLesson={currentLesson}
+            quizzParam={quizzParam}
+            handleQuizzSelect={handleQuizzSelect}
             setCurrentLesson={setCurrentLesson}
             handleModuleOrderChange={handleModuleOrderChange}
             handleLessonOrderChange={handleLessonOrderChange}
