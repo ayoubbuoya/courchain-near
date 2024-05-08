@@ -38,16 +38,21 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     if (!wallet) return;
-
-    if (!signedAccountId) {
-      toast.error("Connect to your NEAR Wallet", {
-        autoClose: 1000,
-      });
+    
+    if (!session) {
+      router.push("/login");
       return;
     }
 
     if (session && !session.user) {
       router.push("/login");
+      return;
+    }
+
+    if (!signedAccountId) {
+      toast.error("Connect to your NEAR Wallet", {
+        autoClose: 1000,
+      });
       return;
     }
 
@@ -63,7 +68,7 @@ export default function StudentDashboard() {
     if (session && wallet && signedAccountId) {
       fetchUserEnrolledCourses();
     }
-  }, [wallet, signedAccountId, session]);
+  }, [wallet, signedAccountId]);
 
   if (isLoading) return <Loading />;
   return (

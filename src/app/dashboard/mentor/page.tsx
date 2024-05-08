@@ -46,6 +46,10 @@ export default function MentorDashboard() {
   }
 
   useEffect(() => {
+    if (!session) {
+      router.push("/login");
+    }
+    
     if (session && !session.user) {
       router.push("/login");
       return;
@@ -73,7 +77,7 @@ export default function MentorDashboard() {
     if (session && wallet && signedAccountId) {
       fetchCreatedCourses();
     }
-  }, [wallet, signedAccountId, session]);
+  }, [wallet, signedAccountId]);
 
   const handlePublishCourse = async (courseId: number) => {
     const loadingToast = toast.loading("Publishing Course...");
@@ -137,7 +141,7 @@ export default function MentorDashboard() {
   return (
     <div className="md:grid md:grid-cols-12">
       <SplitLayout session={session} />
-      <main className="container min-h-[77.5vh]  pb-5 mx-auto md:px-5 md:col-span-11 md:pb-10">
+      <main className="container min-h-[77.5vh] pb-5 mx-auto md:px-5 md:col-span-11 md:pb-10">
         <div className="mt-4 md:mt-0 px-3 w-full md:px-0 md:max-w-[39%]">
           <h1 className="mb-1 text-2xl font-normal uppercase text-aqua-blue font-poppins md:text-3xl ">
             Create New Course
