@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useCoursesStore } from "@/stores/courses";
+import { fromYoctoToNear } from "@/lib/utils";
 
 export default function CoursePage({
   params,
@@ -250,7 +251,7 @@ export default function CoursePage({
 
                   <div className="flex flex-col items-center justify-center gap-1 md:gap-2">
                     <h3 className="font-poppins text-aqua-blue font-semibold text-center text-2xl md:text-3xl xl:text-4xl tracking-[-0.2%]">
-                      {course.price} NEAR
+                      {fromYoctoToNear(course.price)} NEAR
                     </h3>
                     <span className="text-schemes-secondary text-center font-poppins font-medium text-base md:text-xl  ">
                       Pay With NEAR
