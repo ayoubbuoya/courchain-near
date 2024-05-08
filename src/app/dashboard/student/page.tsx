@@ -39,11 +39,6 @@ export default function StudentDashboard() {
   useEffect(() => {
     if (!wallet) return;
 
-    if (!session) {
-      router.push("/login");
-      return;
-    }
-
     if (session && !session.user) {
       router.push("/login");
       return;
@@ -65,7 +60,7 @@ export default function StudentDashboard() {
       return;
     }
 
-    if (session && wallet && signedAccountId) {
+    if (wallet && signedAccountId) {
       fetchUserEnrolledCourses();
     }
   }, [wallet, signedAccountId]);
