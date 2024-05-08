@@ -38,7 +38,7 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     if (!wallet) return;
-    
+
     if (!session) {
       router.push("/login");
       return;
@@ -112,9 +112,6 @@ export default function StudentDashboard() {
                           {course.category}
                         </p>
                       </div>
-                    </div>
-                    <div className="w-[80%] mx-auto bg-gray-100 rounded-full h-1">
-                      <div className="bg-aqua-blue h-1 w-[50%] rounded-full "></div>
                     </div>
                   </div>
                 </Link>
