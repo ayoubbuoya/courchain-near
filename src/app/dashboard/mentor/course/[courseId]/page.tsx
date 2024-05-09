@@ -797,7 +797,7 @@ export default function MentorCoursePage({
                 <div className="w-full flex items-center justify-evenly mt-8">
                   <button
                     onClick={() => setAddContentAction("video")}
-                    className={`apitalize  rounded-full px-5 py-3  border-[1px]  border-solid  font-poppins font-normal text-[0.88rem] leading-5 text-center duration-500 ${
+                    className={`capitalize  rounded-full px-5 py-3  border-[1px]  border-solid  font-poppins font-normal text-[0.88rem] leading-5 text-center duration-500 ${
                       addContentAction === "video"
                         ? "bg-aqua-blue border-white text-white"
                         : "bg-white text-aqua-blue border-aqua-blue"
@@ -898,13 +898,13 @@ export default function MentorCoursePage({
                 {currentLesson && addContentAction === "ai" && (
                   <div className="w-full mt-8 h-[70vh]">
                     {isAISectionLoading ? (
-                      <div className="w-full min-h-[60%] max-h-full flex justify-center items-center mt-10 ">
+                      <div className="w-full  h-full flex justify-center items-center mt-10 ">
                         <div className="w-20 h-20 border-4 border-t-aqua-blue border-r-aqua-blue border-b-purple border-l-purple rounded-full animate-spin"></div>
                       </div>
                     ) : (
                       <>
-                        <div className="custom-linear-border w-full min-h-[40%] h-[65%] max-h-[75%] rounded-2xl">
-                          <div className="p-3 pt-0 h-[88%]  ">
+                        <div className="custom-linear-border w-full h-[75%]  rounded-2xl">
+                          <div className="p-3 pt-0 h-[80%]  ">
                             <div className="border-b-2 py-3.5 border-aqua-blue  ">
                               <h2 className="text-purple font-poppins font-medium text-lg text-center">
                                 {currentLesson?.title}
