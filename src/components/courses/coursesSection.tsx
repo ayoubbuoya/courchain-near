@@ -22,7 +22,6 @@ export default function CoursesSection({
   const start = (currentPage - 1) * perPage;
   const end = start + perPage;
   const coursesToDisplay = courses?.slice(start, end);
-  console.log(courses?.length);
 
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams);

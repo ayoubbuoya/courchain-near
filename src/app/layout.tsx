@@ -36,9 +36,7 @@ export default function RootLayout({
     const courses = await wallet.viewMethod({
       contractId: CONTRACTID,
       method: "get_courses",
-      args: {},
     });
-    console.log("Courses Fetched From Layout : ", courses);
     setAllCourses(courses);
     setIsLoading(false);
   }
@@ -46,14 +44,12 @@ export default function RootLayout({
   async function getCurrentSession() {
     setIsLoading(true);
     const session = await getSession();
-    console.log("Session from layout : ", session);
     setSession(session);
     setIsLoading(false);
     return session;
   }
 
   async function checkWalletAndServerUserDetails() {
-    console.info("Checking user details in wallet and session...");
     if (!wallet) {
       return;
     }
@@ -121,8 +117,7 @@ export default function RootLayout({
           autoClose: 5000,
         });
       } else {
-        console.info("User details are same in wallet and session.");
-        console.log("User from wallet : ", userWall);
+        console.log("User from Blockchain : ", userWall);
         setCurrentUser(userWall);
       }
     }
@@ -144,7 +139,6 @@ export default function RootLayout({
       return;
     }
 
-    console.log("fetching courses from layout");
     fetchCourses();
 
     if (!signedAccountId) {
