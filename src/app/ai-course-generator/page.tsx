@@ -104,7 +104,7 @@ export default function Page() {
           className="flex flex-col items-center text-center md:text-left "
         >
           <h1 className="text-lg font-normal text-center uppercase font-capriola md:text-left xl:text-3xl text-aqua-blue">
-            Générateur de cours AI
+            AI Course Generator
           </h1>
           <div className="flex items-start sm:items-center gap-3 my-1 max-w-[85%] ">
             <Image
@@ -115,8 +115,8 @@ export default function Page() {
               alt=""
             />
             <p className="text-xs font-medium md:font-normal text-left font-poppins text-dimgray-100 md:text-lg">
-              Tapez le sujet de votre cours et nous vous fournirons un plan de
-              cours complet
+              Type in your course topic and we'll provide you with a complete
+              course outline.
             </p>
           </div>
           <div className="w-[85%] xl:w-[75%] mt-4 rounded-full custom-linear-border md:custom-linear-border ">
@@ -140,7 +140,7 @@ export default function Page() {
               {isLoadingModules && (
                 <div className="w-5 h-5 border-2 border-t-aqua-blue border-r-aqua-blue border-b-purple border-l-purple rounded-full animate-spin"></div>
               )}
-              Générer cours
+              Generate Course
             </button>
           </div>
         </form>
@@ -148,7 +148,7 @@ export default function Page() {
         {isLoadingModules && (
           <>
             <div className="flex justify-center items-center my-4  font-poppins font-normal gap-1 xl:gap-2 xl:text-lg text-dimgray-300 ">
-              This can takes up to 3 min
+              This can takes up to 4 min
               <span className="tracking-[0.2rem]">...</span>
             </div>
             <div className="h-full w-full flex justify-center items-center">
@@ -160,7 +160,7 @@ export default function Page() {
         {modules.length > 0 && (
           <div className="px-2 md:px-5">
             <h2 className="mt-3 mb-10 md:mt-8 md:mb-16 text-lg font-normal text-left uppercase font-capriola xl:text-2xl text-aqua-blue">
-              Choisissez une module
+              Choose a module
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
               {modules.map(
