@@ -33,11 +33,10 @@ export default function AddedValuesSection() {
               <img src="/messages--24--outline.svg" alt="" />
             </div>
             <h5 className="text-xl font-semibold text-center md:text-2xl md:font-bold text-dimgray-500 font-poppins">
-              Measure your performance
+              Access to industry professionals
             </h5>
             <p className="px-8 text-sm font-medium md:text-base text-dimgray-300 font-poppins ">
-              Stay connected with your team and make quick decisions wherever
-              you are.
+              Benefit from their practical experience and expertise.
             </p>
           </div>
           <div className="hidden row-span-2 md:block">
@@ -60,11 +59,11 @@ export default function AddedValuesSection() {
               />
             </div>
             <h5 className="text-xl font-semibold text-center md:text-2xl md:font-bold text-dimgray-500 font-poppins">
-              Custom analytics
+              Constant Content Update
             </h5>
             <p className="px-8 text-sm font-medium md:text-base text-dimgray-300 font-poppins ">
-              Get a complete sales dashboard in the cloud. See activity, revenue
-              and social metrics all in one place.
+              Stay up to date with the latest advances thanks to regular course
+              updates.
             </p>
           </div>
           <div className="flex flex-col items-center justify-between gap-2">
@@ -72,11 +71,11 @@ export default function AddedValuesSection() {
               <img src="/edit--24--outline.svg" alt="" />
             </div>
             <h5 className="text-xl font-semibold text-center md:text-2xl md:font-bold text-dimgray-500 font-poppins">
-              Build your website
+              Constant Content Update
             </h5>
             <p className="px-8 text-sm font-medium md:text-base text-dimgray-300 font-poppins ">
-              A tool that lets you build a dream website even if you know
-              nothing about web design or programming.
+              Stay up to date with the latest advances thanks to regular course
+              updates.
             </p>
           </div>
           <div className="flex flex-col items-center justify-between gap-2">
@@ -84,11 +83,11 @@ export default function AddedValuesSection() {
               <img src="/grid--24--outline.svg" alt="" />
             </div>
             <h5 className="text-xl font-semibold text-center md:text-2xl md:font-bold text-dimgray-500 font-poppins">
-              Connect multiple apps
+              Recognized certification
             </h5>
             <p className="px-8 text-sm font-medium md:text-base text-dimgray-300 font-poppins ">
-              The first business platform to bring together all of your products
-              from one place.
+              industry-recognized certifications that boost your credibility and
+              competitiveness in the job market.
             </p>
           </div>
         </div>
