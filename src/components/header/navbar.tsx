@@ -26,14 +26,14 @@ export default function Navbar({ session }: { session: Session | null }) {
         </Link>
       </li>
 
-      <li className="pb-2 md:pb-0">
+      {/* <li className="pb-2 md:pb-0">
         <Link
           className={pathname === "/about" ? "text-purple" : ""}
           href="/about"
         >
           about
         </Link>
-      </li>
+      </li> */}
 
       {/* {session?.isMentor && (
         <li className="pb-2 md:pb-0">
