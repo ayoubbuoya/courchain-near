@@ -127,7 +127,7 @@ export default function Page() {
                 name="topic"
                 type="search"
                 className="w-full py-3 pl-1 font-poppins font-normal overflow-auto text-sm text-left rounded-full outline-none text-dimgray-100 bg-white-900 "
-                placeholder="Tapez le sujet de votre cours"
+                placeholder="Type your course subject"
               />
             </div>
           </div>
