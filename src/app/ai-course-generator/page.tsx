@@ -40,56 +40,67 @@ export default function Page() {
         topic,
       })
     );
-
     // post request to the /course/genrate
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_AI_SERVER_API}/course/generate/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          mentorId: signedAccountId,
-          topic,
-        }),
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_AI_SERVER_API}/course/generate/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            mentorId: signedAccountId,
+            topic,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setIsLoadingModules(false);
+        toast.update(loadingToast, {
+          render: "Course Generated",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+          transition: Bounce,
+        });
+        const {
+          course,
+          courseId,
+          modules: modulesChains,
+        } = await response.json();
+        // console.log("ChatHistory: ", chatHistory);
+        console.log("Course: ", course);
+        console.log("Modules: ", modulesChains);
+
+        setModules(modulesChains);
+        setCourseId(courseId);
+        // setModulesIds(modulesIds);
+        console.log("Course Generated: ", course);
+      } else {
+        setIsLoadingModules(false);
+        console.error(response);
+        toast.update(loadingToast, {
+          render: response.statusText || "An error occurred",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+          transition: Bounce,
+        });
+        toast.error(await response.text(), {
+          autoClose: 2200,
+        });
       }
-    );
-
-    if (response.ok) {
+    } catch (error) {
+      console.error(error);
       setIsLoadingModules(false);
       toast.update(loadingToast, {
-        render: "Course Generated",
-        type: "success",
-        isLoading: false,
-        autoClose: 2000,
-        transition: Bounce,
-      });
-      const {
-        course,
-        courseId,
-        modules: modulesChains,
-      } = await response.json();
-      // console.log("ChatHistory: ", chatHistory);
-      console.log("Course: ", course);
-      console.log("Modules: ", modulesChains);
-
-      setModules(modulesChains);
-      setCourseId(courseId);
-      // setModulesIds(modulesIds);
-      console.log("Course Generated: ", course);
-    } else {
-      setIsLoadingModules(false);
-      console.error(response);
-      toast.update(loadingToast, {
-        render: response.statusText || "An error occurred",
+        render: "An error occurred",
         type: "error",
         isLoading: false,
         autoClose: 2000,
         transition: Bounce,
-      });
-      toast.error(await response.text(), {
-        autoClose: 2200,
       });
     }
   }
