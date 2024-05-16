@@ -283,7 +283,7 @@ export default function CoursePage({
             update={update}
             handleAddCourseToCart={handleAddCourseToCart}
           />
-          <div className="mx-auto w-[98%] md:w-[85%]">
+          {/* <div className="mx-auto w-[98%] md:w-[85%]">
             <h1 className="text-xl md:text-[2.5rem] md:leading-10 font-normal uppercase text-purple font-capriola my-8 ">
               Voir ce que pensent les internautes / ux
             </h1>
@@ -378,7 +378,7 @@ export default function CoursePage({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </main>
       ) : (
         <div className="min-h-screen container mx-auto py-10 flex justify-center items-center">
