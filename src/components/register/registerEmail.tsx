@@ -18,11 +18,11 @@ export default function RegisterEmail() {
 
   const handleCreateAccount = () => {
     if (email === "") {
-      toast.error("Veuillez entrer votre email");
+      toast.error("Please enter an email address");
       return;
     }
     if (!isValidEmail) {
-      toast.error("Veuillez entrer un email valide");
+      toast.error("Please enter a valid email address");
       return;
     }
 
@@ -33,10 +33,10 @@ export default function RegisterEmail() {
   return (
     <>
       <h1 className="font-poppins font-semibold md:text-[1.568rem] md:leading-[2.38rem] text-lg mt-8 text-aqua-blue">
-        Une étape pour créer votre compte
+        One step to create your account
       </h1>
       <p className="px-1 py-1 text-sm font-normal md:px-0 md:py-2 md:text-base text-dimgray-200 font-poppins ">
-        {"Commençons une aventure d’apprentissage"}
+        Let's begin a learning adventure
       </p>
       <div className=" mt-2 md:mt-8 w-[80%] md:w-[55%] mx-auto">
         <div className="flex flex-col items-start justify-start gap-2">
@@ -64,7 +64,7 @@ export default function RegisterEmail() {
             onClick={handleCreateAccount}
             className="w-full py-[0.6rem] rounded-full mx-auto text-white font-poppins font-normal text-base bg-aqua-blue border-white border-2  "
           >
-            Créer un compte
+            Create an account
           </button>
         </div>
       </div>
@@ -72,10 +72,10 @@ export default function RegisterEmail() {
       <div className="w-[85%] md:w-[60%] mx-auto my-5 flex justify-center items-center gap-3 md:gap-1 ">
         <hr className="border-t-[1px] md:border-t-2 border-aqua-blue w-[25%] md:w-7" />
         <p className="hidden md:block text-xs font-normal text-center font-poppins text-dimgray-400 ">
-          ou bien avec le mail et le mot de passe
+          or with e-mail and password
         </p>
         <p className="md:hidden capitalize text-sm font-normal text-center font-poppins text-dimgray-400 ">
-          ou bien
+          or with e-mail and password
         </p>
         <hr className="border-t-[1px] md:border-t-2 border-aqua-blue w-[25%] md:w-7 " />
       </div>
@@ -86,12 +86,12 @@ export default function RegisterEmail() {
 
       <div className="flex items-center justify-center py-4 mb-3">
         <div className="flex flex-col items-center gap-1 text-base font-normal leading-4 text-center text-dimgray-200 font-poppins">
-          <span>{"Vous avez déjà un compte ?"}</span>
+          <span>Already have an account?</span>
           <Link
             href={"/login"}
             className="text-base font-normal underline decoration-aqua-blue decoration-1 text-aqua-blue "
           >
-            Connectez-vous
+            Log In
           </Link>
         </div>
       </div>

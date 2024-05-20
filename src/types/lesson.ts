@@ -1,13 +1,13 @@
 interface Lesson {
-  id: string;
+  id: number;
   title: string;
-  description?: string;
-  video?: string;
-  article?: string;
+  description: string;
+  video_url: string;
+  article: string;
   order: number;
-  withAI: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  with_ai: boolean;
+  module_id: number;
+  created_at: number;
+  updated_at: number;
 }
-
 export default Lesson;

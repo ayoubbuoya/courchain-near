@@ -2,7 +2,7 @@ import { Circle, LucideIcon } from "lucide-react";
 
 const contractPerNetwork = {
   mainnet: "hello.near-examples.near",
-  testnet: "test-pfe-2.testnet",
+  testnet: "courchain-pfe-1.testnet",
 };
 
 export type Category = {

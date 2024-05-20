@@ -326,8 +326,8 @@ export default function MentorCoursePage({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            course_id: courseId,
-            lesson_id: currentLesson.id,
+            course_id: courseId.toString(),
+            lesson_id: currentLesson.id.toString(),
             mentor_id: signedAccountId,
           }),
         }
@@ -369,6 +369,11 @@ export default function MentorCoursePage({
   };
 
   const handleSaveAIContent = async () => {
+    if (!wallet) {
+      toast.error("No Wallet Connected");
+      return;
+    }
+
     const loadingToast = toast.loading("Saving AI Content to lesson");
 
     if (!currentLesson) {
@@ -391,52 +396,41 @@ export default function MentorCoursePage({
       return;
     }
 
-    try {
-      const response = await wallet.callMethod({
-        contractId: CONTRACTID,
-        method: "add_article_to_lesson",
-        args: {
-          lesson_id: currentLesson.id,
-          article: aiGeneratedContent,
-        },
-      });
+    const response = await wallet.callMethod({
+      contractId: CONTRACTID,
+      method: "add_article_to_lesson",
+      args: {
+        lesson_id: currentLesson.id,
+        article: aiGeneratedContent,
+      },
+    });
 
-      const resSuccess = Boolean(
-        Buffer.from(response.status.SuccessValue, "base64").toString(
-          "utf-8"
-        ) === "true"
-      );
+    const resSuccess = Boolean(
+      Buffer.from(response.status.SuccessValue, "base64").toString("utf-8") ===
+        "true"
+    );
 
-      if (!resSuccess) {
-        toast.update(loadingToast, {
-          type: "error",
-          render: "Error Saving AI Content",
-          isLoading: false,
-          autoClose: 1000,
-        });
-        return;
-      }
-
-      toast.update(loadingToast, {
-        type: "success",
-        render: "AI Content Saved Successfully",
-        isLoading: false,
-        autoClose: 1000,
-      });
-
-      // update the course details
-      setAddContentAction(null);
-      setAIGeneratedContent(null);
-      fetchCourseDetails();
-    } catch (error) {
-      console.error("Error Saving AI Content: ", error);
+    if (!resSuccess) {
       toast.update(loadingToast, {
         type: "error",
         render: "Error Saving AI Content",
         isLoading: false,
         autoClose: 1000,
       });
+      return;
     }
+
+    toast.update(loadingToast, {
+      type: "success",
+      render: "AI Content Saved Successfully",
+      isLoading: false,
+      autoClose: 1000,
+    });
+
+    // update the course details
+    setAddContentAction(null);
+    setAIGeneratedContent(null);
+    fetchCourseDetails();
   };
 
   const handleEditArticle = async () => {

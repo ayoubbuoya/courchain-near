@@ -51,21 +51,27 @@ export default function Page({
     }
   }, [wallet, signedAccountId]);
 
-  const handleGenerateLessonContent = async (lessonId: string) => {
+  const handleGenerateLessonContent = async (lessonId: number) => {
     setIsLoading(true);
     setIsEditing(false);
+
+    const data = JSON.stringify({
+      course_id: course_id,
+      lesson_id: lessonId.toString(),
+      mentor_id: signedAccountId,
+    });
+
+    console.log("Data: ", data);
+
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_AI_SERVER_API}/lesson/generate/`,
       {
         method: "POST",
+        body: data,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          course_id: course_id,
-          lesson_id: lessonId,
-          mentor_id: signedAccountId,
-        }),
       }
     );
 
@@ -180,7 +186,9 @@ export default function Page({
                     className="w-full custom-linear-border rounded-xl my-3 md:mb-6 hover:shadow-custom-purple"
                   >
                     <div
-                      onClick={() => handleGenerateLessonContent(lesson.id)}
+                      onClick={() =>
+                        handleGenerateLessonContent(lesson.id || 0)
+                      }
                       className="p-3 pr-2 pb-2 rounded-xl group hover:bg-purple hover:bg-opacity-30  hover:backdrop-blur-[3.13rem] cursor-pointer"
                     >
                       <div className="flex justify-start mb-3">

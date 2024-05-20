@@ -33,7 +33,7 @@ export default function RegisterForm({ email }: { email: string }) {
     if (firstName === "") {
       setIsValidFirstName(false);
       toast.update(id, {
-        render: "Veuillez entrer votre nom",
+        render: "Please enter your first name",
         type: "error",
         isLoading: false,
         autoClose: 2000,
@@ -46,7 +46,7 @@ export default function RegisterForm({ email }: { email: string }) {
     if (lastName === "") {
       setIsValidLastName(false);
       toast.update(id, {
-        render: "Veuillez entrer votre prénom",
+        render: "Please enter your last name",
         type: "error",
         isLoading: false,
         autoClose: 2000,
@@ -58,7 +58,7 @@ export default function RegisterForm({ email }: { email: string }) {
     if (password === "") {
       setIsValidPassword(false);
       toast.update(id, {
-        render: "Veuillez entrer votre mot de passe",
+        render: "Please enter your password",
         type: "error",
         isLoading: false,
         autoClose: 2000,
@@ -70,7 +70,7 @@ export default function RegisterForm({ email }: { email: string }) {
     if (password.length < 8) {
       setIsValidPassword(false);
       toast.update(id, {
-        render: "Le mot de passe doit contenir au moins 8 caractères",
+        render: "Password must be at least 8 characters long",
         type: "error",
         isLoading: false,
         autoClose: 2000,
@@ -82,7 +82,7 @@ export default function RegisterForm({ email }: { email: string }) {
     if (password.length > 20) {
       setIsValidPassword(false);
       toast.update(id, {
-        render: "Le mot de passe doit contenir au plus 20 caractères",
+        render: "Password must be less than 20 characters long",
         type: "error",
         isLoading: false,
         autoClose: 2000,
@@ -94,7 +94,7 @@ export default function RegisterForm({ email }: { email: string }) {
     if (confirmPassword !== password) {
       setIsValidConfirmPassword(false);
       toast.update(id, {
-        render: "Les mots de passe ne correspondent pas",
+        render: "Passwords do not match",
         type: "error",
         isLoading: false,
         autoClose: 2000,
@@ -196,7 +196,7 @@ export default function RegisterForm({ email }: { email: string }) {
           htmlFor="password"
           className="font-poppins font-normal text-base text-darkslategray-400"
         >
-          Mot de passe
+          Password
         </label>
         <input
           type="password"
@@ -218,7 +218,7 @@ export default function RegisterForm({ email }: { email: string }) {
           htmlFor="confirm-password"
           className="font-poppins font-normal text-base text-darkslategray-400"
         >
-          Confirmer le mot de passe
+          Confirm Password
         </label>
         <input
           type="password"
@@ -240,11 +240,11 @@ export default function RegisterForm({ email }: { email: string }) {
             htmlFor="first-name"
             className="font-poppins font-normal text-base text-darkslategray-400"
           >
-            Nom
+            First Name
           </label>
           <input
             type="text"
-            placeholder="Votre nom"
+            placeholder="Your First name"
             name="first-name"
             className={`border-2 ${
               isSubmitted && !isValidFirstName
@@ -260,11 +260,11 @@ export default function RegisterForm({ email }: { email: string }) {
             htmlFor="last-name"
             className="font-poppins font-normal text-base text-darkslategray-400"
           >
-            Prénom
+            Last Name
           </label>
           <input
             type="text"
-            placeholder="Votre prénom"
+            placeholder="your last name"
             name="last-name"
             className={`border-2 ${
               isSubmitted && !isValidLastName
@@ -282,7 +282,7 @@ export default function RegisterForm({ email }: { email: string }) {
           type="submit"
           className="w-[80%] py-[0.6rem] rounded-full mx-auto text-white font-poppins font-normal text-base bg-aqua-blue border-white border-2  "
         >
-          Créer un compte
+          Create Account
         </button>
       </div>
     </form>
