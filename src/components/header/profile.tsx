@@ -1,15 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { useWalletStore } from "@/stores/wallet";
-import Logout from "../logout";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { CONTRACTID } from "@/lib/config";
-import { useSession } from "next-auth/react";
 import ProfileDropMenu from "./ProfileDropMenu";
-import { useCurrentUserStore } from "@/stores/currentUser";
 import { Session } from "next-auth";
 import Image from "next/image";
 
