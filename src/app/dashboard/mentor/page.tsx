@@ -25,6 +25,14 @@ export default function MentorDashboard() {
 
   // fetch courses
   async function fetchCreatedCourses() {
+    if (!signedAccountId) {
+      toast.error("Please connect your wallet", {
+        autoClose: 1000,
+      });
+      setIsLoading(false);
+      return;
+    }
+
     const courses = await wallet.viewMethod({
       contractId: CONTRACTID,
       method: "get_mentor_created_courses",
@@ -46,38 +54,39 @@ export default function MentorDashboard() {
   }
 
   useEffect(() => {
-    if (!session) {
+    if (status === "unauthenticated") {
       router.push("/login");
     }
-    
-    if (session && !session.user) {
-      router.push("/login");
+
+    if (status === "loading") {
       return;
     }
 
-    if (session && session.user.role === "admin") {
-      // redirect to admin dashboard
-      router.push("/dashboard/admin");
-      return;
-    }
+    if (status === "authenticated") {
+      if (!session) {
+        return;
+      }
 
-    if (session && session.user.role === "user" && !session.isMentor) {
-      // redirect to user dashboard
-      router.push("/dashboard/student");
-      return;
-    }
+      if (!session.user) {
+        router.push("/login");
+        return;
+      }
 
-    if (session && !signedAccountId) {
-      toast.error("Please connect your wallet", {
-        autoClose: 1000,
-      });
-      setIsLoading(false);
-    }
+      if (session.user.role === "admin") {
+        // redirect to admin dashboard
+        router.push("/dashboard/admin");
+        return;
+      }
 
-    if (session && wallet && signedAccountId) {
+      if (session.user.role === "user" && !session.isMentor) {
+        // redirect to user dashboard
+        router.push("/dashboard/student");
+        return;
+      }
+
       fetchCreatedCourses();
     }
-  }, [wallet, signedAccountId]);
+  }, [status, wallet, signedAccountId]);
 
   const handlePublishCourse = async (courseId: number) => {
     const loadingToast = toast.loading("Publishing Course...");
