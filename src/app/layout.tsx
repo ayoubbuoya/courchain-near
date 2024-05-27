@@ -3,6 +3,9 @@
 // react
 import { useEffect } from "react";
 
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 // app
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -154,6 +157,8 @@ export default function RootLayout({
         <body className="w-full relative">
           {children}
           <ToastContainer />
+          <SpeedInsights />
+          <Analytics />
         </body>
       </html>
     </SessionWrapper>
