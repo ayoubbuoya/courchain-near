@@ -37,7 +37,7 @@ export default function ProfileDropMenu({
     });
     setIsDropdownVisible(false);
     toast.success("Switched to Mentor", {
-      autoClose: 1000,
+      autoClose: 1500,
     });
   };
 
@@ -48,7 +48,7 @@ export default function ProfileDropMenu({
     });
     setIsDropdownVisible(false);
     toast.success("Switched to Student", {
-      autoClose: 1000,
+      autoClose: 1500,
     });
   };
 
@@ -69,7 +69,15 @@ export default function ProfileDropMenu({
       <ul className="mt-2.5 md:mt-0  md:py-1 border-t-[1px] border-solid border-aqua-blue md:border-t-0 ">
         <li>
           <Link
-            href={"/dashboard"}
+            href={
+              session && session.user.role === "admin"
+                ? "/dashboard/admin"
+                : session && session.isMentor
+                ? "/dashboard/mentor"
+                : session && session.isMentor === false
+                ? "/dashboard/student"
+                : "/dashboard"
+            }
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Dashboard
