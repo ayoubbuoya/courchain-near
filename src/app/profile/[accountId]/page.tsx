@@ -6,7 +6,7 @@ import { CONTRACTID } from "@/lib/config";
 import { FullCourse, User } from "@/lib/types";
 import { useWalletStore } from "@/stores/wallet";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { toast } from "react-toastify";
 
 export default function ProfilePage({
   params,
@@ -46,6 +47,10 @@ export default function ProfilePage({
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [picture, setPicture] = useState<string>("");
+  const [pictureFile, setPictureFile] = useState<File | null>(null);
+  const [selectedPicture, setSelectedPicture] = useState<string | null>(null);
+
+  const pictureRef = useRef<HTMLInputElement>(null);
 
   async function getUserData() {
     setIsLoading(true);
@@ -57,6 +62,7 @@ export default function ProfilePage({
     setUser(fetchedUser);
     setName(fetchedUser.name);
     setPhone(fetchedUser.phone);
+    setPicture(fetchedUser.picture);
     console.log("Fetched User : ", fetchedUser);
     setIsLoading(false);
   }
@@ -109,6 +115,105 @@ export default function ProfilePage({
       </div>
     );
   }
+
+  const handleUploadPicture = () => {
+    const file = pictureRef.current?.files?.[0];
+    if (!file) return;
+    setPictureFile(file);
+
+    const imgUrl = URL.createObjectURL(file);
+    setSelectedPicture(imgUrl);
+  };
+
+  const handleSaveChanges = async () => {
+    if (!pictureFile) {
+      toast.error("Please select a picture");
+      return;
+    }
+
+    if (!name || name === "") {
+      toast.error("Please enter a name");
+      return;
+    }
+
+    const loadingToast = toast.loading("Uploading picture to ipfs...");
+
+    try {
+      const data = new FormData();
+      data.append("file", pictureFile);
+
+      const response = await fetch("/api/video/upload/ipfs", {
+        method: "POST",
+        body: data,
+      });
+
+      if (!response.ok) {
+        toast.update(loadingToast, {
+          type: "error",
+          render: "Error Saving Picture to IPFS",
+          isLoading: false,
+          autoClose: 1000,
+        });
+        return;
+      }
+
+      const { success, message, ipfsResponse } = await response.json();
+
+      if (!success) {
+        toast.update(loadingToast, {
+          type: "error",
+          render: message,
+          isLoading: false,
+          autoClose: 1000,
+        });
+        return;
+      }
+
+      const imageUrl: string =
+        process.env.NEXT_PUBLIC_GATEWAY_URL + ipfsResponse.IpfsHash;
+
+      console.log("Image URL: ", imageUrl);
+
+      setPicture(imageUrl);
+
+      toast.update(loadingToast, {
+        type: "success",
+        render: "Image Upladed to IPFS Successfully",
+        isLoading: false,
+        autoClose: 1000,
+      });
+
+      const loadingToast2 = toast.loading("Saving Changes...");
+
+      await wallet.callMethod({
+        contractId: CONTRACTID,
+        method: "update_user_info",
+        args: {
+          name,
+          phone,
+          picture: imageUrl,
+          updated_at: new Date().getTime(),
+        },
+      });
+      toast.update(loadingToast2, {
+        type: "success",
+        render: "Changes Saved Successfully",
+        isLoading: false,
+        autoClose: 1000,
+      });
+      setIsEditing(false);
+
+    } catch (error) {
+      console.error("Error uploading picture to IPFS:", error);
+      toast.update(loadingToast, {
+        render: "Error uploading picture to IPFS",
+        type: "error",
+        isLoading: false,
+        autoClose: 1500,
+      });
+      return;
+    }
+  };
 
   return (
     <>
@@ -268,9 +373,38 @@ export default function ProfilePage({
                   className="col-span-3 outline-aqua-blue py-3 border border-aqua-blue rounded-lg px-3 font-poppins font-normal text-[0.8rem] leading-5 text-schemes-primary"
                 />
               </div>
+              <div className="grid items-center grid-cols-4 gap-4">
+                <input
+                  ref={pictureRef}
+                  onChange={handleUploadPicture}
+                  accept="image/*"
+                  type="file"
+                  className="hidden w-full px-5 py-3 text-lg font-normal text-left border-none outline-none rounded-md font-poppins text-black placeholder:text-lg placeholder:font-poppins"
+                />
+                {/* <h5 className="capitalize">Picture preview</h5> */}
+                <div className="flex flex-col items-center justify-around col-span-4 gap-4">
+                  <Image
+                    src={selectedPicture || user.picture}
+                    alt="Course Picture"
+                    width={100}
+                    height={100}
+                    className="w-28 object-cover h-auto rounded-full"
+                  />
+
+                  <button
+                    onClick={() => {
+                      pictureRef.current?.click();
+                    }}
+                    className="font-poppins font-medium text-white text-lg bg-aqua-blue bg-opacity-85 py-2 px-5 rounded-xl mb-5 text-center w-full"
+                  >
+                    Click to change picture
+                  </button>
+                </div>
+              </div>
             </div>
             <DialogFooter>
               <Button
+                onClick={handleSaveChanges}
                 type="button"
                 className=" bg-aqua-blue outline-aqua-blue text-white rounded-lg px-5 py-2 font-poppins font-normal text-[0.88rem] leading-5 duration-700 text-center hover:bg-white hover:text-aqua-blue hover:border hover:border-aqua-blue"
               >
